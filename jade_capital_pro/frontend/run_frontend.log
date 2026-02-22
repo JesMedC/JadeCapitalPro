@@ -1,0 +1,884 @@
+
+> frontend@0.1.0 dev
+> next dev -p 3000
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.123:3000
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 2s
+○ Compiling /login ...
+ GET /login 200 in 6.4s (compile: 5.8s, proxy.ts: 145ms, render: 439ms)
+ GET /login 200 in 144ms (compile: 26ms, proxy.ts: 22ms, render: 97ms)
+ GET / 200 in 901ms (compile: 792ms, proxy.ts: 18ms, render: 91ms)
+⚠ Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /login 200 in 61ms (compile: 9ms, proxy.ts: 14ms, render: 38ms)
+ GET /dashboard 200 in 1490ms (compile: 1431ms, proxy.ts: 15ms, render: 44ms)
+ GET /dashboard/balance 200 in 1152ms (compile: 1093ms, proxy.ts: 9ms, render: 50ms)
+ GET /dashboard/reports 200 in 1142ms (compile: 1091ms, proxy.ts: 11ms, render: 40ms)
+ GET /dashboard/reports 200 in 56ms (compile: 9ms, proxy.ts: 9ms, render: 38ms)
+ GET /dashboard/metrics 200 in 1129ms (compile: 1067ms, proxy.ts: 14ms, render: 48ms)
+ GET /dashboard/strategy 200 in 982ms (compile: 911ms, proxy.ts: 10ms, render: 61ms)
+ GET /dashboard/bot 200 in 1382ms (compile: 1312ms, proxy.ts: 14ms, render: 55ms)
+ GET /dashboard/library 200 in 986ms (compile: 932ms, proxy.ts: 12ms, render: 42ms)
+ GET /dashboard/settings 200 in 861ms (compile: 812ms, proxy.ts: 11ms, render: 38ms)
+ GET /dashboard 200 in 65ms (compile: 12ms, proxy.ts: 11ms, render: 42ms)
+ GET /dashboard/balance 200 in 62ms (compile: 12ms, proxy.ts: 9ms, render: 41ms)
+ GET /dashboard/reports 200 in 63ms (compile: 11ms, proxy.ts: 9ms, render: 43ms)
+ GET /dashboard/metrics 200 in 62ms (compile: 12ms, proxy.ts: 8ms, render: 42ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 14ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/strategy 200 in 49ms (compile: 11ms, proxy.ts: 7ms, render: 31ms)
+ GET /dashboard/bot 200 in 63ms (compile: 13ms, proxy.ts: 12ms, render: 38ms)
+ GET /dashboard 200 in 57ms (compile: 11ms, proxy.ts: 8ms, render: 38ms)
+ GET /dashboard/balance 200 in 51ms (compile: 9ms, proxy.ts: 8ms, render: 34ms)
+ GET /dashboard/reports 200 in 69ms (compile: 16ms, proxy.ts: 12ms, render: 41ms)
+ GET /dashboard/balance 200 in 55ms (compile: 8ms, proxy.ts: 8ms, render: 39ms)
+ GET /dashboard 200 in 52ms (compile: 11ms, proxy.ts: 8ms, render: 33ms)
+ GET /dashboard/settings 200 in 66ms (compile: 12ms, proxy.ts: 13ms, render: 41ms)
+ GET /dashboard/library 200 in 53ms (compile: 9ms, proxy.ts: 8ms, render: 36ms)
+ GET /dashboard/strategy 200 in 64ms (compile: 11ms, proxy.ts: 8ms, render: 44ms)
+ GET /dashboard/bot 200 in 53ms (compile: 9ms, proxy.ts: 8ms, render: 35ms)
+✓ Compiled in 364ms
+ GET /dashboard/balance 200 in 251ms (compile: 172ms, proxy.ts: 13ms, render: 66ms)
+ GET /dashboard/reports 200 in 61ms (compile: 13ms, proxy.ts: 11ms, render: 38ms)
+ GET /dashboard/metrics 200 in 62ms (compile: 13ms, proxy.ts: 8ms, render: 41ms)
+ GET /dashboard/bot 200 in 49ms (compile: 9ms, proxy.ts: 7ms, render: 33ms)
+ GET /dashboard/balance 200 in 60ms (compile: 10ms, proxy.ts: 7ms, render: 42ms)
+ GET /dashboard 200 in 60ms (compile: 15ms, proxy.ts: 8ms, render: 38ms)
+ GET /dashboard/settings 200 in 55ms (compile: 15ms, proxy.ts: 8ms, render: 31ms)
+ GET /dashboard 200 in 47ms (compile: 7ms, proxy.ts: 10ms, render: 30ms)
+ GET /dashboard/metrics 200 in 64ms (compile: 10ms, proxy.ts: 12ms, render: 43ms)
+✓ Compiled in 125ms
+✓ Compiled in 97ms
+✓ Compiled in 151ms
+✓ Compiled in 181ms
+✓ Compiled in 115ms
+✓ Compiled in 107ms
+ GET /dashboard/metrics 200 in 771ms (compile: 296ms, proxy.ts: 127ms, render: 349ms)
+ GET /dashboard/metrics 200 in 218ms (compile: 12ms, proxy.ts: 10ms, render: 195ms)
+ GET /dashboard/metrics 200 in 201ms (compile: 10ms, proxy.ts: 7ms, render: 185ms)
+ GET /dashboard/metrics 200 in 205ms (compile: 9ms, proxy.ts: 6ms, render: 189ms)
+ GET /dashboard/metrics 200 in 198ms (compile: 13ms, proxy.ts: 7ms, render: 179ms)
+ GET /dashboard/metrics 200 in 197ms (compile: 12ms, proxy.ts: 8ms, render: 177ms)
+ GET /dashboard/metrics 200 in 192ms (compile: 12ms, proxy.ts: 7ms, render: 173ms)
+ GET /dashboard/metrics 200 in 204ms (compile: 10ms, proxy.ts: 8ms, render: 186ms)
+ GET /dashboard/metrics 200 in 199ms (compile: 11ms, proxy.ts: 7ms, render: 181ms)
+ GET /dashboard/metrics 200 in 194ms (compile: 10ms, proxy.ts: 8ms, render: 176ms)
+ GET /dashboard/metrics 200 in 187ms (compile: 11ms, proxy.ts: 6ms, render: 169ms)
+ GET /dashboard/metrics 200 in 195ms (compile: 12ms, proxy.ts: 7ms, render: 176ms)
+ GET /dashboard/metrics 200 in 195ms (compile: 11ms, proxy.ts: 7ms, render: 177ms)
+ GET /dashboard/metrics 200 in 197ms (compile: 13ms, proxy.ts: 8ms, render: 176ms)
+ GET /dashboard/metrics 200 in 191ms (compile: 12ms, proxy.ts: 6ms, render: 173ms)
+ GET /dashboard/metrics 200 in 202ms (compile: 15ms, proxy.ts: 8ms, render: 179ms)
+ GET /dashboard/metrics 200 in 197ms (compile: 12ms, proxy.ts: 7ms, render: 178ms)
+ GET /dashboard/metrics 200 in 196ms (compile: 12ms, proxy.ts: 8ms, render: 175ms)
+ GET /dashboard/metrics 200 in 181ms (compile: 10ms, proxy.ts: 9ms, render: 162ms)
+ GET /dashboard/metrics 200 in 191ms (compile: 13ms, proxy.ts: 7ms, render: 171ms)
+ GET /dashboard/metrics 200 in 186ms (compile: 12ms, proxy.ts: 9ms, render: 166ms)
+ GET /dashboard/metrics 200 in 182ms (compile: 11ms, proxy.ts: 7ms, render: 164ms)
+ GET /dashboard/metrics 200 in 162ms (compile: 12ms, proxy.ts: 6ms, render: 144ms)
+ GET /dashboard/metrics 200 in 112ms (compile: 11ms, proxy.ts: 7ms, render: 94ms)
+ GET /dashboard/metrics 200 in 63ms (compile: 10ms, proxy.ts: 7ms, render: 46ms)
+✓ Compiled in 251ms
+ GET /dashboard/metrics 200 in 578ms (compile: 195ms, proxy.ts: 81ms, render: 303ms)
+ GET /dashboard/metrics 200 in 266ms (compile: 15ms, proxy.ts: 14ms, render: 237ms)
+ GET /dashboard/metrics 200 in 249ms (compile: 12ms, proxy.ts: 8ms, render: 229ms)
+ GET /dashboard/metrics 200 in 230ms (compile: 24ms, proxy.ts: 10ms, render: 196ms)
+ GET /dashboard/metrics 200 in 220ms (compile: 14ms, proxy.ts: 9ms, render: 197ms)
+ GET /dashboard/metrics 200 in 230ms (compile: 13ms, proxy.ts: 9ms, render: 208ms)
+ GET /dashboard/metrics 200 in 272ms (compile: 12ms, proxy.ts: 7ms, render: 253ms)
+ GET /dashboard/metrics 200 in 301ms (compile: 15ms, proxy.ts: 7ms, render: 280ms)
+ GET /dashboard/metrics 200 in 313ms (compile: 22ms, proxy.ts: 12ms, render: 278ms)
+ GET /dashboard/metrics 200 in 291ms (compile: 14ms, proxy.ts: 11ms, render: 266ms)
+ GET /dashboard/metrics 200 in 262ms (compile: 27ms, proxy.ts: 15ms, render: 220ms)
+ GET /dashboard/metrics 200 in 219ms (compile: 13ms, proxy.ts: 6ms, render: 199ms)
+ GET /dashboard/metrics 200 in 196ms (compile: 13ms, proxy.ts: 13ms, render: 171ms)
+ GET /dashboard/metrics 200 in 185ms (compile: 10ms, proxy.ts: 8ms, render: 167ms)
+ GET /dashboard/metrics 200 in 191ms (compile: 12ms, proxy.ts: 7ms, render: 172ms)
+ GET /dashboard/metrics 200 in 213ms (compile: 13ms, proxy.ts: 7ms, render: 192ms)
+ GET /dashboard/metrics 200 in 211ms (compile: 14ms, proxy.ts: 7ms, render: 190ms)
+ GET /dashboard/metrics 200 in 191ms (compile: 10ms, proxy.ts: 6ms, render: 174ms)
+ GET /dashboard/metrics 200 in 189ms (compile: 14ms, proxy.ts: 9ms, render: 166ms)
+ GET /dashboard/metrics 200 in 183ms (compile: 11ms, proxy.ts: 8ms, render: 164ms)
+ GET /dashboard/metrics 200 in 184ms (compile: 11ms, proxy.ts: 7ms, render: 166ms)
+ GET /dashboard/metrics 200 in 166ms (compile: 11ms, proxy.ts: 8ms, render: 147ms)
+ GET /dashboard/metrics 200 in 113ms (compile: 11ms, proxy.ts: 6ms, render: 96ms)
+ GET /dashboard/metrics 200 in 62ms (compile: 11ms, proxy.ts: 7ms, render: 44ms)
+✓ Compiled in 122ms
+✓ Compiled in 159ms
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 258ms
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /dashboard/metrics 200 in 1121ms (compile: 228ms, proxy.ts: 9ms, render: 885ms)
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 60ms
+ GET /dashboard/metrics 200 in 839ms (compile: 202ms, proxy.ts: 14ms, render: 624ms)
+ GET /login 200 in 207ms (compile: 31ms, proxy.ts: 8ms, render: 169ms)
+ GET /dashboard/metrics 200 in 166ms (compile: 12ms, proxy.ts: 9ms, render: 145ms)
+ GET /dashboard/metrics 200 in 134ms (compile: 12ms, proxy.ts: 5ms, render: 117ms)
+ GET / 200 in 150ms (compile: 42ms, proxy.ts: 13ms, render: 96ms)
+ GET /dashboard 200 in 188ms (compile: 129ms, proxy.ts: 5ms, render: 55ms)
+
+Could not open EquityCurveChart.tsx in the editor.
+The editor process exited with an error: spawn code ENOENT.
+
+To set up the editor integration, add something like REACT_EDITOR=atom to the .env.local file in your project folder and restart the development server.
+
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 53ms
+ GET /dashboard 200 in 750ms (compile: 185ms, proxy.ts: 25ms, render: 540ms)
+✓ Compiled in 70ms
+ GET /dashboard/reports 200 in 163ms (compile: 34ms, proxy.ts: 14ms, render: 115ms)
+ GET /dashboard/reports 200 in 66ms (compile: 13ms, proxy.ts: 9ms, render: 45ms)
+ GET /dashboard/balance 200 in 210ms (compile: 154ms, proxy.ts: 8ms, render: 49ms)
+ GET /dashboard 200 in 226ms (compile: 149ms, proxy.ts: 8ms, render: 68ms)
+ GET /dashboard/reports 200 in 64ms (compile: 10ms, proxy.ts: 11ms, render: 43ms)
+ GET /dashboard/metrics 200 in 201ms (compile: 141ms, proxy.ts: 8ms, render: 52ms)
+ GET /dashboard/strategy 200 in 72ms (compile: 26ms, proxy.ts: 9ms, render: 37ms)
+ GET /dashboard/settings 200 in 396ms (compile: 320ms, proxy.ts: 11ms, render: 66ms)
+ GET /dashboard/library 200 in 94ms (compile: 45ms, proxy.ts: 11ms, render: 38ms)
+ GET /dashboard/bot 200 in 76ms (compile: 33ms, proxy.ts: 8ms, render: 35ms)
+ GET /dashboard/strategy 200 in 62ms (compile: 10ms, proxy.ts: 8ms, render: 44ms)
+ GET /dashboard/metrics 200 in 66ms (compile: 15ms, proxy.ts: 8ms, render: 43ms)
+ GET /dashboard/balance 200 in 65ms (compile: 13ms, proxy.ts: 9ms, render: 43ms)
+ GET /dashboard/reports 200 in 61ms (compile: 12ms, proxy.ts: 8ms, render: 42ms)
+ GET /dashboard/metrics 200 in 50ms (compile: 10ms, proxy.ts: 7ms, render: 33ms)
+ GET /dashboard/balance 200 in 56ms (compile: 7ms, proxy.ts: 12ms, render: 37ms)
+ GET /dashboard 200 in 62ms (compile: 16ms, proxy.ts: 6ms, render: 40ms)
+ GET /dashboard/settings 200 in 61ms (compile: 12ms, proxy.ts: 8ms, render: 42ms)
+ GET /dashboard 200 in 58ms (compile: 9ms, proxy.ts: 9ms, render: 39ms)
+ GET /dashboard/balance 200 in 63ms (compile: 14ms, proxy.ts: 10ms, render: 40ms)
+ GET /dashboard/reports 200 in 69ms (compile: 12ms, proxy.ts: 10ms, render: 47ms)
+ GET /dashboard/metrics 200 in 50ms (compile: 9ms, proxy.ts: 6ms, render: 35ms)
+ GET /dashboard/strategy 200 in 54ms (compile: 7ms, proxy.ts: 9ms, render: 37ms)
+ GET /dashboard/bot 200 in 65ms (compile: 14ms, proxy.ts: 10ms, render: 42ms)
+ GET /dashboard/library 200 in 64ms (compile: 10ms, proxy.ts: 9ms, render: 44ms)
+ GET /dashboard/settings 200 in 69ms (compile: 15ms, proxy.ts: 12ms, render: 41ms)
+ GET /dashboard 200 in 63ms (compile: 15ms, proxy.ts: 9ms, render: 39ms)
+ GET /dashboard/balance 200 in 68ms (compile: 8ms, proxy.ts: 8ms, render: 52ms)
+ GET /dashboard/reports 200 in 63ms (compile: 10ms, proxy.ts: 7ms, render: 46ms)
+ GET /dashboard/metrics 200 in 45ms (compile: 9ms, proxy.ts: 6ms, render: 30ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 11ms, proxy.ts: 10ms, render: 44ms)
+ GET /dashboard/metrics 200 in 52ms (compile: 10ms, proxy.ts: 7ms, render: 35ms)
+ GET /dashboard/strategy 200 in 62ms (compile: 13ms, proxy.ts: 10ms, render: 39ms)
+ GET /dashboard/metrics 200 in 42ms (compile: 7ms, proxy.ts: 6ms, render: 29ms)
+ GET /dashboard 200 in 52ms (compile: 9ms, proxy.ts: 7ms, render: 36ms)
+ GET /dashboard/balance 200 in 63ms (compile: 11ms, proxy.ts: 8ms, render: 43ms)
+ GET /dashboard/reports 200 in 70ms (compile: 11ms, proxy.ts: 10ms, render: 49ms)
+ GET /dashboard 200 in 46ms (compile: 9ms, proxy.ts: 7ms, render: 31ms)
+ GET /dashboard/metrics 200 in 47ms (compile: 9ms, proxy.ts: 6ms, render: 32ms)
+ GET /dashboard/strategy 200 in 67ms (compile: 9ms, proxy.ts: 12ms, render: 45ms)
+ GET /dashboard/bot 200 in 64ms (compile: 11ms, proxy.ts: 8ms, render: 44ms)
+✓ Compiled in 150ms
+✓ Compiled in 91ms
+✓ Compiled in 55ms
+✓ Compiled in 122ms
+✓ Compiled in 79ms
+✓ Compiled in 90ms
+✓ Compiled in 1971ms
+✓ Compiled in 133ms
+✓ Compiled in 85ms
+✓ Compiled in 81ms
+✓ Compiled in 53ms
+✓ Compiled in 111ms
+✓ Compiled in 135ms
+ GET /dashboard 200 in 243ms (compile: 159ms, proxy.ts: 10ms, render: 74ms)
+ GET /dashboard/balance 200 in 275ms (compile: 194ms, proxy.ts: 10ms, render: 71ms)
+ GET /dashboard/reports 200 in 217ms (compile: 142ms, proxy.ts: 11ms, render: 64ms)
+ GET /dashboard/reports 200 in 460ms (compile: 122ms, proxy.ts: 99ms, render: 239ms)
+ GET /dashboard/reports 200 in 186ms (compile: 8ms, proxy.ts: 12ms, render: 166ms)
+ GET /dashboard/reports 200 in 182ms (compile: 8ms, proxy.ts: 7ms, render: 167ms)
+ GET /dashboard/reports 200 in 182ms (compile: 10ms, proxy.ts: 8ms, render: 165ms)
+ GET /dashboard/reports 200 in 173ms (compile: 15ms, proxy.ts: 6ms, render: 152ms)
+ GET /dashboard/reports 200 in 175ms (compile: 11ms, proxy.ts: 6ms, render: 158ms)
+ GET /dashboard/reports 200 in 175ms (compile: 12ms, proxy.ts: 7ms, render: 155ms)
+ GET /dashboard/reports 200 in 173ms (compile: 11ms, proxy.ts: 6ms, render: 156ms)
+ GET /dashboard/reports 200 in 180ms (compile: 11ms, proxy.ts: 7ms, render: 162ms)
+ GET /dashboard/reports 200 in 167ms (compile: 11ms, proxy.ts: 7ms, render: 149ms)
+ GET /dashboard/reports 200 in 166ms (compile: 10ms, proxy.ts: 6ms, render: 150ms)
+ GET /dashboard/reports 200 in 169ms (compile: 18ms, proxy.ts: 6ms, render: 145ms)
+ GET /dashboard/reports 200 in 163ms (compile: 11ms, proxy.ts: 6ms, render: 146ms)
+ GET /dashboard/reports 200 in 160ms (compile: 12ms, proxy.ts: 6ms, render: 142ms)
+ GET /dashboard/reports 200 in 163ms (compile: 10ms, proxy.ts: 6ms, render: 147ms)
+ GET /dashboard/reports 200 in 161ms (compile: 10ms, proxy.ts: 6ms, render: 145ms)
+ GET /dashboard/reports 200 in 163ms (compile: 10ms, proxy.ts: 5ms, render: 147ms)
+ GET /dashboard/reports 200 in 165ms (compile: 13ms, proxy.ts: 6ms, render: 146ms)
+ GET /dashboard/reports 200 in 163ms (compile: 11ms, proxy.ts: 6ms, render: 146ms)
+ GET /dashboard/reports 200 in 164ms (compile: 10ms, proxy.ts: 7ms, render: 147ms)
+ GET /dashboard/reports 200 in 161ms (compile: 11ms, proxy.ts: 6ms, render: 144ms)
+ GET /dashboard/reports 200 in 162ms (compile: 10ms, proxy.ts: 6ms, render: 146ms)
+ GET /dashboard/reports 200 in 152ms (compile: 9ms, proxy.ts: 6ms, render: 137ms)
+ GET /dashboard/reports 200 in 101ms (compile: 11ms, proxy.ts: 6ms, render: 84ms)
+ GET /dashboard/reports 200 in 58ms (compile: 11ms, proxy.ts: 7ms, render: 40ms)
+ GET /dashboard/metrics 200 in 197ms (compile: 133ms, proxy.ts: 11ms, render: 53ms)
+ GET /dashboard/strategy 404 in 627ms (compile: 567ms, proxy.ts: 10ms, render: 50ms)
+ GET /dashboard/strategy 404 in 199ms (compile: 17ms, proxy.ts: 8ms, render: 174ms)
+ GET /dashboard/metrics 200 in 481ms (compile: 12ms, proxy.ts: 11ms, render: 459ms)
+ GET /dashboard/strategy 404 in 50ms (compile: 12ms, proxy.ts: 8ms, render: 31ms)
+ GET /dashboard/strategy 404 in 109ms (compile: 17ms, proxy.ts: 8ms, render: 84ms)
+ GET /dashboard/metrics 200 in 141ms (compile: 16ms, proxy.ts: 10ms, render: 115ms)
+ GET /dashboard/bot 200 in 79ms (compile: 25ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/library 200 in 242ms (compile: 158ms, proxy.ts: 17ms, render: 67ms)
+✓ Compiled in 236ms
+ GET /dashboard/library 200 in 816ms (compile: 151ms, proxy.ts: 91ms, render: 574ms)
+ GET /dashboard/settings 200 in 637ms (compile: 263ms, proxy.ts: 29ms, render: 346ms)
+ GET /dashboard/library 200 in 627ms (compile: 21ms, proxy.ts: 18ms, render: 588ms)
+ GET /dashboard/library 200 in 397ms (compile: 8ms, proxy.ts: 9ms, render: 380ms)
+ GET /dashboard/library 200 in 403ms (compile: 18ms, proxy.ts: 20ms, render: 365ms)
+ GET /dashboard/library 200 in 305ms (compile: 28ms, proxy.ts: 19ms, render: 258ms)
+ GET /dashboard/library 200 in 245ms (compile: 24ms, proxy.ts: 15ms, render: 205ms)
+ GET /dashboard/library 200 in 209ms (compile: 22ms, proxy.ts: 12ms, render: 175ms)
+ GET /dashboard/library 200 in 197ms (compile: 11ms, proxy.ts: 7ms, render: 179ms)
+ GET /dashboard/library 200 in 196ms (compile: 11ms, proxy.ts: 8ms, render: 178ms)
+ GET /dashboard/library 200 in 190ms (compile: 13ms, proxy.ts: 6ms, render: 171ms)
+ GET /dashboard/library 200 in 186ms (compile: 13ms, proxy.ts: 6ms, render: 167ms)
+ GET /dashboard/library 200 in 183ms (compile: 11ms, proxy.ts: 6ms, render: 165ms)
+ GET /dashboard/library 200 in 180ms (compile: 11ms, proxy.ts: 7ms, render: 161ms)
+ GET /dashboard/library 200 in 178ms (compile: 10ms, proxy.ts: 6ms, render: 162ms)
+ GET /dashboard/library 200 in 178ms (compile: 12ms, proxy.ts: 7ms, render: 159ms)
+ GET /dashboard/library 200 in 174ms (compile: 11ms, proxy.ts: 8ms, render: 155ms)
+ GET /dashboard/library 200 in 184ms (compile: 11ms, proxy.ts: 6ms, render: 167ms)
+ GET /dashboard/library 200 in 186ms (compile: 10ms, proxy.ts: 8ms, render: 168ms)
+ GET /dashboard/library 200 in 185ms (compile: 10ms, proxy.ts: 7ms, render: 168ms)
+ GET /dashboard/library 200 in 177ms (compile: 11ms, proxy.ts: 6ms, render: 159ms)
+ GET /dashboard/library 200 in 182ms (compile: 12ms, proxy.ts: 7ms, render: 163ms)
+ GET /dashboard/library 200 in 180ms (compile: 12ms, proxy.ts: 7ms, render: 161ms)
+ GET /dashboard/library 200 in 130ms (compile: 13ms, proxy.ts: 7ms, render: 110ms)
+ GET /dashboard/library 200 in 78ms (compile: 13ms, proxy.ts: 6ms, render: 58ms)
+ GET /dashboard 200 in 81ms (compile: 32ms, proxy.ts: 12ms, render: 37ms)
+ GET /dashboard/balance 200 in 278ms (compile: 196ms, proxy.ts: 10ms, render: 72ms)
+ GET /dashboard 200 in 63ms (compile: 11ms, proxy.ts: 9ms, render: 43ms)
+ GET /dashboard/balance 200 in 59ms (compile: 9ms, proxy.ts: 9ms, render: 41ms)
+ GET /dashboard 200 in 67ms (compile: 15ms, proxy.ts: 11ms, render: 42ms)
+ GET /dashboard/balance 200 in 73ms (compile: 16ms, proxy.ts: 14ms, render: 44ms)
+ GET /dashboard/reports 200 in 92ms (compile: 36ms, proxy.ts: 14ms, render: 43ms)
+ GET /dashboard/metrics 200 in 60ms (compile: 21ms, proxy.ts: 5ms, render: 34ms)
+ GET /dashboard/strategy 200 in 832ms (compile: 752ms, proxy.ts: 11ms, render: 68ms)
+ GET /dashboard/bot 200 in 72ms (compile: 22ms, proxy.ts: 6ms, render: 44ms)
+ GET /dashboard/strategy 200 in 52ms (compile: 8ms, proxy.ts: 6ms, render: 37ms)
+✓ Compiled in 151ms
+ GET /dashboard 200 in 59ms (compile: 12ms, proxy.ts: 12ms, render: 36ms)
+ GET /dashboard/balance 200 in 55ms (compile: 10ms, proxy.ts: 6ms, render: 39ms)
+ GET /dashboard 200 in 59ms (compile: 12ms, proxy.ts: 9ms, render: 38ms)
+ GET /dashboard/settings 200 in 53ms (compile: 10ms, proxy.ts: 9ms, render: 34ms)
+ GET /dashboard 200 in 58ms (compile: 9ms, proxy.ts: 12ms, render: 37ms)
+ GET /dashboard/balance 200 in 67ms (compile: 14ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard 200 in 62ms (compile: 14ms, proxy.ts: 9ms, render: 39ms)
+ GET /dashboard/balance 200 in 69ms (compile: 15ms, proxy.ts: 11ms, render: 44ms)
+ GET /dashboard/reports 200 in 57ms (compile: 8ms, proxy.ts: 8ms, render: 42ms)
+ GET /dashboard/metrics 200 in 68ms (compile: 13ms, proxy.ts: 11ms, render: 44ms)
+ GET /dashboard/strategy 200 in 50ms (compile: 11ms, proxy.ts: 6ms, render: 34ms)
+ GET /dashboard/bot 200 in 211ms (compile: 144ms, proxy.ts: 10ms, render: 57ms)
+ GET /dashboard/library 200 in 75ms (compile: 15ms, proxy.ts: 11ms, render: 50ms)
+ GET /dashboard/settings 200 in 62ms (compile: 16ms, proxy.ts: 7ms, render: 38ms)
+ GET /dashboard/balance 200 in 65ms (compile: 15ms, proxy.ts: 7ms, render: 43ms)
+ GET /dashboard 200 in 70ms (compile: 15ms, proxy.ts: 11ms, render: 44ms)
+ GET /dashboard/balance 200 in 75ms (compile: 15ms, proxy.ts: 13ms, render: 47ms)
+ GET /dashboard/reports 200 in 91ms (compile: 13ms, proxy.ts: 11ms, render: 67ms)
+ GET /dashboard 200 in 59ms (compile: 10ms, proxy.ts: 8ms, render: 41ms)
+ GET /dashboard/balance 200 in 50ms (compile: 8ms, proxy.ts: 6ms, render: 35ms)
+ GET /dashboard/reports 200 in 67ms (compile: 15ms, proxy.ts: 10ms, render: 42ms)
+ GET /dashboard/metrics 200 in 46ms (compile: 7ms, proxy.ts: 6ms, render: 33ms)
+ GET /dashboard/strategy 200 in 50ms (compile: 11ms, proxy.ts: 10ms, render: 30ms)
+ GET /dashboard/bot 200 in 65ms (compile: 11ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/library 200 in 53ms (compile: 7ms, proxy.ts: 6ms, render: 39ms)
+✓ Compiled in 92ms
+✓ Compiled in 101ms
+ GET /dashboard 200 in 40ms (compile: 7ms, proxy.ts: 6ms, render: 27ms)
+ GET /dashboard 200 in 65ms (compile: 17ms, proxy.ts: 10ms, render: 38ms)
+ GET /dashboard/balance 200 in 257ms (compile: 157ms, proxy.ts: 10ms, render: 90ms)
+✓ Compiled in 101ms
+ GET /dashboard/reports 200 in 76ms (compile: 16ms, proxy.ts: 14ms, render: 46ms)
+ GET /dashboard/metrics 200 in 79ms (compile: 16ms, proxy.ts: 9ms, render: 54ms)
+ GET /dashboard/strategy 200 in 133ms (compile: 28ms, proxy.ts: 24ms, render: 81ms)
+ GET /dashboard/bot 200 in 54ms (compile: 7ms, proxy.ts: 8ms, render: 39ms)
+✓ Compiled in 69ms
+✓ Compiled in 144ms
+ GET /dashboard 200 in 224ms (compile: 157ms, proxy.ts: 9ms, render: 58ms)
+ GET /dashboard/balance 200 in 212ms (compile: 140ms, proxy.ts: 9ms, render: 62ms)
+ GET /dashboard 200 in 46ms (compile: 8ms, proxy.ts: 7ms, render: 31ms)
+ GET /dashboard/metrics 200 in 75ms (compile: 12ms, proxy.ts: 9ms, render: 54ms)
+ GET /dashboard/strategy 200 in 199ms (compile: 126ms, proxy.ts: 9ms, render: 64ms)
+ GET /dashboard/bot 200 in 68ms (compile: 11ms, proxy.ts: 10ms, render: 47ms)
+ GET /dashboard/library 200 in 43ms (compile: 11ms, proxy.ts: 7ms, render: 25ms)
+ GET /dashboard/settings 200 in 214ms (compile: 144ms, proxy.ts: 11ms, render: 60ms)
+ GET /dashboard 200 in 67ms (compile: 13ms, proxy.ts: 10ms, render: 44ms)
+✓ Compiled in 77ms
+✓ Compiled in 69ms
+✓ Compiled in 64ms
+✓ Compiled in 61ms
+✓ Compiled in 74ms
+✓ Compiled in 69ms
+ GET /dashboard/balance 200 in 63ms (compile: 14ms, proxy.ts: 11ms, render: 38ms)
+ GET /dashboard/reports 200 in 70ms (compile: 16ms, proxy.ts: 9ms, render: 45ms)
+ GET /dashboard/metrics 200 in 65ms (compile: 13ms, proxy.ts: 8ms, render: 44ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 14ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/bot 200 in 225ms (compile: 123ms, proxy.ts: 9ms, render: 93ms)
+ GET /dashboard/bot 200 in 43ms (compile: 6ms, proxy.ts: 5ms, render: 31ms)
+ GET /dashboard/strategy 200 in 42ms (compile: 6ms, proxy.ts: 6ms, render: 30ms)
+ GET /dashboard/bot 200 in 65ms (compile: 11ms, proxy.ts: 9ms, render: 44ms)
+ GET /dashboard/library 200 in 56ms (compile: 9ms, proxy.ts: 8ms, render: 38ms)
+ GET /dashboard/settings 200 in 59ms (compile: 14ms, proxy.ts: 8ms, render: 37ms)
+✓ Compiled in 61ms
+✓ Compiled in 146ms
+✓ Compiled in 58ms
+ GET /dashboard/settings 200 in 479ms (compile: 11ms, proxy.ts: 12ms, render: 455ms)
+ GET / 200 in 159ms (compile: 38ms, proxy.ts: 15ms, render: 106ms)
+ GET /dashboard 200 in 192ms (compile: 126ms, proxy.ts: 7ms, render: 59ms)
+ GET /dashboard/balance 200 in 58ms (compile: 10ms, proxy.ts: 8ms, render: 39ms)
+ GET /dashboard/metrics 200 in 64ms (compile: 15ms, proxy.ts: 10ms, render: 39ms)
+ GET /dashboard/strategy 200 in 55ms (compile: 11ms, proxy.ts: 6ms, render: 38ms)
+ GET /dashboard/bot 200 in 215ms (compile: 141ms, proxy.ts: 8ms, render: 66ms)
+ GET / 200 in 192ms (compile: 62ms, proxy.ts: 8ms, render: 122ms)
+ GET /dashboard 200 in 46ms (compile: 10ms, proxy.ts: 5ms, render: 32ms)
+ GET /dashboard/bot 200 in 54ms (compile: 10ms, proxy.ts: 11ms, render: 33ms)
+ GET /dashboard/bot 200 in 49ms (compile: 9ms, proxy.ts: 9ms, render: 32ms)
+ GET /dashboard 200 in 70ms (compile: 16ms, proxy.ts: 14ms, render: 40ms)
+ GET /dashboard/balance 200 in 75ms (compile: 13ms, proxy.ts: 13ms, render: 49ms)
+ GET /dashboard/settings 200 in 77ms (compile: 15ms, proxy.ts: 13ms, render: 49ms)
+ GET /dashboard/balance 200 in 73ms (compile: 13ms, proxy.ts: 12ms, render: 49ms)
+ GET /dashboard/balance 200 in 51ms (compile: 9ms, proxy.ts: 6ms, render: 35ms)
+ GET /dashboard 200 in 46ms (compile: 10ms, proxy.ts: 7ms, render: 29ms)
+ GET /dashboard/balance 200 in 50ms (compile: 9ms, proxy.ts: 8ms, render: 33ms)
+✓ Compiled in 764ms
+✓ Compiled in 67ms
+✓ Compiled in 77ms
+ GET /dashboard/bot 200 in 224ms (compile: 157ms, proxy.ts: 12ms, render: 55ms)
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+⨯ ./src/app/dashboard/bot/page.tsx:18:1
+Module not found: Can't resolve '@/components/TradingChart'
+[0m [90m 16 |[39m [36mimport[39m { motion } [36mfrom[39m [32m'framer-motion'[39m[33m;[39m
+ [90m 17 |[39m [36mimport[39m api [36mfrom[39m [32m'@/lib/api'[39m[33m;[39m
+[31m[1m>[22m[39m[90m 18 |[39m [36mimport[39m [33mTradingChart[39m [36mfrom[39m [32m'@/components/TradingChart'[39m[33m;[39m
+ [90m    |[39m [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 19 |[39m [36mimport[39m { getApiErrorMessage } [36mfrom[39m [32m'@/lib/apiError'[39m[33m;[39m
+ [90m 20 |[39m [36mimport[39m { useToastStore } [36mfrom[39m [32m'@/lib/toastStore'[39m[33m;[39m
+ [90m 21 |[39m[0m
+
+Import map: aliased to relative './src/components/TradingChart' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/dashboard/bot/page.tsx [Client Component Browser]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/dashboard/bot/page.tsx [Client Component SSR]
+    ./src/app/dashboard/bot/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+✓ Compiled in 313ms
+ GET /dashboard/bot 200 in 321ms (compile: 223ms, proxy.ts: 9ms, render: 90ms)
+✓ Compiled in 239ms
+✓ Compiled in 67ms
+ GET /dashboard/strategy 200 in 92ms (compile: 20ms, proxy.ts: 9ms, render: 63ms)
+ GET /dashboard/bot 200 in 198ms (compile: 130ms, proxy.ts: 14ms, render: 54ms)
+ GET /dashboard/reports 200 in 79ms (compile: 21ms, proxy.ts: 10ms, render: 49ms)
+ GET /dashboard/balance 200 in 226ms (compile: 156ms, proxy.ts: 8ms, render: 62ms)
+ GET / 200 in 149ms (compile: 14ms, proxy.ts: 9ms, render: 126ms)
+ GET /dashboard 200 in 95ms (compile: 13ms, proxy.ts: 10ms, render: 73ms)
+ GET /dashboard/balance 200 in 86ms (compile: 16ms, proxy.ts: 11ms, render: 59ms)
+ GET /dashboard/balance 200 in 81ms (compile: 22ms, proxy.ts: 8ms, render: 51ms)
+✓ Compiled in 153ms
+ GET /dashboard/reports 200 in 70ms (compile: 22ms, proxy.ts: 13ms, render: 35ms)
+ GET /dashboard/bot 200 in 197ms (compile: 138ms, proxy.ts: 8ms, render: 51ms)
+ GET /dashboard/strategy 200 in 69ms (compile: 17ms, proxy.ts: 8ms, render: 45ms)
+ GET /dashboard/bot 200 in 57ms (compile: 13ms, proxy.ts: 7ms, render: 37ms)
+ GET /dashboard/bot 200 in 62ms (compile: 11ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 15ms, proxy.ts: 9ms, render: 41ms)
+ GET /dashboard/bot 200 in 69ms (compile: 10ms, proxy.ts: 15ms, render: 44ms)
+ GET /dashboard/settings 200 in 73ms (compile: 22ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/bot 200 in 56ms (compile: 9ms, proxy.ts: 9ms, render: 38ms)
+✓ Compiled in 68ms
+✓ Compiled in 75ms
+✓ Compiled in 85ms
+✓ Compiled in 77ms
+✓ Compiled in 71ms
+✓ Compiled in 106ms
+ GET /dashboard/library 200 in 94ms (compile: 18ms, proxy.ts: 10ms, render: 66ms)
+ GET /dashboard/settings 200 in 73ms (compile: 15ms, proxy.ts: 12ms, render: 47ms)
+✓ Compiled in 88ms
+✓ Compiled in 82ms
+✓ Compiled in 73ms
+ GET /dashboard/bot 200 in 300ms (compile: 169ms, proxy.ts: 8ms, render: 124ms)
+ GET /dashboard/library 200 in 68ms (compile: 17ms, proxy.ts: 13ms, render: 38ms)
+ GET /dashboard/bot 200 in 70ms (compile: 14ms, proxy.ts: 13ms, render: 43ms)
+ GET /dashboard/library 200 in 61ms (compile: 10ms, proxy.ts: 10ms, render: 41ms)
+ GET /dashboard/balance 200 in 97ms (compile: 16ms, proxy.ts: 9ms, render: 71ms)
+ GET /dashboard/metrics 200 in 67ms (compile: 14ms, proxy.ts: 11ms, render: 42ms)
+ GET /dashboard/library 200 in 68ms (compile: 12ms, proxy.ts: 12ms, render: 44ms)
+ GET /dashboard/bot 200 in 73ms (compile: 15ms, proxy.ts: 9ms, render: 50ms)
+ GET /dashboard/library 200 in 73ms (compile: 16ms, proxy.ts: 9ms, render: 48ms)
+ GET /dashboard/bot 200 in 66ms (compile: 11ms, proxy.ts: 9ms, render: 46ms)
+✓ Compiled in 74ms
+ GET /dashboard 200 in 63ms (compile: 9ms, proxy.ts: 13ms, render: 41ms)
+ GET /dashboard/balance 200 in 67ms (compile: 13ms, proxy.ts: 13ms, render: 40ms)
+ GET /dashboard/strategy 200 in 63ms (compile: 13ms, proxy.ts: 11ms, render: 39ms)
+ GET /dashboard/bot 200 in 219ms (compile: 152ms, proxy.ts: 7ms, render: 60ms)
+✓ Compiled in 149ms
+✓ Compiled in 90ms
+✓ Compiled in 188ms
+✓ Compiled in 84ms
+✓ Compiled in 110ms
+ GET /dashboard/strategy 200 in 66ms (compile: 12ms, proxy.ts: 10ms, render: 44ms)
+ GET /dashboard/bot 200 in 200ms (compile: 135ms, proxy.ts: 8ms, render: 56ms)
+ GET /dashboard/library 200 in 51ms (compile: 10ms, proxy.ts: 7ms, render: 34ms)
+ GET /dashboard/bot 200 in 54ms (compile: 9ms, proxy.ts: 8ms, render: 37ms)
+✓ Compiled in 75ms
+✓ Compiled in 86ms
+ GET /dashboard/balance 200 in 68ms (compile: 14ms, proxy.ts: 12ms, render: 41ms)
+✓ Compiled in 67ms
+ GET /dashboard/settings 200 in 70ms (compile: 15ms, proxy.ts: 10ms, render: 46ms)
+ GET /dashboard/bot 200 in 191ms (compile: 129ms, proxy.ts: 6ms, render: 56ms)
+ GET /dashboard/balance 200 in 67ms (compile: 12ms, proxy.ts: 8ms, render: 47ms)
+✓ Compiled in 214ms
+✓ Compiled in 84ms
+✓ Compiled in 97ms
+✓ Compiled in 89ms
+✓ Compiled in 106ms
+ GET /dashboard/settings 200 in 324ms (compile: 206ms, proxy.ts: 9ms, render: 109ms)
+ GET /dashboard/balance 200 in 194ms (compile: 126ms, proxy.ts: 10ms, render: 58ms)
+ GET /dashboard/reports 200 in 74ms (compile: 15ms, proxy.ts: 12ms, render: 46ms)
+ GET /dashboard/metrics 200 in 58ms (compile: 10ms, proxy.ts: 7ms, render: 41ms)
+ GET /dashboard/strategy 200 in 72ms (compile: 15ms, proxy.ts: 10ms, render: 47ms)
+ GET /dashboard/bot 200 in 168ms (compile: 107ms, proxy.ts: 7ms, render: 55ms)
+ GET /dashboard/bot 200 in 64ms (compile: 11ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/bot 200 in 60ms (compile: 16ms, proxy.ts: 8ms, render: 36ms)
+ GET /dashboard/library 200 in 66ms (compile: 14ms, proxy.ts: 9ms, render: 43ms)
+ GET /dashboard/bot 200 in 67ms (compile: 16ms, proxy.ts: 10ms, render: 41ms)
+ GET /dashboard/balance 200 in 65ms (compile: 11ms, proxy.ts: 10ms, render: 44ms)
+✓ Compiled in 97ms
+✓ Compiled in 99ms
+✓ Compiled in 93ms
+✓ Compiled in 109ms
+ GET /dashboard/bot 200 in 193ms (compile: 114ms, proxy.ts: 19ms, render: 61ms)
+ GET /dashboard/balance 200 in 61ms (compile: 10ms, proxy.ts: 8ms, render: 43ms)
+ GET /dashboard/bot 200 in 65ms (compile: 12ms, proxy.ts: 12ms, render: 41ms)
+ GET /dashboard/balance 200 in 64ms (compile: 10ms, proxy.ts: 12ms, render: 42ms)
+✓ Compiled in 81ms
+ GET /dashboard/bot 200 in 201ms (compile: 135ms, proxy.ts: 10ms, render: 56ms)
+ GET /dashboard/library 200 in 52ms (compile: 10ms, proxy.ts: 7ms, render: 35ms)
+ GET /dashboard 200 in 65ms (compile: 11ms, proxy.ts: 11ms, render: 43ms)
+ GET /dashboard/metrics 200 in 70ms (compile: 13ms, proxy.ts: 13ms, render: 43ms)
+ GET /dashboard/balance 200 in 58ms (compile: 13ms, proxy.ts: 6ms, render: 39ms)
+ GET /dashboard/bot 200 in 67ms (compile: 11ms, proxy.ts: 13ms, render: 44ms)
+ GET /dashboard/balance 200 in 79ms (compile: 18ms, proxy.ts: 13ms, render: 49ms)
+ GET /dashboard/bot 200 in 69ms (compile: 13ms, proxy.ts: 9ms, render: 47ms)
+ GET /dashboard/balance 200 in 57ms (compile: 12ms, proxy.ts: 9ms, render: 37ms)
+ GET /dashboard/reports 200 in 72ms (compile: 18ms, proxy.ts: 9ms, render: 45ms)
+ GET /dashboard/metrics 200 in 57ms (compile: 12ms, proxy.ts: 7ms, render: 38ms)
+ GET /dashboard/balance 200 in 66ms (compile: 12ms, proxy.ts: 13ms, render: 41ms)
+ GET /dashboard/bot 200 in 56ms (compile: 10ms, proxy.ts: 10ms, render: 36ms)
+ GET /dashboard/balance 200 in 71ms (compile: 16ms, proxy.ts: 11ms, render: 44ms)
+ GET /dashboard/bot 200 in 68ms (compile: 13ms, proxy.ts: 8ms, render: 46ms)
+ GET /dashboard/balance 200 in 62ms (compile: 12ms, proxy.ts: 7ms, render: 43ms)
+✓ Compiled in 80ms
+✓ Compiled in 212ms
+ GET /dashboard/library 200 in 60ms (compile: 10ms, proxy.ts: 8ms, render: 41ms)
+ GET /dashboard/bot 200 in 249ms (compile: 156ms, proxy.ts: 10ms, render: 83ms)
+ GET /dashboard/bot 404 in 973ms (compile: 300ms, proxy.ts: 193ms, render: 480ms)
+ GET /dashboard/bot 404 in 492ms (compile: 36ms, proxy.ts: 7ms, render: 448ms)
+ GET /dashboard/bot 404 in 373ms (compile: 286ms, proxy.ts: 10ms, render: 76ms)
+ GET /dashboard/bot 404 in 496ms (compile: 113ms, proxy.ts: 9ms, render: 373ms)
+ GET /dashboard/library 200 in 213ms (compile: 141ms, proxy.ts: 8ms, render: 64ms)
+ GET /dashboard 200 in 84ms (compile: 33ms, proxy.ts: 8ms, render: 43ms)
+✓ Compiled in 198ms
+ GET /dashboard 200 in 648ms (compile: 227ms, proxy.ts: 52ms, render: 369ms)
+ GET /dashboard 200 in 280ms (compile: 14ms, proxy.ts: 13ms, render: 253ms)
+ GET /dashboard 200 in 301ms (compile: 13ms, proxy.ts: 14ms, render: 274ms)
+ GET /dashboard 200 in 286ms (compile: 22ms, proxy.ts: 16ms, render: 249ms)
+ GET /dashboard 200 in 257ms (compile: 17ms, proxy.ts: 27ms, render: 213ms)
+ GET /dashboard 200 in 225ms (compile: 16ms, proxy.ts: 8ms, render: 201ms)
+ GET /dashboard 200 in 213ms (compile: 20ms, proxy.ts: 10ms, render: 182ms)
+ GET /dashboard 200 in 248ms (compile: 14ms, proxy.ts: 9ms, render: 225ms)
+ GET /dashboard 200 in 250ms (compile: 20ms, proxy.ts: 8ms, render: 222ms)
+ GET /dashboard 200 in 246ms (compile: 27ms, proxy.ts: 9ms, render: 209ms)
+ GET /dashboard 200 in 218ms (compile: 29ms, proxy.ts: 30ms, render: 159ms)
+ GET /dashboard 200 in 185ms (compile: 8ms, proxy.ts: 8ms, render: 169ms)
+ GET /dashboard 200 in 187ms (compile: 20ms, proxy.ts: 8ms, render: 159ms)
+ GET /dashboard 200 in 184ms (compile: 12ms, proxy.ts: 8ms, render: 164ms)
+ GET /dashboard 200 in 173ms (compile: 10ms, proxy.ts: 9ms, render: 155ms)
+ GET /dashboard 200 in 182ms (compile: 10ms, proxy.ts: 7ms, render: 165ms)
+ GET /dashboard 200 in 177ms (compile: 10ms, proxy.ts: 7ms, render: 160ms)
+ GET /dashboard 200 in 191ms (compile: 11ms, proxy.ts: 6ms, render: 174ms)
+ GET /dashboard 200 in 177ms (compile: 10ms, proxy.ts: 7ms, render: 161ms)
+ GET /dashboard 200 in 195ms (compile: 10ms, proxy.ts: 8ms, render: 178ms)
+ GET /dashboard 200 in 179ms (compile: 9ms, proxy.ts: 7ms, render: 163ms)
+ GET /dashboard 200 in 179ms (compile: 11ms, proxy.ts: 7ms, render: 160ms)
+ GET /dashboard 200 in 117ms (compile: 14ms, proxy.ts: 9ms, render: 93ms)
+ GET /dashboard 200 in 66ms (compile: 11ms, proxy.ts: 7ms, render: 48ms)
+✓ Compiled in 144ms
+ GET /dashboard/bot 200 in 408ms (compile: 327ms, proxy.ts: 9ms, render: 72ms)
+✓ Compiled in 98ms
+ GET /dashboard 200 in 79ms (compile: 13ms, proxy.ts: 18ms, render: 48ms)
+ GET /dashboard/balance 200 in 101ms (compile: 39ms, proxy.ts: 10ms, render: 52ms)
+ GET /dashboard/reports 200 in 88ms (compile: 37ms, proxy.ts: 11ms, render: 41ms)
+ GET /dashboard/balance 200 in 66ms (compile: 13ms, proxy.ts: 8ms, render: 44ms)
+✓ Compiled in 0ms
+ GET /dashboard/balance 200 in 718ms (compile: 417ms, proxy.ts: 66ms, render: 235ms)
+ GET /dashboard/balance 200 in 233ms (compile: 13ms, proxy.ts: 25ms, render: 195ms)
+ GET /dashboard/balance 200 in 278ms (compile: 7ms, proxy.ts: 10ms, render: 261ms)
+ GET /dashboard/balance 200 in 366ms (compile: 11ms, proxy.ts: 9ms, render: 346ms)
+ GET /dashboard/balance 200 in 358ms (compile: 21ms, proxy.ts: 14ms, render: 323ms)
+ GET /dashboard/balance 200 in 296ms (compile: 27ms, proxy.ts: 20ms, render: 248ms)
+ GET /dashboard/balance 200 in 215ms (compile: 13ms, proxy.ts: 7ms, render: 195ms)
+ GET /dashboard/balance 200 in 223ms (compile: 13ms, proxy.ts: 10ms, render: 201ms)
+ GET /dashboard/balance 200 in 223ms (compile: 16ms, proxy.ts: 8ms, render: 199ms)
+ GET /dashboard/balance 200 in 216ms (compile: 13ms, proxy.ts: 9ms, render: 195ms)
+ GET /dashboard/balance 200 in 211ms (compile: 11ms, proxy.ts: 8ms, render: 192ms)
+ GET /dashboard/balance 200 in 222ms (compile: 15ms, proxy.ts: 9ms, render: 198ms)
+ GET /dashboard/balance 200 in 215ms (compile: 13ms, proxy.ts: 8ms, render: 193ms)
+ GET /dashboard/balance 200 in 225ms (compile: 15ms, proxy.ts: 8ms, render: 203ms)
+ GET /dashboard/balance 200 in 211ms (compile: 11ms, proxy.ts: 7ms, render: 192ms)
+ GET /dashboard/balance 200 in 208ms (compile: 14ms, proxy.ts: 8ms, render: 187ms)
+ GET /dashboard/balance 200 in 192ms (compile: 14ms, proxy.ts: 9ms, render: 169ms)
+ GET /dashboard/balance 200 in 194ms (compile: 11ms, proxy.ts: 7ms, render: 175ms)
+ GET /dashboard/balance 200 in 186ms (compile: 10ms, proxy.ts: 7ms, render: 168ms)
+ GET /dashboard/balance 200 in 197ms (compile: 10ms, proxy.ts: 7ms, render: 180ms)
+ GET /dashboard/balance 200 in 193ms (compile: 12ms, proxy.ts: 7ms, render: 174ms)
+ GET /dashboard/balance 200 in 212ms (compile: 14ms, proxy.ts: 7ms, render: 191ms)
+ GET /dashboard/balance 200 in 202ms (compile: 11ms, proxy.ts: 7ms, render: 184ms)
+ GET /dashboard/balance 200 in 221ms (compile: 15ms, proxy.ts: 8ms, render: 197ms)
+ GET /dashboard/balance 200 in 214ms (compile: 12ms, proxy.ts: 10ms, render: 192ms)
+ GET /dashboard/balance 200 in 211ms (compile: 13ms, proxy.ts: 10ms, render: 189ms)
+ GET /dashboard/balance 200 in 185ms (compile: 13ms, proxy.ts: 7ms, render: 165ms)
+ GET /dashboard/balance 200 in 176ms (compile: 11ms, proxy.ts: 7ms, render: 158ms)
+ GET /dashboard/balance 200 in 119ms (compile: 10ms, proxy.ts: 7ms, render: 102ms)
+ GET /dashboard/balance 200 in 84ms (compile: 10ms, proxy.ts: 6ms, render: 68ms)
+ GET /dashboard/balance 200 in 161ms (compile: 10ms, proxy.ts: 7ms, render: 144ms)
+ GET /dashboard/balance 200 in 167ms (compile: 9ms, proxy.ts: 6ms, render: 152ms)
+ GET /dashboard/balance 200 in 190ms (compile: 8ms, proxy.ts: 6ms, render: 177ms)
+ GET /dashboard/balance 200 in 216ms (compile: 9ms, proxy.ts: 7ms, render: 200ms)
+ GET /dashboard/balance 200 in 225ms (compile: 17ms, proxy.ts: 9ms, render: 199ms)
+ GET /dashboard/balance 200 in 230ms (compile: 19ms, proxy.ts: 10ms, render: 201ms)
+ GET /dashboard/balance 200 in 215ms (compile: 11ms, proxy.ts: 9ms, render: 196ms)
+ GET /dashboard/balance 200 in 226ms (compile: 15ms, proxy.ts: 9ms, render: 202ms)
+ GET /dashboard/balance 200 in 220ms (compile: 11ms, proxy.ts: 9ms, render: 200ms)
+ GET /dashboard/balance 200 in 228ms (compile: 14ms, proxy.ts: 9ms, render: 206ms)
+ GET /dashboard/balance 200 in 219ms (compile: 12ms, proxy.ts: 8ms, render: 199ms)
+ GET /dashboard/balance 200 in 226ms (compile: 12ms, proxy.ts: 8ms, render: 206ms)
+ GET /dashboard/balance 200 in 209ms (compile: 12ms, proxy.ts: 8ms, render: 189ms)
+ GET /dashboard/balance 200 in 205ms (compile: 14ms, proxy.ts: 8ms, render: 183ms)
+ GET /dashboard/balance 200 in 192ms (compile: 13ms, proxy.ts: 9ms, render: 170ms)
+ GET /dashboard/balance 200 in 191ms (compile: 11ms, proxy.ts: 6ms, render: 174ms)
+ GET /dashboard/balance 200 in 169ms (compile: 11ms, proxy.ts: 7ms, render: 151ms)
+ GET /dashboard/balance 200 in 117ms (compile: 10ms, proxy.ts: 13ms, render: 95ms)
+ GET /dashboard/balance 200 in 56ms (compile: 9ms, proxy.ts: 6ms, render: 41ms)
+✓ Compiled in 241ms
+ GET /dashboard/bot 200 in 298ms (compile: 207ms, proxy.ts: 7ms, render: 84ms)
+ GET /dashboard/balance 200 in 73ms (compile: 14ms, proxy.ts: 11ms, render: 48ms)
+ GET /dashboard/balance 200 in 53ms (compile: 8ms, proxy.ts: 7ms, render: 37ms)
+ GET /dashboard/bot 200 in 53ms (compile: 7ms, proxy.ts: 8ms, render: 38ms)
+ GET /dashboard/balance 200 in 75ms (compile: 18ms, proxy.ts: 13ms, render: 44ms)
+ GET /dashboard/metrics 200 in 92ms (compile: 37ms, proxy.ts: 14ms, render: 41ms)
+ GET /dashboard/reports 200 in 86ms (compile: 43ms, proxy.ts: 10ms, render: 34ms)
+ GET /dashboard/metrics 200 in 67ms (compile: 13ms, proxy.ts: 10ms, render: 44ms)
+ GET /dashboard/strategy 200 in 128ms (compile: 79ms, proxy.ts: 9ms, render: 40ms)
+ GET /dashboard/bot 200 in 66ms (compile: 12ms, proxy.ts: 9ms, render: 44ms)
+ GET /dashboard/strategy 200 in 45ms (compile: 6ms, proxy.ts: 6ms, render: 33ms)
+ GET /dashboard/bot 200 in 58ms (compile: 10ms, proxy.ts: 8ms, render: 40ms)
+ GET /dashboard/balance 200 in 61ms (compile: 13ms, proxy.ts: 11ms, render: 37ms)
+ GET /dashboard/reports 200 in 56ms (compile: 9ms, proxy.ts: 8ms, render: 39ms)
+ GET /dashboard/metrics 200 in 47ms (compile: 8ms, proxy.ts: 6ms, render: 33ms)
+ GET /dashboard/strategy 200 in 61ms (compile: 12ms, proxy.ts: 16ms, render: 33ms)
+ GET /dashboard/bot 200 in 58ms (compile: 8ms, proxy.ts: 8ms, render: 42ms)
+ GET /dashboard/balance 200 in 44ms (compile: 7ms, proxy.ts: 6ms, render: 30ms)
+ GET /dashboard/strategy 200 in 57ms (compile: 9ms, proxy.ts: 12ms, render: 37ms)
+ GET /dashboard/bot 200 in 48ms (compile: 7ms, proxy.ts: 6ms, render: 34ms)
+✓ Compiled in 304ms
+ GET / 200 in 556ms (compile: 203ms, proxy.ts: 15ms, render: 339ms)
+ GET /login 200 in 391ms (compile: 325ms, proxy.ts: 9ms, render: 57ms)
+ GET /dashboard 200 in 84ms (compile: 31ms, proxy.ts: 8ms, render: 45ms)
+ GET /dashboard/bot 200 in 500ms (compile: 313ms, proxy.ts: 7ms, render: 180ms)
+ GET /dashboard/settings 200 in 298ms (compile: 210ms, proxy.ts: 13ms, render: 74ms)
+ GET /dashboard/bot 200 in 71ms (compile: 11ms, proxy.ts: 7ms, render: 54ms)
+ GET /dashboard 200 in 64ms (compile: 16ms, proxy.ts: 8ms, render: 39ms)
+ GET /dashboard/reports 200 in 79ms (compile: 21ms, proxy.ts: 17ms, render: 41ms)
+ GET /dashboard/metrics 200 in 67ms (compile: 16ms, proxy.ts: 10ms, render: 42ms)
+ GET /dashboard/bot 200 in 67ms (compile: 11ms, proxy.ts: 12ms, render: 44ms)
+✓ Compiled in 61ms
+✓ Compiled in 158ms
+✓ Compiled in 74ms
+✓ Compiled in 69ms
+ GET /dashboard/strategy 200 in 85ms (compile: 22ms, proxy.ts: 13ms, render: 50ms)
+ GET /dashboard/bot 200 in 194ms (compile: 129ms, proxy.ts: 12ms, render: 54ms)
