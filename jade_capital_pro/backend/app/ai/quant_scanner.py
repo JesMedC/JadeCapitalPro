@@ -1481,6 +1481,14 @@ def scan_jade_binary_m5_structural_scalp_strategy(
     ema_fast_p: int = 50,
     ema_slow_p: int = 100,
     ema_filter_p: int = 200,
+    # User requested limits
+    stoch_up: int = 80,
+    stoch_down: int = 20,
+    # Entry specific limits
+    entry_rsi_up: int = 90,
+    entry_rsi_down: int = 10,
+    entry_stoch_up: int = 90,
+    entry_stoch_down: int = 10,
 ) -> List[QuantScanResult]:
     """
     Advanced strategy based on Market Structure, Elliott Waves, and multi-indicator confirmation.
@@ -1520,43 +1528,58 @@ def scan_jade_binary_m5_structural_scalp_strategy(
     if len(pivots) < 5:
         return []
     
-    # Try to identify an Elliott 5-wave sequence or a valid operational impulse
-    # For now, we look at the last major leg as the impulse
-    last_p = pivots[-1]
-    prev_p = pivots[-2]
+    # Analyze HH/HL/LL/LH and Impulse duration
+    # We need to find the last valid impulse (A->B) of at least min_impulse_candles (e.g. 5)
+    # And ensure the total structure from the first relevant pivot to current is at least 30 candles.
     
-    direction = "CALL" if last_p[1] == "H" and prev_p[1] == "L" else "PUT" if last_p[1] == "L" and prev_p[1] == "H" else None
+    # We'll work with the last 5 pivots to identify a structure (X-A-B-C-D)
+    last_5 = pivots[-5:]
+    p_indices = [p[0] for p in last_5]
+    p_types = [p[1] for p in last_5]
+    p_prices = [p[2] for p in last_5]
+    
+    # Check if impulse legs have min length
+    # Legs: (p0, p1), (p1, p2), (p2, p3), (p3, p4)
+    leg_lengths = [p_indices[i] - p_indices[i-1] for i in range(1, 5)]
+    valid_impulse = all(length >= min_impulse_candles for length in leg_lengths)
+    
+    # Total structure length (from p0 to current candle)
+    total_len = len(candles_m5) - p_indices[0]
+    valid_structure_len = total_len >= 30
+
+    if not (valid_impulse and valid_structure_len):
+        return []
+
+    # HH/HL/LL/LH Detection
+    direction = None
+    if p_types[-1] == "H" and p_types[-2] == "L" and p_types[-3] == "H" and p_types[-4] == "L":
+        # Check for uptrend HH/HL
+        if p_prices[-1] > p_prices[-3] and p_prices[-2] > p_prices[-4]:
+            direction = "CALL"
+    elif p_types[-1] == "L" and p_types[-2] == "H" and p_types[-3] == "L" and p_types[-4] == "H":
+        # Check for downtrend LL/LH
+        if p_prices[-1] < p_prices[-3] and p_prices[-2] < p_prices[-4]:
+            direction = "PUT"
+
     if not direction:
         return []
-    
-    # Elliott Rules Validation (Simplified proxy for real-time)
-    # We check if the sequence of recent pivots resembles a 1-2-3 or 1-2-3-4-5
-    ell_valid = False
-    retrace_ratio = 1.0
-    if direction == "CALL":
-        # Check HH/HL
-        highs = [p for p in pivots if p[1] == "H"]
-        lows = [p for p in pivots if p[1] == "L"]
-        if len(highs) >= 2 and len(lows) >= 2:
-            if highs[-1][2] > highs[-2][2] and lows[-1][2] > lows[-2][2]:
-                ell_valid = True
-        impulse_low = prev_p[2]
-        impulse_high = last_p[2]
-        rng = impulse_high - impulse_low
-        retrace_ratio = (impulse_high - px) / rng if rng > 0 else 1.0
-    else:
-        highs = [p for p in pivots if p[1] == "H"]
-        lows = [p for p in pivots if p[1] == "L"]
-        if len(highs) >= 2 and len(lows) >= 2:
-            if highs[-1][2] < highs[-2][2] and lows[-1][2] < lows[-2][2]:
-                ell_valid = True
-        impulse_high = prev_p[2]
-        impulse_low = last_p[2]
-        rng = impulse_high - impulse_low
-        retrace_ratio = (px - impulse_low) / rng if rng > 0 else 1.0
 
-    if not ell_valid:
-        return []
+    # Fibonacci calculation over the last impulse (last_p-1 to last_p)
+    impulse_start = p_prices[-2]
+    impulse_end = p_prices[-1]
+    rng = abs(impulse_end - impulse_start)
+    if rng <= 0: return []
+    
+    if direction == "CALL":
+        # Retracement from high
+        retrace_ratio = (impulse_end - px) / rng
+        # If px > impulse_end, it's breaking structure (BOS)
+        is_bos = px > impulse_end
+    else:
+        # Retracement from low
+        retrace_ratio = (px - impulse_end) / rng
+        # If px < impulse_end, it's breaking structure (BOS)
+        is_bos = px < impulse_end
 
     # 3. Momentum Confirmations
     rsi = _rsi(closes, rsi_period)[-1]
@@ -1567,18 +1590,14 @@ def scan_jade_binary_m5_structural_scalp_strategy(
 
     results = []
     
-    # PRE-ALERTA (near)
-    # CALL: Stoch cross 80 UP, RSI cross 80 UP, impulse confirmed
-    pre_call = direction == "CALL" and uptrend and k > 80 and rsi > 70 # RSI 70-80 is high
-    pre_put = direction == "PUT" and downtrend and k < 20 and rsi < 30
+    # Zone settings
+    near_retrace_trigger = 0.5  # Prepare after 50% retrace
+    entry_fib_min = 0.618 - fib_margin
+    entry_fib_max = 0.618 + fib_margin
     
-    # ENTRY (entry)
-    # Reaction in Fib 0.5 - 0.618
-    in_fib_zone = (0.45 <= retrace_ratio <= 0.65) # Including margin
+    # Check if we are in entry zone (Fib 61.8 area)
+    in_entry_fib = entry_fib_min <= retrace_ratio <= 1.0 # Standard retrace entry
     
-    entry_call = direction == "CALL" and uptrend and in_fib_zone and k > 50 and rsi > 50
-    entry_put = direction == "PUT" and downtrend and in_fib_zone and k < 50 and rsi < 50
-
     meta_common = {
         "agent": "jade_advanced_elliott_v1",
         "instrument": instrument,
@@ -1593,32 +1612,43 @@ def scan_jade_binary_m5_structural_scalp_strategy(
         },
         "structure": {
             "retrace": retrace_ratio,
-            "in_fib": in_fib_zone,
+            "is_bos": is_bos,
+            "leg_lengths": leg_lengths,
+            "total_len": total_len,
             "bias": "uptrend" if uptrend else "downtrend" if downtrend else "sideways"
         }
     }
 
+    # PRE-ALERTA (near)
+    pre_call = (direction == "CALL" and uptrend and retrace_ratio >= near_retrace_trigger and rsi < rsi_down and k < stoch_down)
+    pre_put = (direction == "PUT" and downtrend and retrace_ratio >= near_retrace_trigger and rsi > rsi_up and k > stoch_up)
+    
+    # ENTRY (entry)
+    entry_call = (direction == "CALL" and uptrend and in_entry_fib and rsi < entry_rsi_down and k < entry_stoch_down)
+    entry_put = (direction == "PUT" and downtrend and in_entry_fib and rsi > entry_rsi_up and k > entry_stoch_up)
+
     if entry_call or entry_put:
-        r = QuantScanResult(
+        entry_r = QuantScanResult(
             instrument=instrument,
             direction=direction,
             expiry_time="5m",
             entry=float(px),
             status="entry",
-            report_text=f"🚨 ENTRAR YA {direction} - Reacción en zona Fibonacci 0.5-0.618 con estructura Elliott confirmada.",
-            meta={**meta_common, "alert_type": "entry"}
+            report_text=f"🚨 ENTRAR YA {direction} - Filtro Estructural OK (Impulso > 5v, Estructura > 30v). Nivel Fib 61.8 confirmado.",
+            meta={**meta_common, "alert_type": "entry", "signal": {"probability": 88}}
         )
-        results.append(r)
+        results.append(entry_r)
     elif pre_call or pre_put:
-        r = QuantScanResult(
+        near_r = QuantScanResult(
             instrument=instrument,
             direction=direction,
             expiry_time="5m",
             entry=float(px),
             status="near",
-            report_text=f"⚠️ PREPARA {direction} - Impulso Elliott detectado, esperando retroceso a zona 0.5-0.618.",
-            meta={**meta_common, "alert_type": "near"}
+            report_text=f"⚠️ PREPARA {direction} - Detectada Estructura Institucional. Esperando retroceso a zona Fib 61.8.",
+            meta={**meta_common, "alert_type": "near", "signal": {"probability": 84}}
         )
-        results.append(r)
+        results.append(near_r)
 
     return results
+

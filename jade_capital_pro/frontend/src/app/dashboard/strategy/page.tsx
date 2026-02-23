@@ -161,54 +161,83 @@ export default function StrategyPage() {
     const baseMedia = typeof window !== 'undefined' ? `http://${window.location.hostname}:8080/media/strategy/` : 'http://127.0.0.1:8080/media/strategy/';
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-end">
-                <div>
-                    <h1 className="text-4xl font-extrabold tracking-tight">Manual de Estrategias</h1>
-                    <p className="text-zinc-500 mt-1">Crea estrategias paso a paso (1 a 10 pasos) con foto opcional.</p>
+        <div className="space-y-10 pb-10">
+            {/* Terminal Header */}
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 pb-8 border-b border-white/5">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
+                        <span className="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                            <BrainCircuit className="text-emerald-500" size={24} />
+                        </span>
+                        Neural Strategy Matrix
+                    </h1>
+                    <p className="text-white/40 font-bold tracking-[0.2em] text-[10px] uppercase ml-14">
+                        Logical Framework • Step-by-Step Execution Protocols
+                    </p>
                 </div>
                 <button
                     onClick={openCreate}
-                    className="bg-teal-500 text-black px-6 py-3 rounded-2xl font-black text-sm hover:bg-teal-400 transition-all flex items-center gap-2"
+                    className="h-12 flex items-center gap-3 px-8 bg-emerald-500 text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]"
                 >
-                    <Plus size={18} />
-                    Nueva
+                    <Plus size={16} />
+                    Deploy New Protocol
                 </button>
             </div>
 
             {loading ? (
-                <div className="h-[300px] flex items-center justify-center">
-                    <Loader2 className="animate-spin text-teal-500 w-12 h-12" />
+                <div className="h-[50vh] flex flex-col items-center justify-center gap-4">
+                    <Loader2 className="animate-spin text-emerald-500 w-10 h-10" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Reconstructing Strategy Nodes...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {strategies.map((s) => {
                         const stepsCount = parseSteps(s.rules).length;
                         return (
-                            <div key={s.id} className="bg-zinc-950 border border-white/5 rounded-3xl p-6">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="p-3 bg-teal-500/10 text-teal-400 rounded-2xl">
+                            <motion.div
+                                key={s.id}
+                                whileHover={{ y: -8 }}
+                                className="bg-[#0B0E11] border border-white/5 rounded-[32px] p-8 group hover:border-emerald-500/20 transition-all duration-300 shadow-2xl relative overflow-hidden"
+                            >
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[60px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                                <div className="flex justify-between items-start mb-8">
+                                    <div className="p-4 bg-white/[0.03] text-emerald-500 rounded-2xl border border-white/5 transition-all group-hover:bg-emerald-500/10 group-hover:scale-110">
                                         <BrainCircuit size={24} />
                                     </div>
                                     <div className="flex gap-2">
-                                        <button onClick={() => openView(s)} className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase tracking-widest text-white hover:bg-white/10 transition-colors">
-                                            Ver
-                                        </button>
-                                        <button onClick={() => openEdit(s)} className="p-2 text-zinc-500 hover:text-white transition-colors" aria-label="Editar">
+                                        <button onClick={() => openEdit(s)} className="p-2 text-white/20 hover:text-white transition-colors" aria-label="Editar">
                                             <Pencil size={18} />
                                         </button>
-                                        <button onClick={() => removeStrategy(s.id)} className="p-2 text-zinc-500 hover:text-rose-400 transition-colors" aria-label="Eliminar">
+                                        <button onClick={() => removeStrategy(s.id)} className="p-2 text-white/20 hover:text-rose-500 transition-colors" aria-label="Eliminar">
                                             <Trash2 size={18} />
                                         </button>
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-bold mb-1 uppercase tracking-tight">{s.name}</h3>
-                                <p className="text-sm text-zinc-500 mb-6 line-clamp-3">{s.description}</p>
-                                <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-zinc-500">
-                                    <span>{stepsCount} pasos</span>
-                                    <span className={s.is_active ? 'text-emerald-400' : 'text-zinc-500'}>{s.is_active ? 'activa' : 'pausada'}</span>
+
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight italic group-hover:text-emerald-500 transition-colors mb-2">{s.name}</h3>
+                                <p className="text-[11px] text-white/30 font-bold uppercase tracking-widest leading-relaxed mb-8 line-clamp-3">{s.description}</p>
+
+                                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                                    <div className="flex flex-col">
+                                        <span className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Complexity</span>
+                                        <span className="text-xs font-black text-white uppercase tracking-widest">{stepsCount} Logical Steps</span>
+                                    </div>
+                                    <button
+                                        onClick={() => openView(s)}
+                                        className="h-10 px-6 rounded-xl bg-white/[0.03] border border-white/5 text-[9px] font-black uppercase tracking-widest text-white hover:bg-emerald-500 hover:text-black hover:border-emerald-500 transition-all"
+                                    >
+                                        Examine
+                                    </button>
                                 </div>
-                            </div>
+
+                                <div className="absolute bottom-4 left-8">
+                                    <div className={`flex items-center gap-2 px-2 py-1 rounded-full border ${s.is_active ? 'bg-emerald-500/5 border-emerald-500/10 text-emerald-500' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                                        <div className={`w-1 h-1 rounded-full ${s.is_active ? 'bg-emerald-500 animate-pulse' : 'bg-white/20'}`} />
+                                        <span className="text-[8px] font-black uppercase tracking-widest">{s.is_active ? 'Online' : 'Standby'}</span>
+                                    </div>
+                                </div>
+                            </motion.div>
                         );
                     })}
                 </div>
@@ -218,67 +247,64 @@ export default function StrategyPage() {
                 {showModal ? (
                     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setShowModal(false)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/90 backdrop-blur-xl"
                         />
                         <motion.div
-                            initial={{ scale: 0.98, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.98, opacity: 0 }}
-                            className="bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-4xl p-8 relative z-10"
+                            initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.98, opacity: 0 }}
+                            className="bg-[#0B0E11] border border-white/10 rounded-[40px] w-full max-w-5xl shadow-[0_0_80px_rgba(0,0,0,0.5)] relative z-10 overflow-hidden"
                         >
-                            <button onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-zinc-500 hover:text-white">
-                                <X size={20} />
-                            </button>
+                            <div className="p-8 border-b border-white/5 flex items-center justify-between bg-[#0E1216]">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-emerald-500/10 rounded-2xl text-emerald-500">
+                                        <Plus size={24} />
+                                    </div>
+                                    <h2 className="text-xl font-black text-white uppercase italic tracking-tight">{mode === 'create' ? 'Initialize New Strategy Node' : 'Update Protocol Logic'}</h2>
+                                </div>
+                                <button onClick={() => setShowModal(false)} className="p-3 hover:bg-white/5 rounded-2xl text-white/30 hover:text-white transition-all">
+                                    <X size={20} />
+                                </button>
+                            </div>
 
-                            <h2 className="text-2xl font-black mb-6">{mode === 'create' ? 'Nueva estrategia' : 'Editar estrategia'}</h2>
-
-                            <form onSubmit={save} className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                                <div className="lg:col-span-5 space-y-4">
+                            <form onSubmit={save} className="grid grid-cols-1 lg:grid-cols-12 gap-0">
+                                <div className="lg:col-span-5 p-10 border-r border-white/5 space-y-8 bg-[#0B0E11]">
                                     <div>
-                                        <label className="text-xs font-black text-zinc-500 uppercase block mb-2">Nombre</label>
-                                        <input value={name} onChange={(e) => setName(e.target.value)} required className="w-full bg-black border border-white/10 rounded-2xl p-4 text-white font-bold outline-none" />
+                                        <label className="text-[9px] font-black text-white/20 uppercase tracking-[.2em] block mb-3">Protocol Identity</label>
+                                        <input
+                                            value={name} onChange={(e) => setName(e.target.value)} required
+                                            placeholder="E.g. NEURAL_FIBONACCI_V1"
+                                            className="w-full bg-black/40 border border-white/5 rounded-2xl h-16 px-6 text-white font-black uppercase tracking-widest focus:border-emerald-500/30 transition-all outline-none"
+                                        />
                                     </div>
                                     <div>
-                                        <label className="text-xs font-black text-zinc-500 uppercase block mb-2">Descripcion</label>
-                                        <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full bg-black border border-white/10 rounded-2xl p-4 text-white font-bold outline-none h-28 resize-none" />
+                                        <label className="text-[9px] font-black text-white/20 uppercase tracking-[.2em] block mb-3">Logical Intent</label>
+                                        <textarea
+                                            value={description} onChange={(e) => setDescription(e.target.value)}
+                                            placeholder="Define the primary objective of this protocol..."
+                                            className="w-full bg-black/40 border border-white/5 rounded-2xl p-6 text-white font-bold text-sm outline-none h-32 resize-none focus:border-emerald-500/30 transition-all"
+                                        />
                                     </div>
-                                    <div className="flex items-center justify-between bg-black/40 border border-white/10 rounded-2xl p-4">
-                                        <div>
-                                            <div className="text-xs font-black uppercase tracking-widest text-zinc-500">Estado</div>
-                                            <div className="text-sm font-bold text-white">{isActive ? 'Activa' : 'Pausada'}</div>
+
+                                    <div className="p-6 bg-white/[0.02] border border-white/5 rounded-[24px]">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="text-[9px] font-black uppercase tracking-[.2em] text-white/20">Step Sequence</div>
+                                            <div className="text-[10px] font-black text-emerald-500">{steps.length} / 10</div>
                                         </div>
-                                        <label className="text-sm font-black text-zinc-300 flex items-center gap-3">
-                                            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
-                                            Activa
-                                        </label>
-                                    </div>
-
-                                    <div className="bg-black/40 border border-white/10 rounded-2xl p-4">
-                                        <div className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-3">Pasos</div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-3 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
                                             {steps.map((s, idx) => (
                                                 <button
-                                                    type="button"
-                                                    key={idx}
+                                                    type="button" key={idx}
                                                     onClick={() => setActiveStep(idx)}
-                                                    className={`w-full text-left px-4 py-3 rounded-xl border ${idx === activeStep ? 'border-teal-500/40 bg-teal-500/10 text-teal-200' : 'border-white/10 bg-white/5 text-zinc-300'} transition-colors`}
+                                                    className={`w-full h-14 px-5 rounded-xl border flex items-center justify-between transition-all ${idx === activeStep ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500' : 'bg-black/20 border-white/5 text-white/40'}`}
                                                 >
-                                                    <div className="flex items-center justify-between gap-3">
-                                                        <div className="min-w-0">
-                                                            <div className="text-[10px] font-black uppercase tracking-widest opacity-70">Paso {idx + 1}</div>
-                                                            <div className="text-sm font-black truncate">{s.title || '(sin titulo)'}</div>
-                                                        </div>
-                                                        {s.image ? <ImageIcon size={16} className="opacity-70" /> : null}
-                                                    </div>
+                                                    <span className="text-[10px] font-black uppercase tracking-widest">Paso {idx + 1}: {s.title || 'Untitled'}</span>
+                                                    {s.image && <ImageIcon size={14} />}
                                                 </button>
                                             ))}
                                         </div>
 
-                                        <div className="mt-4 flex gap-3">
+                                        <div className="mt-6 flex gap-3">
                                             <button
                                                 type="button"
                                                 onClick={() => {
@@ -286,9 +312,9 @@ export default function StrategyPage() {
                                                     setSteps((prev) => [...prev, { title: '', description: '', image: null }]);
                                                     setActiveStep(steps.length);
                                                 }}
-                                                className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest"
+                                                className="flex-1 h-12 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest text-white transition-all shadow-xl"
                                             >
-                                                + Agregar paso
+                                                + New Step
                                             </button>
                                             <button
                                                 type="button"
@@ -297,57 +323,58 @@ export default function StrategyPage() {
                                                     setSteps((prev) => prev.filter((_, i) => i !== activeStep));
                                                     setActiveStep((i) => Math.max(0, i - 1));
                                                 }}
-                                                className="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 rounded-xl px-4 py-3 text-xs font-black uppercase tracking-widest text-rose-200"
+                                                className="h-12 w-12 flex items-center justify-center bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-500 hover:bg-rose-500/20 transition-all"
                                             >
-                                                Eliminar paso
+                                                <Trash2 size={16} />
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="lg:col-span-7 space-y-4">
-                                    <div className="bg-zinc-950 border border-white/10 rounded-3xl p-6">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div>
-                                                <div className="text-xs font-black uppercase tracking-widest text-zinc-500">Edicion</div>
-                                                <div className="text-lg font-black">Paso {activeStep + 1} de {steps.length}</div>
+                                <div className="lg:col-span-7 p-10 space-y-8 bg-[#0E1216]">
+                                    <div className="bg-[#0B0E11] border border-white/5 rounded-[32px] p-8 shadow-2xl relative overflow-hidden group">
+                                        <div className="flex items-center justify-between mb-8">
+                                            <div className="flex items-center gap-3">
+                                                <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-500 border border-emerald-500/20">
+                                                    <Pencil size={18} />
+                                                </div>
+                                                <h3 className="text-sm font-black text-white uppercase tracking-widest">Editing Fragment {activeStep + 1}</h3>
                                             </div>
                                             <div className="flex gap-2">
-                                                <button type="button" onClick={() => setActiveStep((i) => Math.max(0, i - 1))} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase tracking-widest" disabled={activeStep === 0}>Anterior</button>
-                                                <button type="button" onClick={() => setActiveStep((i) => Math.min(steps.length - 1, i + 1))} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-black uppercase tracking-widest" disabled={activeStep === steps.length - 1}>Siguiente</button>
+                                                <button type="button" onClick={() => setActiveStep((i) => Math.max(0, i - 1))} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 transition-all" disabled={activeStep === 0}>←</button>
+                                                <button type="button" onClick={() => setActiveStep((i) => Math.min(steps.length - 1, i + 1))} className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white disabled:opacity-20 transition-all" disabled={activeStep === steps.length - 1}>→</button>
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4">
+                                        <div className="space-y-6">
                                             <div>
-                                                <label className="text-xs font-black text-zinc-500 uppercase block mb-2">Titulo</label>
+                                                <label className="text-[9px] font-black text-white/20 uppercase tracking-[.2em] block mb-3">Fragment Title</label>
                                                 <input
                                                     value={steps[activeStep]?.title || ''}
                                                     onChange={(e) => {
                                                         const v = e.target.value;
                                                         setSteps((prev) => prev.map((s, i) => (i === activeStep ? { ...s, title: v } : s)));
                                                     }}
-                                                    className="w-full bg-black border border-white/10 rounded-2xl p-4 text-white font-bold outline-none"
+                                                    className="w-full bg-black/40 border border-white/5 rounded-2xl h-14 px-6 text-white font-black uppercase tracking-widest outline-none focus:border-emerald-500/30 transition-all"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="text-xs font-black text-zinc-500 uppercase block mb-2">Descripcion</label>
+                                                <label className="text-[9px] font-black text-white/20 uppercase tracking-[.2em] block mb-3">Execution Details</label>
                                                 <textarea
                                                     value={steps[activeStep]?.description || ''}
                                                     onChange={(e) => {
                                                         const v = e.target.value;
                                                         setSteps((prev) => prev.map((s, i) => (i === activeStep ? { ...s, description: v } : s)));
                                                     }}
-                                                    className="w-full bg-black border border-white/10 rounded-2xl p-4 text-white font-bold outline-none h-40 resize-none"
+                                                    className="w-full bg-black/40 border border-white/5 rounded-2xl p-6 text-white font-medium text-sm outline-none h-48 resize-none focus:border-emerald-500/30 transition-all"
                                                 />
                                             </div>
 
-                                            <div className="bg-black/40 border border-white/10 rounded-2xl p-4">
-                                                <div className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-3">Foto (opcional)</div>
-                                                <div className="flex items-center justify-between gap-4">
+                                            <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl">
+                                                <div className="text-[9px] font-black uppercase tracking-[.2em] text-white/20 mb-4">Neural Vision Attachment</div>
+                                                <div className="flex items-center justify-between">
                                                     <input
-                                                        type="file"
-                                                        accept="image/*"
+                                                        type="file" accept="image/*"
                                                         onChange={async (e) => {
                                                             const file = e.target.files?.[0];
                                                             if (!file) return;
@@ -355,40 +382,40 @@ export default function StrategyPage() {
                                                                 setSaving(true);
                                                                 const filename = await uploadStepImage(file);
                                                                 setSteps((prev) => prev.map((s, i) => (i === activeStep ? { ...s, image: filename } : s)));
-                                                                pushToast({ type: 'success', title: 'Imagen', message: 'Imagen subida.' });
+                                                                pushToast({ type: 'success', title: 'Cyber-Sense', message: 'Vision fragment uploaded.' });
                                                             } catch (err) {
-                                                                pushToast({ type: 'error', title: 'Imagen', message: getApiErrorMessage(err, 'No se pudo subir la imagen.') });
+                                                                pushToast({ type: 'error', title: 'Cyber-Sense', message: 'Upload failed.' });
                                                             } finally {
                                                                 setSaving(false);
                                                                 e.target.value = '';
                                                             }
                                                         }}
-                                                        className="text-sm text-zinc-300"
+                                                        className="text-[10px] text-white/30 font-black file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-white/5 file:text-white hover:file:bg-white/10 cursor-pointer"
                                                     />
-                                                    {steps[activeStep]?.image ? (
-                                                        <a
-                                                            className="text-xs font-black uppercase tracking-widest text-teal-300 underline"
-                                                            href={`${baseMedia}${steps[activeStep].image}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                        >
-                                                            Ver
-                                                        </a>
-                                                    ) : (
-                                                        <span className="text-xs font-black uppercase tracking-widest text-zinc-600">Sin imagen</span>
+                                                    {steps[activeStep]?.image && (
+                                                        <a href={`${baseMedia}${steps[activeStep].image}`} target="_blank" rel="noreferrer" className="text-[10px] font-black uppercase text-emerald-500 underline underline-offset-4">View Vision</a>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <button
-                                        disabled={saving || !canSave}
-                                        className="w-full bg-teal-500 hover:bg-teal-400 text-black font-black py-4 rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50"
-                                    >
-                                        {saving ? <Loader2 className="animate-spin" size={16} /> : null}
-                                        Guardar
-                                    </button>
+                                    <div className="flex items-center gap-6 pt-4">
+                                        <div className="flex-1 flex items-center justify-between px-6 py-4 bg-white/[0.02] border border-white/5 rounded-2xl">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Broadcasting Status</span>
+                                            <div className="flex items-center gap-4">
+                                                <span className="text-[10px] font-black text-white uppercase">{isActive ? 'Active Node' : 'Suspended'}</span>
+                                                <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} className="w-5 h-5 rounded border-white/10 bg-black text-emerald-500 focus:ring-emerald-500/20 cursor-pointer" />
+                                            </div>
+                                        </div>
+                                        <button
+                                            disabled={saving || !canSave}
+                                            className="h-16 px-12 bg-emerald-500 text-black font-black uppercase text-[11px] tracking-widest rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.2)] hover:scale-105 transition-all disabled:opacity-30 disabled:hover:scale-100 flex items-center gap-3"
+                                        >
+                                            {saving && <Loader2 className="animate-spin" size={16} />}
+                                            Commit Protocol
+                                        </button>
+                                    </div>
                                 </div>
                             </form>
                         </motion.div>
@@ -400,52 +427,53 @@ export default function StrategyPage() {
                 {showView && viewing ? (
                     <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setShowView(false)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                            className="absolute inset-0 bg-black/90 backdrop-blur-xl"
                         />
                         <motion.div
-                            initial={{ scale: 0.98, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.98, opacity: 0 }}
-                            className="bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-3xl p-8 relative z-10"
+                            initial={{ scale: 0.98, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.98, opacity: 0 }}
+                            className="bg-[#0B0E11] border border-white/10 rounded-[40px] w-full max-w-3xl shadow-[0_0_80px_rgba(0,0,0,0.5)] relative z-10 overflow-hidden"
                         >
-                            <button onClick={() => setShowView(false)} className="absolute top-6 right-6 text-zinc-500 hover:text-white">
-                                <X size={20} />
-                            </button>
-
-                            <div className="flex items-start justify-between gap-6 mb-6">
-                                <div>
-                                    <div className="text-xs font-black uppercase tracking-widest text-zinc-500">Estrategia</div>
-                                    <div className="text-2xl font-black">{viewing.name}</div>
-                                    <div className="text-sm text-zinc-400 font-semibold mt-2">{viewing.description}</div>
-                                </div>
-                                <button
-                                    onClick={() => {
-                                        setShowView(false);
-                                        openEdit(viewing);
-                                    }}
-                                    className="px-4 py-3 rounded-2xl bg-teal-500 text-black text-xs font-black uppercase tracking-widest"
-                                >
-                                    Editar
+                            <div className="p-10 bg-[#0E1216] border-b border-white/5 relative">
+                                <button onClick={() => setShowView(false)} className="absolute top-8 right-8 p-3 hover:bg-white/5 rounded-2xl text-white/30 hover:text-white transition-all">
+                                    <X size={20} />
                                 </button>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
+                                            <BrainCircuit size={20} />
+                                        </div>
+                                        <span className="text-[10px] font-black uppercase tracking-[.3em] text-white/30 italic">Strategy Document Visualization</span>
+                                    </div>
+                                    <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">{viewing.name}</h2>
+                                    <div className="text-[11px] font-black uppercase text-white/40 tracking-widest leading-relaxed max-w-xl">{viewing.description}</div>
+                                </div>
                             </div>
 
-                            <div className="space-y-4">
+                            <div className="p-10 space-y-6 max-h-[60vh] overflow-y-auto custom-scrollbar bg-[#0B0E11]">
                                 {parseSteps(viewing.rules).map((st, idx) => (
-                                    <div key={idx} className="bg-black/40 border border-white/10 rounded-2xl p-5">
-                                        <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Paso {idx + 1}</div>
-                                        <div className="text-lg font-black mt-1">{st.title}</div>
-                                        <div className="text-sm text-zinc-300 font-semibold mt-2 whitespace-pre-wrap">{st.description}</div>
-                                        {st.image ? (
-                                            <a className="inline-block mt-4 text-xs font-black uppercase tracking-widest text-teal-300 underline" href={`${baseMedia}${st.image}`} target="_blank" rel="noreferrer">
-                                                Ver imagen
-                                            </a>
-                                        ) : null}
+                                    <div key={idx} className="bg-white/[0.02] border border-white/5 rounded-[32px] p-8 group hover:border-emerald-500/10 transition-all duration-300">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="text-[9px] font-black uppercase tracking-[.3em] text-emerald-500 border-b border-emerald-500/20 pb-1">Operational Stage {idx + 1}</div>
+                                            {st.image && (
+                                                <a href={`${baseMedia}${st.image}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-[9px] font-black uppercase text-white/30 hover:text-emerald-500 transition-colors">
+                                                    <ImageIcon size={14} /> Fragment Vision
+                                                </a>
+                                            )}
+                                        </div>
+                                        <div className="text-xl font-black text-white uppercase italic tracking-tight mb-3 group-hover:text-emerald-500 transition-colors">{st.title}</div>
+                                        <div className="text-[12px] font-bold text-white/50 tracking-wide leading-relaxed whitespace-pre-wrap">{st.description}</div>
                                     </div>
                                 ))}
+                            </div>
+                            <div className="p-8 border-t border-white/5 flex justify-end bg-[#0B0E11]">
+                                <button
+                                    onClick={() => { setShowView(false); openEdit(viewing); }}
+                                    className="h-12 px-8 rounded-2xl bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
+                                >
+                                    Refine Logic
+                                </button>
                             </div>
                         </motion.div>
                     </div>

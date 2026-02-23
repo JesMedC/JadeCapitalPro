@@ -53,7 +53,7 @@ export default function ReportsPage() {
         try {
             if (type === 'trades') {
                 const res = await api.get(`/trading/trades/${accountId}`);
-                const sorted = [...res.data.binary, ...res.data.forex].sort((a, b) =>
+                const sorted = [...(res.data.binary || []), ...(res.data.forex || [])].sort((a, b) =>
                     new Date(b.open_date).getTime() - new Date(a.open_date).getTime()
                 );
                 setData(sorted);
@@ -177,61 +177,72 @@ export default function ReportsPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div>
-                    <h1 className="text-4xl font-black uppercase tracking-tighter italic decoration-teal-500 underline underline-offset-8">Reportes de Auditoría</h1>
-                    <p className="text-zinc-500 mt-4 font-bold tracking-widest text-xs uppercase">Historial Maestro y Exportación de Sesiones</p>
+        <div className="space-y-10 pb-10">
+            {/* Terminal Header */}
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 pb-8 border-b border-white/5">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
+                        <span className="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                            <FileText className="text-emerald-500" size={24} />
+                        </span>
+                        Neural Audit Protocol
+                    </h1>
+                    <p className="text-white/40 font-bold tracking-[0.2em] text-[10px] uppercase ml-14">
+                        Master Ledger • Transaction Discovery System
+                    </p>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-wrap items-center gap-4">
                     <button
                         onClick={exportPDF}
-                        className="bg-white text-black px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-teal-500 transition-all shadow-xl shadow-white/5"
+                        className="h-12 flex items-center gap-3 px-6 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl"
                     >
                         <Download size={16} />
-                        Exportar a PDF
+                        Export PDF
                     </button>
                     <button
                         onClick={exportCSV}
-                        className="bg-zinc-900 border border-white/10 text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-zinc-800 transition-all"
+                        className="h-12 flex items-center gap-3 px-6 bg-[#0B0E11] border border-white/5 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-white/5 transition-all"
                     >
                         <Download size={16} />
-                        Exportar CSV
+                        CSV Export
                     </button>
                 </div>
             </div>
 
-            <div className="flex bg-zinc-950 p-2 rounded-[30px] border border-white/5 w-fit">
+            {/* Navigation Tabs */}
+            <div className="flex bg-[#0B0E11] p-1.5 rounded-[22px] border border-white/5 w-fit">
                 <button
                     onClick={() => { setTab('trades'); fetchReport(selectedAccount.id, 'trades'); }}
-                    className={`px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${tab === 'trades' ? 'bg-zinc-800 text-teal-400 shadow-xl' : 'text-zinc-500'}`}
+                    className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'trades' ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'text-white/40 hover:text-white'}`}
                 >
-                    Operativa
+                    Operational
                 </button>
                 <button
                     onClick={() => { setTab('banking'); fetchReport(selectedAccount.id, 'banking'); }}
-                    className={`px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all ${tab === 'banking' ? 'bg-zinc-800 text-teal-400 shadow-xl' : 'text-zinc-500'}`}
+                    className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'banking' ? 'bg-emerald-500 text-black shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'text-white/40 hover:text-white'}`}
                 >
-                    Bancarios
+                    Financials
                 </button>
             </div>
 
             {loading ? (
-                <div className="h-[400px] flex items-center justify-center">
-                    <Loader2 className="animate-spin text-teal-500 w-12 h-12" />
+                <div className="h-[50vh] flex flex-col items-center justify-center gap-4">
+                    <Loader2 className="animate-spin text-emerald-500 w-10 h-10" />
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Reconstructing Ledger...</p>
                 </div>
             ) : (
-                <div className="bg-zinc-950 border border-white/5 rounded-[40px] overflow-hidden shadow-2xl">
-                    <div className="p-8 border-b border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 bg-white/[0.02]">
-                        <div className="flex items-center gap-4">
-                            <Calendar size={20} className="text-teal-500" />
-                            <span className="text-sm font-bold text-zinc-400 uppercase tracking-widest">Últimos 30 días registrados</span>
+                <div className="bg-[#0B0E11] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative">
+                    <div className="p-8 border-b border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 bg-[#0E1216]">
+                        <div className="flex items-center gap-3">
+                            <Calendar size={18} className="text-emerald-500" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[.2em]">Live Sequential Index</span>
                         </div>
-                        <div className="flex items-center gap-2 bg-black/40 px-4 py-2 rounded-xl border border-white/5">
-                            <Filter size={14} className="text-zinc-600" />
+
+                        <div className="flex items-center gap-4 bg-black/40 px-6 py-3 rounded-2xl border border-white/5 group focus-within:border-emerald-500/30 transition-all">
+                            <Filter size={14} className="text-white/20 group-focus-within:text-emerald-500" />
                             <select
-                                className="bg-transparent text-xs font-bold text-zinc-400 outline-none cursor-pointer"
+                                className="bg-transparent text-[11px] font-black text-white uppercase outline-none cursor-pointer min-w-[140px]"
                                 value={selectedAccount?.id || ''}
                                 onChange={(e) => {
                                     const acc = accounts.find(a => a.id === parseInt(e.target.value));
@@ -240,77 +251,92 @@ export default function ReportsPage() {
                                 }}
                             >
                                 {accounts.map(acc => (
-                                    <option key={acc.id} value={acc.id}>{acc.name}</option>
+                                    <option key={acc.id} value={acc.id} className="bg-[#0B0E11]">{acc.name}</option>
                                 ))}
                             </select>
                         </div>
                     </div>
 
-                    <table className="w-full text-left">
-                        <thead className="bg-white/[0.02] text-zinc-500 text-[10px] uppercase font-black tracking-widest">
-                            <tr>
-                                <th className="px-10 py-6">Instrumento / ID</th>
-                                <th className="px-10 py-6">Fecha y Hora</th>
-                                <th className="px-10 py-6">Tipo</th>
-                                <th className="px-10 py-6">Inversión</th>
-                                <th className="px-10 py-6">Resultado final</th>
-                                <th className="px-10 py-6 text-right">Detalles</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/5">
-                            {data.map((item, i) => (
-                                <tr key={i} className="hover:bg-white/[0.01] transition-colors group">
-                                    <td className="px-10 py-6">
-                                        <div className="flex flex-col">
-                                            <span className="font-black text-white uppercase tracking-tight">{item.instrument || (item.id ? `#${item.id}` : '-')}</span>
-                                            <span className="text-[10px] text-zinc-600 font-bold uppercase">{selectedAccount.market_type}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-10 py-6">
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-sm font-medium text-zinc-400">
-                                                {new Date(item.open_date || item.date).toLocaleDateString()}
-                                            </span>
-                                            <span className="text-xs text-zinc-600">
-                                                {new Date(item.open_date || item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td className="px-10 py-6">
-                                        <span className={`text-[10px] font-black px-3 py-1 rounded-md uppercase tracking-widest ${(item.direction === 'BUY' || item.direction === 'CALL' || item.type === 'deposit')
-                                                ? 'bg-teal-500/10 text-teal-400' : 'bg-rose-500/10 text-rose-500'
-                                            }`}>
-                                            {item.direction || item.type}
-                                        </span>
-                                    </td>
-                                    <td className="px-10 py-6">
-                                        <span className="font-black text-white text-sm">${(item.investment || item.amount).toLocaleString()}</span>
-                                    </td>
-                                    <td className="px-10 py-6">
-                                        <div className="flex items-center gap-2">
-                                            {item.status === 'win' ? (
-                                                <span className="text-emerald-500 font-black text-sm uppercase italic">+$ {(item.investment * item.payout_pct).toLocaleString()}</span>
-                                            ) : item.status === 'loss' ? (
-                                                <span className="text-rose-500 font-black text-sm uppercase italic">-$ {item.investment.toLocaleString()}</span>
-                                            ) : (
-                                                <span className="text-zinc-500 font-black text-sm uppercase italic">PROCESADO</span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-10 py-6 text-right">
-                                        <button className="text-zinc-600 hover:text-white transition-colors">
-                                            <ExternalLink size={18} />
-                                        </button>
-                                    </td>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left border-collapse">
+                            <thead>
+                                <tr className="bg-white/[0.02] border-b border-white/5">
+                                    <th className="px-10 py-6 text-[9px] font-black uppercase tracking-[.2em] text-white/30">Node / Asset</th>
+                                    <th className="px-10 py-6 text-[9px] font-black uppercase tracking-[.2em] text-white/30">Timestamp</th>
+                                    <th className="px-10 py-6 text-[9px] font-black uppercase tracking-[.2em] text-white/30">Vector</th>
+                                    <th className="px-10 py-6 text-[9px] font-black uppercase tracking-[.2em] text-white/30">Allocated</th>
+                                    <th className="px-10 py-6 text-[9px] font-black uppercase tracking-[.2em] text-white/30">Net Realized</th>
+                                    <th className="px-10 py-6 text-right text-[9px] font-black uppercase tracking-[.2em] text-white/30">Audit</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="divide-y divide-white/5">
+                                {data.map((item, i) => (
+                                    <tr key={i} className="hover:bg-white/[0.01] transition-colors group">
+                                        <td className="px-10 py-6">
+                                            <div className="flex flex-col">
+                                                <span className="font-black text-white uppercase tracking-tight group-hover:text-emerald-500 transition-colors">
+                                                    {item.instrument || (item.id ? `#${item.id}` : '-')}
+                                                </span>
+                                                <span className="text-[9px] text-white/20 font-black uppercase mt-0.5">{selectedAccount.market_type}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-6">
+                                            <div className="flex flex-col">
+                                                <span className="text-xs font-bold text-white/80">
+                                                    {new Date(item.open_date || item.date).toLocaleDateString()}
+                                                </span>
+                                                <span className="text-[10px] text-white/30 font-medium">
+                                                    {new Date(item.open_date || item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-6">
+                                            <span className={`text-[9px] font-black px-3 py-1.5 rounded-lg border uppercase tracking-[.15em] ${(item.direction === 'BUY' || item.direction === 'CALL' || item.type === 'deposit')
+                                                ? 'bg-emerald-500/5 text-emerald-500 border-emerald-500/10' : 'bg-rose-500/5 text-rose-500 border-rose-500/10'
+                                                }`}>
+                                                {item.direction || item.type}
+                                            </span>
+                                        </td>
+                                        <td className="px-10 py-6">
+                                            <span className="font-black text-white/90 text-sm italic">${(item.investment || item.amount).toLocaleString()}</span>
+                                        </td>
+                                        <td className="px-10 py-6">
+                                            <div className="flex items-center gap-2">
+                                                {item.status === 'win' ? (
+                                                    <span className="text-emerald-500 font-black text-sm uppercase italic drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]">
+                                                        +$ {(item.investment * item.payout_pct).toLocaleString()}
+                                                    </span>
+                                                ) : item.status === 'loss' ? (
+                                                    <span className="text-rose-500 font-black text-sm uppercase italic drop-shadow-[0_0_8px_rgba(244,63,94,0.3)]">
+                                                        -$ {item.investment.toLocaleString()}
+                                                    </span>
+                                                ) : item.status === 'open' ? (
+                                                    <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                        <span className="text-white/40 text-[9px] font-black uppercase tracking-widest">Active</span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-white/20 font-black text-[10px] uppercase italic tracking-widest">Processed</span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-6 text-right">
+                                            <button className="p-3 bg-white/[0.03] border border-white/5 rounded-xl text-white/20 hover:text-emerald-500 hover:border-emerald-500/30 transition-all">
+                                                <ExternalLink size={16} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {data.length === 0 && (
-                        <div className="py-32 text-center text-zinc-700">
-                            <FileText size={48} className="mx-auto mb-6 opacity-20" />
-                            <p className="font-black uppercase tracking-widest text-xs">No se encontraron registros para esta cuenta</p>
+                        <div className="py-32 text-center">
+                            <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-[32px] flex items-center justify-center text-white/10 mx-auto mb-6">
+                                <FileText size={40} />
+                            </div>
+                            <p className="font-black uppercase tracking-[.4em] text-[10px] text-white/20">Zero Records Recovered for this Node</p>
                         </div>
                     )}
                 </div>

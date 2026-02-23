@@ -27,7 +27,7 @@ def _symbol(instrument: str) -> Optional[str]:
 
 def _interval(tf: str) -> Optional[str]:
     s = (tf or "").strip().lower()
-    if s in {"1m", "5m", "15m", "1h"}:
+    if s in {"1m", "5m", "15m", "1h", "1d"}:
         return s
     return None
 

@@ -26,6 +26,8 @@ def _interval(tf: str) -> Optional[str]:
         return "1min"
     if s == "10m":
         return "10min"
+    if s == "1d":
+        return "1day"
     return None
 
 

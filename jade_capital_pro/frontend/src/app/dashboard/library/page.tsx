@@ -93,57 +93,68 @@ export default function LibraryPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <h1 className="text-4xl font-extrabold tracking-tight">Base de Conocimiento</h1>
-                    <p className="text-zinc-500 mt-1">Sube manuales y PDFs para alimentar la inteligencia de JADE BOT.</p>
+        <div className="space-y-10 pb-10">
+            {/* Page Header */}
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 pb-8 border-b border-white/5">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
+                        <span className="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                            <BookOpen className="text-emerald-500" size={24} />
+                        </span>
+                        Neural Knowledge Base
+                    </h1>
+                    <p className="text-white/40 font-bold tracking-[0.2em] text-[10px] uppercase ml-14">
+                        Data Ingestion • Strategy Training Repository
+                    </p>
                 </div>
 
-                <div className="flex gap-4">
-                    <label className="cursor-pointer bg-teal-500 text-black px-6 py-3 rounded-2xl font-bold text-sm hover:bg-teal-400 transition-colors flex items-center gap-2">
-                        {uploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                        {uploading ? 'SUBIENDO...' : 'SUBIR PDF'}
+                <div className="flex items-center gap-4">
+                    <label className="group relative cursor-pointer h-12 flex items-center gap-3 px-8 bg-emerald-500 text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                        {uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                        {uploading ? 'Processing...' : 'Upload Training PDF'}
                         <input type="file" className="hidden" accept=".pdf" onChange={handleFileUpload} disabled={uploading} />
                     </label>
                 </div>
             </div>
 
-            {/* Search & Stats */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <div className="lg:col-span-3 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={18} />
+            {/* Interface Controls */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div className="lg:col-span-3 relative group">
+                    <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-emerald-500 transition-colors" size={20} />
                     <input
                         type="text"
-                        placeholder="Buscar en la librería o por palabras clave (Elliott, Fibonacci...)"
+                        placeholder="Search repository or meta-tags (Elliott, Fibonacci, Waves...)"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-zinc-950 border border-white/5 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-teal-500/50 outline-none transition-all"
+                        className="w-full bg-[#0B0E11] border border-white/5 rounded-2xl h-16 pl-16 pr-6 focus:border-emerald-500/30 focus:shadow-[0_0_20px_rgba(16,185,129,0.05)] outline-none transition-all text-white font-medium"
                     />
                 </div>
-                <div className="bg-zinc-950 border border-white/5 p-4 rounded-2xl flex items-center justify-center gap-4">
-                    <div className="text-center">
-                        <p className="text-2xl font-black text-white">{documents.length}</p>
-                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Documentos</p>
+
+                <div className="bg-[#0B0E11] border border-white/5 p-2 rounded-2xl flex items-center justify-between shadow-2xl">
+                    <div className="flex-1 text-center">
+                        <p className="text-xl font-black text-white italic">{documents.length}</p>
+                        <p className="text-[8px] text-white/30 font-black uppercase tracking-widest">Assets</p>
                     </div>
-                    <div className="w-px h-10 bg-white/5" />
-                    <div className="text-center">
-                        <p className="text-2xl font-black text-teal-500">{documents.reduce((acc, doc) => acc + (doc.keywords?.length || 0), 0)}</p>
-                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Conceptos IA</p>
+                    <div className="w-[1px] h-8 bg-white/5" />
+                    <div className="flex-1 text-center font-bold">
+                        <p className="text-xl font-black text-emerald-500 italic">{documents.reduce((acc, doc) => acc + (doc.keywords?.length || 0), 0)}</p>
+                        <p className="text-[8px] text-white/30 font-black uppercase tracking-widest">Patterns</p>
                     </div>
                 </div>
             </div>
 
             {/* Library Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {loading ? (
                     [1, 2, 3].map(i => (
-                        <div key={i} className="bg-zinc-950/50 border border-white/5 h-48 rounded-3xl animate-pulse" />
+                        <div key={i} className="bg-[#0B0E11] border border-white/5 h-[280px] rounded-[32px] animate-pulse" />
                     ))
                 ) : filteredDocs.length === 0 ? (
-                    <div className="col-span-full py-20 text-center space-y-4">
-                        <FileSearch size={48} className="mx-auto text-zinc-800" />
-                        <p className="text-zinc-500 font-medium">No se encontraron documentos en tu librería.</p>
+                    <div className="col-span-full py-32 text-center space-y-6">
+                        <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-3xl mx-auto flex items-center justify-center text-white/10">
+                            <FileSearch size={40} />
+                        </div>
+                        <p className="text-white/20 font-black uppercase tracking-[.3em] text-xs">Repository Empty • Awaiting Neural Data</p>
                     </div>
                 ) : (
                     filteredDocs.map((doc, i) => (
@@ -151,44 +162,47 @@ export default function LibraryPage() {
                             key={i}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-zinc-950 border border-white/5 p-6 rounded-3xl group hover:border-teal-500/30 transition-all"
+                            whileHover={{ y: -8 }}
+                            className="bg-[#0B0E11] border border-white/5 p-8 rounded-[32px] group hover:border-emerald-500/20 transition-all duration-300 shadow-2xl relative overflow-hidden"
                         >
-                            <div className="flex justify-between items-start mb-6">
-                                <div className="p-3 bg-teal-500/10 text-teal-400 rounded-2xl">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-[60px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                            <div className="flex justify-between items-start mb-8">
+                                <div className="p-4 bg-white/[0.03] text-emerald-500 rounded-2xl border border-white/5 transition-all group-hover:bg-emerald-500/10 group-hover:scale-110">
                                     <FileText size={24} />
                                 </div>
-                                <button className="text-zinc-600 hover:text-red-500 transition-colors">
+                                <button className="p-2 text-white/20 hover:text-rose-500 transition-colors">
                                     <Trash2 size={18} />
                                 </button>
                             </div>
 
-                            <h3 className="font-bold text-lg truncate mb-1" title={doc.filename}>{doc.filename}</h3>
-                            <p className="text-xs text-zinc-500 font-medium">{doc.pages} páginas • Indexado por IA</p>
+                            <h3 className="font-black text-lg truncate mb-1 text-white group-hover:text-emerald-500 transition-colors" title={doc.filename}>{doc.filename}</h3>
+                            <p className="text-[10px] text-white/20 font-black uppercase tracking-widest">{doc.pages} Pages • Indexed by Jade Oracle</p>
 
-                            <div className="mt-6 flex flex-wrap gap-2">
+                            <div className="mt-8 flex flex-wrap gap-2 min-h-[60px]">
                                 {doc.keywords?.map((kw: string, j: number) => (
-                                    <span key={j} className="text-[9px] font-black uppercase tracking-tighter bg-white/5 text-teal-400/80 px-2 py-1 rounded-md border border-white/5">
+                                    <span key={j} className="text-[8px] font-black uppercase tracking-widest bg-emerald-500/5 text-emerald-500/60 px-2 py-1.5 rounded-lg border border-emerald-500/10">
                                         {kw}
                                     </span>
                                 ))}
                             </div>
 
-                            <div className="mt-6 flex items-center justify-between gap-3">
+                            <div className="mt-8 flex items-center gap-4">
                                 <button
                                     onClick={() => setOpenDoc(doc)}
-                                    className="flex-1 py-3 rounded-xl bg-zinc-900 text-zinc-400 text-xs font-bold hover:bg-zinc-800 hover:text-white transition-all flex items-center justify-center gap-2"
+                                    className="flex-1 h-12 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center gap-2"
                                 >
-                                    Ver PDF
-                                    <ExternalLink size={14} />
+                                    Examine <ExternalLink size={14} className="text-emerald-500" />
                                 </button>
 
-                                <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                                <label className="flex items-center gap-3 px-4 h-12 rounded-2xl border border-white/5 bg-white/[0.02] cursor-pointer hover:bg-white/5 transition-all">
                                     <input
                                         type="checkbox"
                                         checked={doc.enabled !== false}
                                         onChange={(e) => setEnabled(doc.filename, e.target.checked)}
+                                        className="w-4 h-4 rounded border-white/10 bg-black text-emerald-500 focus:ring-emerald-500/20"
                                     />
-                                    Aprender
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-white/40">Train</span>
                                 </label>
                             </div>
                         </motion.div>
@@ -196,18 +210,30 @@ export default function LibraryPage() {
                 )}
             </div>
 
-            {/* PDF Viewer */}
+            {/* Document Viewer Modal */}
             {openDoc ? (
                 <div className="fixed inset-0 z-[110] p-4 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-black/80" onClick={() => setOpenDoc(null)} />
-                    <div className="relative z-10 w-full max-w-5xl bg-zinc-950 border border-white/10 rounded-3xl overflow-hidden">
-                        <div className="p-4 border-b border-white/10 flex items-center justify-between gap-4">
-                            <div className="min-w-0">
-                                <div className="text-xs font-black uppercase tracking-widest text-zinc-500">Documento</div>
-                                <div className="text-sm font-bold truncate">{openDoc.filename}</div>
+                    <motion.div
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+                        onClick={() => setOpenDoc(null)}
+                    />
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                        className="relative z-10 w-full max-w-6xl bg-[#0B0E11] border border-white/10 rounded-[32px] overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.5)]"
+                    >
+                        <div className="p-6 border-b border-white/5 flex items-center justify-between gap-6 bg-[#0E1216]">
+                            <div className="flex items-center gap-4 min-w-0">
+                                <div className="p-2 bg-emerald-500/10 rounded-lg text-emerald-500">
+                                    <FileText size={20} />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-white/30">System Asset</p>
+                                    <h2 className="text-sm font-black truncate text-white">{openDoc.filename}</h2>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                            <div className="flex items-center gap-6">
+                                <label className="flex items-center gap-3 cursor-pointer">
                                     <input
                                         type="checkbox"
                                         checked={openDoc.enabled !== false}
@@ -216,41 +242,57 @@ export default function LibraryPage() {
                                             setOpenDoc((d: any) => ({ ...d, enabled }));
                                             setEnabled(openDoc.filename, enabled);
                                         }}
+                                        className="w-4 h-4 rounded border-white/10 bg-black text-emerald-500 focus:ring-emerald-500/20"
                                     />
-                                    Incluir al aprendizaje
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Active Training</span>
                                 </label>
-                                <button onClick={() => setOpenDoc(null)} className="text-zinc-500 hover:text-white font-black">Cerrar</button>
+                                <button
+                                    onClick={() => setOpenDoc(null)}
+                                    className="p-3 hover:bg-white/5 rounded-2xl text-white/50 hover:text-white transition-all"
+                                >
+                                    <X size={20} />
+                                </button>
                             </div>
                         </div>
                         <div className="h-[80vh] bg-black">
                             <iframe
                                 title={openDoc.filename}
-                                className="w-full h-full"
+                                className="w-full h-full opacity-90"
                                 src={`http://${typeof window !== 'undefined' ? window.location.hostname : '127.0.0.1'}:8080/media/knowledge/${encodeURIComponent(openDoc.filename)}`}
                             />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             ) : null}
 
-            {/* Integration Banner */}
-            <div className="bg-gradient-to-r from-teal-500/10 to-transparent border border-teal-500/20 rounded-3xl p-8 flex items-center justify-between">
-                <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 bg-teal-500/20 rounded-2xl flex items-center justify-center text-teal-400 border border-teal-500/30">
-                        <BookOpen size={32} />
+            {/* Neural Sync Status */}
+            <div className="bg-[#0B0E11] border border-emerald-500/10 rounded-[32px] p-8 relative overflow-hidden group shadow-2xl">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 blur-[80px] pointer-events-none" />
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                    <div className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+                        <div className="relative">
+                            <div className="w-20 h-20 bg-emerald-500/5 rounded-3xl flex items-center justify-center text-emerald-500 border border-emerald-500/20">
+                                <BookOpen size={32} />
+                            </div>
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full animate-ping" />
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black text-white italic uppercase tracking-tight">Intelligence Integration Pulse</h3>
+                            <p className="text-white/30 text-xs mt-1 max-w-xl font-bold uppercase tracking-widest leading-relaxed">
+                                JADE Oracle is continuously distilling these vectors into real-time pattern recognized Elliott Wave strategy parameters.
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="text-xl font-bold">Inteligencia Documental</h3>
-                        <p className="text-zinc-400 text-sm mt-1 max-w-md">
-                            Tu JADE BOT está utilizando estos documentos para mejorar el análisis de patrones Elliott en tiempo real.
-                        </p>
+                    <div className="flex items-center gap-3 text-emerald-500 font-black bg-emerald-500/10 px-8 py-4 rounded-2xl border border-emerald-500/20 uppercase text-[11px] tracking-[.2em] shadow-[0_0_20px_rgba(16,185,129,0.1)]">
+                        <CheckCircle2 size={18} />
+                        Network Synchronized
                     </div>
-                </div>
-                <div className="flex items-center gap-2 text-emerald-500 font-bold bg-emerald-500/10 px-4 py-2 rounded-full">
-                    <CheckCircle2 size={18} />
-                    Sincronizado
                 </div>
             </div>
         </div>
     );
 }
+
+const X = ({ size }: { size: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+);

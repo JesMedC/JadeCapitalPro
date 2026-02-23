@@ -9,12 +9,14 @@ import {
     ArrowUpRight,
     Users,
     BarChart,
-    Clock
+    Clock,
+    LayoutDashboard
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import api from '@/lib/api';
-import EquityCurveChart, { type EquityPoint } from '@/components/EquityCurveChart';
+import TwoLineChart from '@/components/TwoLineChart';
+import SessionShareCard from '@/components/SessionShareCard';
 import { useToastStore } from '@/lib/toastStore';
 import { getApiErrorMessage } from '@/lib/apiError';
 import {
@@ -24,29 +26,45 @@ import {
     computeOffsetFromCurrentBalance,
     dailyEquitySeriesForMonth,
     getSessionWindow,
-    projectionSeriesForMonth,
     sessionNameForDate,
     binaryNetResult,
     forexNetResult,
     toSec,
+    computeFullProjection,
+    computeDailyReal,
 } from '@/lib/ledger';
 
 const StatCard = ({ title, value, change, icon: Icon, trend }: any) => (
     <motion.div
-        whileHover={{ y: -4 }}
-        className="bg-zinc-950 border border-white/5 p-6 rounded-3xl"
+        whileHover={{ y: -4, scale: 1.02 }}
+        className="bg-card border border-border p-8 rounded-[40px] transition-all duration-300 relative overflow-hidden group shadow-sm hover:shadow-xl hover:shadow-primary/5"
     >
-        <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-zinc-900 rounded-2xl border border-white/5">
-                <Icon className="w-6 h-6 text-teal-400" />
+        <div className="relative z-10">
+            <div className="flex justify-between items-start mb-6">
+                <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 text-primary group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-6 h-6" />
+                </div>
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${trend === 'up' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
+                    {trend === 'up' ? <ArrowUpRight size={12} /> : <TrendingDown size={12} />}
+                    {change}
+                </div>
             </div>
-            <div className={`flex items-center gap-1 text-xs font-bold ${trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>
-                {trend === 'up' ? <ArrowUpRight size={14} /> : <TrendingDown size={14} />}
-                {change}
+
+            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mb-1">{title}</p>
+            <div className="flex items-center gap-2">
+                <h3 className="text-3xl font-black text-foreground tracking-tighter">{value}</h3>
+                {trend === 'up' ? (
+                    <TrendingUp className="text-emerald-500 w-6 h-6" />
+                ) : (
+                    <TrendingDown className="text-rose-500 w-6 h-6" />
+                )}
             </div>
         </div>
-        <p className="text-zinc-500 text-sm font-medium">{title}</p>
-        <h3 className="text-2xl font-bold mt-1">{value}</h3>
+
+        {/* Subtle background decoration */}
+        <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
+            <Icon size={120} />
+        </div>
     </motion.div>
 );
 
@@ -60,13 +78,14 @@ export default function DashboardPage() {
         [accounts, selectedAccountId]
     );
 
-    const [dailyReal, setDailyReal] = React.useState<EquityPoint[]>([]);
-    const [dailyProjected, setDailyProjected] = React.useState<EquityPoint[]>([]);
+    const [dailyReal, setDailyReal] = React.useState<any[]>([]);
+    const [fullProjected, setFullProjected] = React.useState<any[]>([]);
+    const [dailyPnl, setDailyPnl] = React.useState<any[]>([]);
     const [dailyProjectionPct, setDailyProjectionPct] = React.useState<number>(0);
 
     const [recentTrades, setRecentTrades] = React.useState<any[]>([]);
 
-    const [sessionInfo, setSessionInfo] = React.useState<{ name: string; pnl: number; pct: number } | null>(null);
+    const [sessionInfo, setSessionInfo] = React.useState<{ name: string; pnl: number; pct: number; wins: number; losses: number; winRate: number } | null>(null);
     const [monthInfo, setMonthInfo] = React.useState<{ pnl: number; pct: number; start: number; end: number } | null>(null);
     const [winInfo, setWinInfo] = React.useState<{ wins: number; losses: number; winRate: number } | null>(null);
 
@@ -117,10 +136,19 @@ export default function DashboardPage() {
 
         const monthStart = new Date(y, m, 1, 0, 0, 0);
         const monthStartBal = balanceAt(agg, offset, toSec(monthStart) - 1);
+        const fullProj = computeFullProjection(agg, offset, dailyProjectionPct);
+        const fullReal = computeDailyReal(agg, offset);
         const monthDaily = dailyEquitySeriesForMonth(agg, offset, y, m);
-        const monthProj = projectionSeriesForMonth({ year: y, month0: m, startBalance: monthStartBal, dailyPct: dailyProjectionPct });
-        setDailyReal(monthDaily);
-        setDailyProjected(monthProj);
+
+        setDailyReal(fullReal);
+        setFullProjected(fullProj);
+
+        // Calculate Daily PnL for histogram
+        const pnlPts = monthDaily.map((p, i) => {
+            const prev = i === 0 ? monthStartBal : monthDaily[i - 1].value;
+            return { time: p.time, value: Number((p.value - prev).toFixed(2)) };
+        });
+        setDailyPnl(pnlPts);
 
         const monthEndBal = monthDaily.length ? monthDaily[monthDaily.length - 1].value : Number(acc.balance || 0);
         const monthPnl = Number((monthEndBal - monthStartBal).toFixed(2));
@@ -133,30 +161,36 @@ export default function DashboardPage() {
         const winRate = wins + losses ? Number(((wins / (wins + losses)) * 100).toFixed(1)) : 0;
         setWinInfo({ wins, losses, winRate });
 
-                const session = getSessionWindow(now);
-                const sessionKey = `${accountId}:${session.start.toISOString()}`;
-                let sessionStartBal = balanceAt(agg, offset, toSec(session.start) - 1);
-                if (sessionStartBal <= 0) {
-                    // Fallback: if no capital existed at session start (e.g. deposit later),
-                    // use balance right after the first event inside the session.
-                    const firstInSession = agg.find((p) => p.t >= toSec(session.start) && p.t < toSec(session.end));
-                    if (firstInSession) {
-                        sessionStartBal = balanceAt(agg, offset, firstInSession.t);
-                    }
-                }
-                const sessionPnl = Number(
-                    (
-                        (binaryTrades || [])
-                            .filter((t: any) => t.close_date && new Date(t.close_date) >= session.start && new Date(t.close_date) < session.end)
-                            .reduce((acc2: number, t: any) => acc2 + binaryNetResult(t), 0) +
-                        (forexTrades || [])
-                            .filter((t: any) => t.close_date && new Date(t.close_date) >= session.start && new Date(t.close_date) < session.end)
-                            .reduce((acc2: number, t: any) => acc2 + forexNetResult(t), 0)
-                    ).toFixed(2)
-                );
-                const denom = sessionStartBal > 0 ? sessionStartBal : Number(acc.balance || 0) || 1;
-                const sessionPct = Number(((sessionPnl / denom) * 100).toFixed(2));
-                setSessionInfo({ name: session.name, pnl: sessionPnl, pct: sessionPct });
+        const session = getSessionWindow(now);
+        const sessionKey = `${accountId}:${session.start.toISOString()}`;
+        let sessionStartBal = balanceAt(agg, offset, toSec(session.start) - 1);
+        if (sessionStartBal <= 0) {
+            // Fallback: if no capital existed at session start (e.g. deposit later),
+            // use balance right after the first event inside the session.
+            const firstInSession = agg.find((p) => p.t >= toSec(session.start) && p.t < toSec(session.end));
+            if (firstInSession) {
+                sessionStartBal = balanceAt(agg, offset, firstInSession.t);
+            }
+        }
+        const sessionPnl = Number(
+            (
+                (binaryTrades || [])
+                    .filter((t: any) => t.close_date && new Date(t.close_date) >= session.start && new Date(t.close_date) < session.end)
+                    .reduce((acc2: number, t: any) => acc2 + binaryNetResult(t), 0) +
+                (forexTrades || [])
+                    .filter((t: any) => t.close_date && new Date(t.close_date) >= session.start && new Date(t.close_date) < session.end)
+                    .reduce((acc2: number, t: any) => acc2 + forexNetResult(t), 0)
+            ).toFixed(2)
+        );
+        const denom = sessionStartBal > 0 ? sessionStartBal : Number(acc.balance || 0) || 1;
+        const sessionPct = Number(((sessionPnl / denom) * 100).toFixed(2));
+
+        const sessionTrades = closed.filter(t => new Date(t.close_date) >= session.start && new Date(t.close_date) < session.end);
+        const sWins = sessionTrades.filter(t => t.status === 'win').length;
+        const sLosses = sessionTrades.filter(t => t.status === 'loss').length;
+        const sWR = sWins + sLosses ? Number(((sWins / (sWins + sLosses)) * 100).toFixed(1)) : 0;
+
+        setSessionInfo({ name: session.name, pnl: sessionPnl, pct: sessionPct, wins: sWins, losses: sLosses, winRate: sWR });
 
         const band: 'none' | 'up' | 'down' = sessionPct >= 5 ? 'up' : sessionPct <= -5 ? 'down' : 'none';
         const prevBand = lastSessionBandByKey.current[sessionKey] ?? 'none';
@@ -202,17 +236,26 @@ export default function DashboardPage() {
     }, [selectedAccountId, dailyProjectionPct, accounts.length]);
 
     return (
-        <div className="space-y-8">
-            {/* Welcome Section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-4xl font-extrabold tracking-tight">Bienvenido, Jade</h1>
-                    <p className="text-zinc-500 mt-1">Aquí tienes el resumen de tus operaciones hoy.</p>
+        <div className="space-y-10">
+            {/* Page header */}
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-8 pb-8 border-b border-white/5">
+                <div className="space-y-1">
+                    <h1 className="text-3xl font-black tracking-tighter uppercase italic text-white flex items-center gap-3">
+                        <span className="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                            <LayoutDashboard className="text-emerald-500" size={24} />
+                        </span>
+                        Master Command Summary
+                    </h1>
+                    <p className="text-white/40 font-bold tracking-[0.2em] text-[10px] uppercase ml-14">
+                        Secure Neural Interface • Node 0.20-PRO
+                    </p>
                 </div>
-                <div className="flex gap-3">
-                    <div className="bg-zinc-950 border border-white/10 rounded-2xl px-4 py-3 text-sm font-bold text-white">
+
+                <div className="flex flex-wrap items-center gap-4">
+                    <div className="bg-[#0B0E11] border border-white/5 rounded-2xl p-1 transition-all flex items-center shadow-lg">
+                        <div className="px-3 py-2 text-[10px] font-black uppercase text-white/30 border-r border-white/5">Account</div>
                         <select
-                            className="bg-transparent outline-none"
+                            className="bg-transparent border-none outline-none px-4 py-2 text-sm font-black text-white cursor-pointer min-w-[200px]"
                             value={selectedAccountId || ''}
                             onChange={(e) => setSelectedAccountId(Number(e.target.value))}
                         >
@@ -221,40 +264,43 @@ export default function DashboardPage() {
                             ))}
                         </select>
                     </div>
-                    <Link href="/dashboard/balance" className="bg-white text-black px-6 py-3 rounded-2xl font-bold text-sm hover:bg-zinc-200 transition-colors">
-                        Nuevo Depósito
-                    </Link>
-                    <Link href="/dashboard/bot" className="bg-zinc-900 border border-white/10 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-zinc-800 transition-colors">
-                        Ver Bot
-                    </Link>
+
+                    <div className="flex items-center gap-3">
+                        <Link href="/dashboard/balance" className="group h-12 flex items-center gap-3 px-6 bg-emerald-500 text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                            <DollarSign size={16} /> Fund Account
+                        </Link>
+                        <Link href="/dashboard/bot" className="h-12 flex items-center gap-3 px-6 bg-white/[0.03] border border-white/5 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-white/10 transition-all">
+                            <Activity size={16} className="text-emerald-500" /> Jade Bot
+                        </Link>
+                    </div>
                 </div>
             </div>
 
-            {/* Main Stats */}
+            {/* Main Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
-                    title="Balance"
+                    title="Real Capital"
                     value={selectedAccount ? `$${Number(selectedAccount.balance || 0).toLocaleString()}` : '--'}
-                    change={monthInfo ? `${monthInfo.pct >= 0 ? '+' : ''}${monthInfo.pct}% (mes)` : '--'}
+                    change={monthInfo ? `${monthInfo.pct >= 0 ? '+' : ''}${monthInfo.pct}% MTD` : '--'}
                     icon={DollarSign}
                     trend={monthInfo && monthInfo.pct >= 0 ? 'up' : 'down'}
                 />
                 <StatCard
-                    title="Progreso Mes"
+                    title="Neural Profit"
                     value={monthInfo ? `${monthInfo.pct >= 0 ? '+' : ''}${monthInfo.pct}%` : '--'}
                     change={monthInfo ? `${monthInfo.pnl >= 0 ? '+' : ''}$${Math.abs(monthInfo.pnl).toLocaleString()}` : '--'}
                     icon={Activity}
                     trend={monthInfo && monthInfo.pnl >= 0 ? 'up' : 'down'}
                 />
                 <StatCard
-                    title="Win Rate"
+                    title="Win Accuracy"
                     value={winInfo ? `${winInfo.winRate}%` : '--'}
-                    change={winInfo ? `${winInfo.wins}/${winInfo.losses}` : '--'}
+                    change={winInfo ? `${winInfo.wins}W / ${winInfo.losses}L` : '--'}
                     icon={TrendingUp}
                     trend={winInfo && winInfo.winRate >= 50 ? 'up' : 'down'}
                 />
                 <StatCard
-                    title="Sesion"
+                    title="Current Session"
                     value={sessionInfo ? `${sessionInfo.pct >= 0 ? '+' : ''}${sessionInfo.pct}%` : '--'}
                     change={sessionInfo ? `${sessionInfo.pnl >= 0 ? '+' : ''}$${Math.abs(sessionInfo.pnl).toLocaleString()} (${sessionInfo.name})` : '--'}
                     icon={Clock}
@@ -263,58 +309,120 @@ export default function DashboardPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Performance Chart Placeholder */}
-                <div className="lg:col-span-2 bg-zinc-950 border border-white/5 rounded-3xl p-8 h-[400px] relative overflow-hidden">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                            <BarChart size={18} className="text-teal-400" />
-                            <span className="text-xs font-black uppercase tracking-widest text-zinc-500">Rendimiento Pro</span>
+                {/* Performance Analytics */}
+                <div className="lg:col-span-2 space-y-8">
+                    {/* Growth Projection */}
+                    <div className="bg-[#0B0E11] border border-white/5 rounded-[32px] p-8 shadow-2xl relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] pointer-events-none" />
+                        <div className="flex items-center justify-between mb-8 relative z-10">
+                            <div>
+                                <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-1">Compound Intelligence</h3>
+                                <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Growth vs {dailyProjectionPct}% Baseline Target</p>
+                            </div>
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/5 rounded-xl">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-[9px] font-black text-white/60 uppercase">Real-Time Sync</span>
+                            </div>
                         </div>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Objetivo diario: {dailyProjectionPct}%</div>
+
+                        <div className="h-[350px]">
+                            {fullProjected.length ? (
+                                <TwoLineChart
+                                    a={{ name: `Target ${dailyProjectionPct}%`, color: '#10b981', points: fullProjected }}
+                                    b={{ name: 'Actual Performance', color: '#64748b', points: dailyReal }}
+                                    type="histogram"
+                                    height={300}
+                                />
+                            ) : (
+                                <div className="h-full flex items-center justify-center text-white/20 font-black italic text-xs uppercase tracking-widest">
+                                    Simulating Compound Scenarios...
+                                </div>
+                            )}
+                        </div>
                     </div>
 
-                    {dailyReal.length ? (
-                        <EquityCurveChart
-                            points={dailyReal}
-                            projectionPoints={dailyProjected}
-                        />
-                    ) : (
-                        <div className="h-[330px] flex items-center justify-center text-zinc-600 font-bold">
-                            Sin datos suficientes para graficar.
+                    {/* Volatility Analysis */}
+                    <div className="bg-[#0B0E11] border border-white/5 rounded-[32px] p-8 shadow-2xl overflow-hidden relative group">
+                        <div className="flex items-center justify-between mb-8">
+                            <div>
+                                <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-1">Consistency Pulse</h3>
+                                <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">MTD Daily PnL Distribution</p>
+                            </div>
                         </div>
-                    )}
+
+                        <div className="h-[350px]">
+                            <TwoLineChart
+                                a={{ name: 'Daily Pulse', color: '#10b981', points: dailyPnl }}
+                                type="histogram"
+                                height={300}
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                {/* Recent Activity */}
-                <div className="bg-zinc-950 border border-white/5 rounded-3xl p-8 flex flex-col">
-                    <h3 className="text-lg font-bold mb-6">Actividad Reciente</h3>
-                    <div className="space-y-6 flex-1">
-                        {(recentTrades || []).map((t: any) => {
-                            const status = String(t.status || '').toLowerCase();
-                            const isWin = status === 'win';
-                            const isLoss = status === 'loss';
-                            const pnl = t.payout_pct !== undefined ? binaryNetResult(t) : forexNetResult(t);
-                            const dt = new Date(t.close_date || t.open_date);
-                            const sessionLabel = sessionNameForDate(new Date(t.open_date));
-                            return (
-                                <div key={`${t.id}-${t.open_date}`} className="flex items-center justify-between">
-                                    <div className="flex items-center gap-4">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isWin ? 'bg-emerald-500/10 text-emerald-500' : isLoss ? 'text-rose-500 bg-rose-500/10' : 'text-white/70 bg-white/5'}`}>
-                                            {isWin ? <TrendingUp size={18} /> : isLoss ? <TrendingDown size={18} /> : <Activity size={18} />}
+                {/* Right Action Stack */}
+                <div className="lg:col-span-1 space-y-8">
+                    {sessionInfo && (
+                        <div className="animate-in fade-in slide-in-from-right-4 duration-700">
+                            <h3 className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-4 ml-4">Neural Performance Share</h3>
+                            <SessionShareCard
+                                wins={sessionInfo.wins}
+                                losses={sessionInfo.losses}
+                                winRate={sessionInfo.winRate}
+                                pnl={sessionInfo.pnl}
+                                sessionName={sessionInfo.name}
+                            />
+                        </div>
+                    )}
+
+                    <div className="bg-[#0B0E11] border border-white/5 rounded-[32px] p-8 shadow-2xl flex flex-col min-h-[500px]">
+                        <div className="mb-8 flex items-center justify-between">
+                            <div>
+                                <h3 className="text-xs font-black text-white uppercase tracking-[0.2em] mb-1">Execution Logs</h3>
+                                <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Latest Network Activity</p>
+                            </div>
+                            <Link href="/dashboard/reports" className="p-2 hover:bg-white/5 rounded-xl text-white/30 transition-all hover:text-emerald-500">
+                                <ArrowUpRight size={18} />
+                            </Link>
+                        </div>
+
+                        <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-2">
+                            {(recentTrades || []).map((t: any) => {
+                                const status = String(t.status || '').toLowerCase();
+                                const isWin = status === 'win';
+                                const isLoss = status === 'loss';
+                                const pnl = t.payout_pct !== undefined ? binaryNetResult(t) : forexNetResult(t);
+                                const dt = new Date(t.close_date || t.open_date);
+                                const sessionLabel = sessionNameForDate(new Date(t.open_date));
+                                return (
+                                    <div
+                                        key={`${t.id}-${t.open_date}`}
+                                        className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-all cursor-default group"
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${isWin ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]' : isLoss ? 'text-rose-500 bg-rose-500/10 border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.1)]' : 'text-white/40 bg-white/5 border border-white/5'}`}>
+                                                {isWin ? <ArrowUpRight size={18} /> : isLoss ? <TrendingDown size={18} /> : <Activity size={18} />}
+                                            </div>
+                                            <div>
+                                                <p className="font-black text-xs text-white tracking-tight group-hover:text-emerald-500 transition-colors">{t.instrument}</p>
+                                                <p className="text-[9px] text-white/20 font-black uppercase tracking-widest">{sessionLabel} • {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-bold text-sm">{t.instrument} - {status.toUpperCase()}</p>
-                                            <p className="text-xs text-zinc-500">Sesion {sessionLabel} • {dt.toLocaleString()}</p>
+                                        <div className="text-right">
+                                            <p className={`font-black tracking-tighter text-sm ${status === 'open' ? 'text-white' : pnl >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                {status === 'open' ? 'OPEN' : `${pnl >= 0 ? '+' : '-'}$${Math.abs(Number(pnl || 0)).toLocaleString()}`}
+                                            </p>
+                                            <p className="text-[8px] font-black uppercase tracking-tighter text-white/20 leading-none mt-1">{status}</p>
                                         </div>
                                     </div>
-                                    <p className={`font-bold ${pnl >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
-                                        {status === 'open' ? '--' : `${pnl >= 0 ? '+' : '-'}$${Math.abs(Number(pnl || 0)).toLocaleString()}`}
-                                    </p>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
+
+                        <Link href="/dashboard/reports" className="mt-8 group flex items-center justify-center gap-3 py-4 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all text-xs font-black uppercase tracking-[0.2em] text-white/30 hover:text-emerald-500">
+                            Full Terminal Logs
+                        </Link>
                     </div>
-                    <button className="mt-8 text-sm font-bold text-teal-400 hover:text-teal-300">Ver historial completo</button>
                 </div>
             </div>
         </div>

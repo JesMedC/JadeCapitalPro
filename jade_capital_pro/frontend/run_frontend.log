@@ -882,3 +882,382 @@ https://nextjs.org/docs/messages/module-not-found
 ✓ Compiled in 69ms
  GET /dashboard/strategy 200 in 85ms (compile: 22ms, proxy.ts: 13ms, render: 50ms)
  GET /dashboard/bot 200 in 194ms (compile: 129ms, proxy.ts: 12ms, render: 54ms)
+ GET /dashboard/library 200 in 183ms (compile: 117ms, proxy.ts: 18ms, render: 49ms)
+ GET /dashboard/library 200 in 55ms (compile: 8ms, proxy.ts: 9ms, render: 39ms)
+ GET /dashboard/settings 200 in 75ms (compile: 16ms, proxy.ts: 9ms, render: 50ms)
+ GET /dashboard/balance 200 in 84ms (compile: 20ms, proxy.ts: 17ms, render: 46ms)
+ GET /dashboard 200 in 68ms (compile: 20ms, proxy.ts: 12ms, render: 35ms)
+ GET /dashboard/balance 200 in 72ms (compile: 15ms, proxy.ts: 13ms, render: 44ms)
+ GET /dashboard/reports 200 in 74ms (compile: 18ms, proxy.ts: 12ms, render: 44ms)
+ GET /dashboard/metrics 200 in 72ms (compile: 14ms, proxy.ts: 9ms, render: 49ms)
+✓ Compiled in 380ms
+✓ Compiled in 806ms
+ GET /dashboard/metrics 200 in 926ms (compile: 186ms, proxy.ts: 19ms, render: 722ms)
+✓ Compiled in 194ms
+✓ Compiled in 145ms
+✓ Compiled in 99ms
+✓ Compiled in 95ms
+ GET /dashboard/metrics 200 in 288ms (compile: 194ms, proxy.ts: 15ms, render: 79ms)
+✓ Compiled in 181ms
+✓ Compiled in 128ms
+✓ Compiled in 144ms
+✓ Compiled in 225ms
+✓ Compiled in 129ms
+✓ Compiled in 164ms
+✓ Compiled in 81ms
+ GET /dashboard/metrics 200 in 310ms (compile: 188ms, proxy.ts: 19ms, render: 103ms)
+✓ Compiled in 57ms
+✓ Compiled in 61ms
+✓ Compiled in 131ms
+ GET /dashboard/reports 200 in 302ms (compile: 222ms, proxy.ts: 12ms, render: 68ms)
+ GET /dashboard/metrics 200 in 213ms (compile: 134ms, proxy.ts: 12ms, render: 67ms)
+ GET /dashboard 200 in 211ms (compile: 136ms, proxy.ts: 13ms, render: 63ms)
+ GET /dashboard/balance 200 in 338ms (compile: 202ms, proxy.ts: 14ms, render: 121ms)
+ GET /dashboard/balance 200 in 75ms (compile: 18ms, proxy.ts: 8ms, render: 49ms)
+ GET /dashboard/balance 200 in 44ms (compile: 12ms, proxy.ts: 6ms, render: 26ms)
+ GET /dashboard/metrics 200 in 61ms (compile: 11ms, proxy.ts: 10ms, render: 40ms)
+ GET /dashboard/reports 200 in 48ms (compile: 6ms, proxy.ts: 7ms, render: 36ms)
+ GET /dashboard/strategy 200 in 193ms (compile: 129ms, proxy.ts: 8ms, render: 57ms)
+ GET /dashboard/bot 200 in 212ms (compile: 139ms, proxy.ts: 5ms, render: 68ms)
+ GET /dashboard/library 200 in 193ms (compile: 125ms, proxy.ts: 8ms, render: 59ms)
+ GET /dashboard/settings 200 in 256ms (compile: 140ms, proxy.ts: 10ms, render: 105ms)
+ GET /dashboard/settings 200 in 79ms (compile: 9ms, proxy.ts: 6ms, render: 64ms)
+ GET /dashboard 200 in 40ms (compile: 7ms, proxy.ts: 8ms, render: 25ms)
+ GET /dashboard/settings 200 in 43ms (compile: 6ms, proxy.ts: 6ms, render: 30ms)
+ GET /dashboard/library 200 in 68ms (compile: 9ms, proxy.ts: 14ms, render: 45ms)
+✓ Compiled in 177ms
+✓ Compiled in 226ms
+✓ Compiled in 175ms
+✓ Compiled in 271ms
+ GET /dashboard 200 in 74ms (compile: 23ms, proxy.ts: 14ms, render: 37ms)
+ GET /dashboard/balance 200 in 69ms (compile: 13ms, proxy.ts: 15ms, render: 40ms)
+ GET /dashboard/reports 200 in 69ms (compile: 17ms, proxy.ts: 13ms, render: 38ms)
+ GET /dashboard/metrics 200 in 59ms (compile: 12ms, proxy.ts: 9ms, render: 38ms)
+ GET /dashboard/strategy 200 in 58ms (compile: 11ms, proxy.ts: 12ms, render: 36ms)
+ GET /dashboard/bot 200 in 70ms (compile: 15ms, proxy.ts: 10ms, render: 46ms)
+ GET /dashboard/library 200 in 198ms (compile: 133ms, proxy.ts: 10ms, render: 55ms)
+ GET /dashboard/bot 200 in 40ms (compile: 6ms, proxy.ts: 6ms, render: 27ms)
+ GET /dashboard/settings 200 in 187ms (compile: 116ms, proxy.ts: 8ms, render: 63ms)
+ GET /dashboard 200 in 62ms (compile: 13ms, proxy.ts: 8ms, render: 40ms)
+ GET /dashboard/balance 200 in 81ms (compile: 13ms, proxy.ts: 13ms, render: 55ms)
+ GET /dashboard/reports 200 in 65ms (compile: 16ms, proxy.ts: 7ms, render: 42ms)
+ GET /dashboard/metrics 200 in 57ms (compile: 10ms, proxy.ts: 9ms, render: 38ms)
+ GET /dashboard/strategy 200 in 44ms (compile: 7ms, proxy.ts: 6ms, render: 31ms)
+ GET /dashboard/bot 200 in 66ms (compile: 9ms, proxy.ts: 9ms, render: 48ms)
+ GET /dashboard/library 200 in 77ms (compile: 16ms, proxy.ts: 13ms, render: 49ms)
+ GET /dashboard/bot 200 in 41ms (compile: 6ms, proxy.ts: 6ms, render: 28ms)
+ GET /dashboard/settings 200 in 63ms (compile: 12ms, proxy.ts: 10ms, render: 40ms)
+ GET /dashboard 200 in 53ms (compile: 8ms, proxy.ts: 9ms, render: 35ms)
+ GET /dashboard 200 in 75ms (compile: 11ms, proxy.ts: 11ms, render: 53ms)
+ GET /dashboard 200 in 46ms (compile: 9ms, proxy.ts: 6ms, render: 31ms)
+ GET /dashboard/bot 200 in 62ms (compile: 13ms, proxy.ts: 17ms, render: 32ms)
+✓ Compiled in 117ms
+✓ Compiled in 163ms
+✓ Compiled in 162ms
+✓ Compiled in 168ms
+✓ Compiled in 122ms
+✓ Compiled in 205ms
+ GET /dashboard/bot 200 in 307ms (compile: 197ms, proxy.ts: 19ms, render: 91ms)
+✓ Compiled in 137ms
+ GET /dashboard/library 200 in 66ms (compile: 9ms, proxy.ts: 13ms, render: 44ms)
+ GET /dashboard/settings 200 in 81ms (compile: 19ms, proxy.ts: 13ms, render: 48ms)
+ GET /dashboard 200 in 190ms (compile: 124ms, proxy.ts: 13ms, render: 53ms)
+ GET /dashboard/settings 200 in 49ms (compile: 10ms, proxy.ts: 10ms, render: 29ms)
+ GET /dashboard/settings 200 in 70ms (compile: 9ms, proxy.ts: 17ms, render: 44ms)
+ GET /dashboard 200 in 75ms (compile: 18ms, proxy.ts: 12ms, render: 45ms)
+ GET /dashboard 200 in 54ms (compile: 12ms, proxy.ts: 9ms, render: 33ms)
+ GET /dashboard/bot 200 in 292ms (compile: 159ms, proxy.ts: 9ms, render: 124ms)
+ GET /dashboard/bot 200 in 58ms (compile: 12ms, proxy.ts: 10ms, render: 36ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 13ms, proxy.ts: 9ms, render: 43ms)
+ GET /dashboard/metrics 200 in 66ms (compile: 11ms, proxy.ts: 9ms, render: 46ms)
+ GET /dashboard/reports 200 in 85ms (compile: 19ms, proxy.ts: 11ms, render: 55ms)
+ GET /dashboard/balance 200 in 72ms (compile: 12ms, proxy.ts: 8ms, render: 52ms)
+ GET /dashboard/balance 200 in 60ms (compile: 11ms, proxy.ts: 8ms, render: 41ms)
+ GET /dashboard/reports 200 in 62ms (compile: 13ms, proxy.ts: 11ms, render: 39ms)
+ GET /dashboard/balance 200 in 58ms (compile: 11ms, proxy.ts: 7ms, render: 41ms)
+ GET /dashboard/strategy 200 in 54ms (compile: 9ms, proxy.ts: 7ms, render: 39ms)
+ GET /dashboard/library 200 in 63ms (compile: 13ms, proxy.ts: 6ms, render: 44ms)
+ GET /dashboard/settings 200 in 61ms (compile: 11ms, proxy.ts: 10ms, render: 40ms)
+✓ Compiled in 52ms
+✓ Compiled in 64ms
+✓ Compiled in 50ms
+✓ Compiled in 85ms
+✓ Compiled in 149ms
+✓ Compiled in 145ms
+✓ Compiled in 173ms
+✓ Compiled in 75ms
+✓ Compiled in 66ms
+ GET /dashboard 200 in 283ms (compile: 154ms, proxy.ts: 17ms, render: 111ms)
+ GET /dashboard 200 in 61ms (compile: 9ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/balance 200 in 198ms (compile: 130ms, proxy.ts: 6ms, render: 62ms)
+ GET /dashboard/reports 200 in 195ms (compile: 127ms, proxy.ts: 10ms, render: 58ms)
+ GET /dashboard/balance 200 in 64ms (compile: 9ms, proxy.ts: 8ms, render: 47ms)
+ GET /dashboard 200 in 56ms (compile: 9ms, proxy.ts: 9ms, render: 39ms)
+ GET /dashboard 200 in 61ms (compile: 17ms, proxy.ts: 10ms, render: 34ms)
+ GET /dashboard/balance 200 in 53ms (compile: 8ms, proxy.ts: 7ms, render: 37ms)
+ GET /dashboard/reports 200 in 48ms (compile: 7ms, proxy.ts: 9ms, render: 32ms)
+ GET /dashboard/reports 200 in 60ms (compile: 11ms, proxy.ts: 6ms, render: 42ms)
+ GET /dashboard/metrics 200 in 205ms (compile: 112ms, proxy.ts: 6ms, render: 87ms)
+ GET /dashboard/metrics 200 in 37ms (compile: 7ms, proxy.ts: 5ms, render: 26ms)
+ GET /dashboard/balance 200 in 68ms (compile: 11ms, proxy.ts: 12ms, render: 46ms)
+ GET /dashboard/balance 200 in 71ms (compile: 15ms, proxy.ts: 8ms, render: 48ms)
+ GET /dashboard/reports 200 in 56ms (compile: 7ms, proxy.ts: 7ms, render: 42ms)
+ GET /dashboard/metrics 200 in 63ms (compile: 9ms, proxy.ts: 7ms, render: 46ms)
+ GET /dashboard/strategy 200 in 207ms (compile: 130ms, proxy.ts: 12ms, render: 65ms)
+ GET /dashboard/bot 200 in 190ms (compile: 122ms, proxy.ts: 12ms, render: 56ms)
+ GET /dashboard/library 200 in 199ms (compile: 126ms, proxy.ts: 8ms, render: 65ms)
+ GET /dashboard/bot 200 in 57ms (compile: 8ms, proxy.ts: 6ms, render: 43ms)
+ GET /dashboard/library 200 in 47ms (compile: 7ms, proxy.ts: 9ms, render: 31ms)
+ GET /dashboard/settings 200 in 167ms (compile: 106ms, proxy.ts: 7ms, render: 54ms)
+ GET /dashboard 200 in 50ms (compile: 10ms, proxy.ts: 8ms, render: 32ms)
+ GET /dashboard 200 in 84ms (compile: 32ms, proxy.ts: 13ms, render: 39ms)
+✓ Compiled in 74ms
+✓ Compiled in 88ms
+✓ Compiled in 49ms
+✓ Compiled in 119ms
+✓ Compiled in 56ms
+✓ Compiled in 144ms
+✓ Compiled in 140ms
+✓ Compiled in 579ms
+ GET /dashboard 200 in 290ms (compile: 192ms, proxy.ts: 10ms, render: 88ms)
+✓ Compiled in 201ms
+✓ Compiled in 55ms
+ GET /dashboard/balance 200 in 279ms (compile: 133ms, proxy.ts: 9ms, render: 136ms)
+ GET /dashboard 200 in 70ms (compile: 12ms, proxy.ts: 18ms, render: 40ms)
+ GET /dashboard/balance 200 in 91ms (compile: 24ms, proxy.ts: 16ms, render: 52ms)
+ GET /dashboard/metrics 200 in 208ms (compile: 135ms, proxy.ts: 13ms, render: 60ms)
+ GET /dashboard 200 in 51ms (compile: 8ms, proxy.ts: 7ms, render: 36ms)
+ GET /dashboard/settings 200 in 214ms (compile: 138ms, proxy.ts: 8ms, render: 68ms)
+ GET /dashboard/library 200 in 74ms (compile: 20ms, proxy.ts: 13ms, render: 41ms)
+ GET /dashboard/bot 200 in 97ms (compile: 21ms, proxy.ts: 14ms, render: 62ms)
+ GET /dashboard/strategy 200 in 75ms (compile: 15ms, proxy.ts: 10ms, render: 49ms)
+ GET /dashboard/metrics 200 in 98ms (compile: 10ms, proxy.ts: 8ms, render: 80ms)
+ GET /dashboard/reports 200 in 214ms (compile: 139ms, proxy.ts: 10ms, render: 65ms)
+ GET /dashboard/balance 200 in 62ms (compile: 9ms, proxy.ts: 7ms, render: 45ms)
+ GET /dashboard 200 in 43ms (compile: 8ms, proxy.ts: 6ms, render: 29ms)
+ GET /dashboard 200 in 60ms (compile: 13ms, proxy.ts: 9ms, render: 38ms)
+✓ Compiled in 62ms
+✓ Compiled in 73ms
+✓ Compiled in 148ms
+✓ Compiled in 153ms
+✓ Compiled in 253ms
+ GET /dashboard 200 in 341ms (compile: 242ms, proxy.ts: 16ms, render: 83ms)
+✓ Compiled in 57ms
+✓ Compiled in 138ms
+✓ Compiled in 55ms
+✓ Compiled in 140ms
+✓ Compiled in 113ms
+✓ Compiled in 84ms
+✓ Compiled in 60ms
+✓ Compiled in 147ms
+✓ Compiled in 88ms
+ GET /dashboard/library 200 in 479ms (compile: 203ms, proxy.ts: 11ms, render: 265ms)
+ GET /dashboard/library 200 in 158ms (compile: 24ms, proxy.ts: 18ms, render: 116ms)
+ GET /dashboard 200 in 247ms (compile: 136ms, proxy.ts: 7ms, render: 104ms)
+ GET /dashboard 200 in 54ms (compile: 13ms, proxy.ts: 7ms, render: 35ms)
+ GET /dashboard/settings 200 in 206ms (compile: 141ms, proxy.ts: 7ms, render: 59ms)
+ GET /dashboard/library 200 in 71ms (compile: 14ms, proxy.ts: 12ms, render: 46ms)
+ GET /dashboard/library 200 in 64ms (compile: 10ms, proxy.ts: 8ms, render: 46ms)
+ GET /dashboard/bot 200 in 208ms (compile: 138ms, proxy.ts: 10ms, render: 59ms)
+ GET /dashboard/strategy 200 in 195ms (compile: 126ms, proxy.ts: 12ms, render: 58ms)
+ GET /dashboard/metrics 200 in 183ms (compile: 123ms, proxy.ts: 11ms, render: 49ms)
+ GET /dashboard 200 in 82ms (compile: 13ms, proxy.ts: 11ms, render: 57ms)
+ GET /dashboard/balance 200 in 196ms (compile: 124ms, proxy.ts: 7ms, render: 65ms)
+ GET /dashboard/reports 200 in 287ms (compile: 127ms, proxy.ts: 9ms, render: 152ms)
+ GET /dashboard/reports 200 in 103ms (compile: 12ms, proxy.ts: 25ms, render: 65ms)
+ GET /dashboard/balance 200 in 55ms (compile: 8ms, proxy.ts: 8ms, render: 39ms)
+ GET /dashboard/reports 200 in 58ms (compile: 12ms, proxy.ts: 10ms, render: 36ms)
+ GET /dashboard/metrics 200 in 61ms (compile: 10ms, proxy.ts: 8ms, render: 43ms)
+ GET /dashboard/strategy 200 in 57ms (compile: 15ms, proxy.ts: 9ms, render: 32ms)
+ GET /dashboard/bot 200 in 62ms (compile: 10ms, proxy.ts: 10ms, render: 42ms)
+ GET /dashboard/library 200 in 74ms (compile: 22ms, proxy.ts: 11ms, render: 41ms)
+ GET /dashboard/metrics 200 in 56ms (compile: 10ms, proxy.ts: 11ms, render: 36ms)
+ GET /dashboard 200 in 58ms (compile: 18ms, proxy.ts: 7ms, render: 33ms)
+ GET /dashboard/bot 200 in 72ms (compile: 14ms, proxy.ts: 19ms, render: 40ms)
+ GET /dashboard/bot 200 in 54ms (compile: 12ms, proxy.ts: 8ms, render: 34ms)
+ GET /dashboard/bot 200 in 71ms (compile: 14ms, proxy.ts: 13ms, render: 44ms)
+ GET /dashboard/bot 200 in 70ms (compile: 14ms, proxy.ts: 8ms, render: 48ms)
+✓ Compiled in 129ms
+✓ Compiled in 73ms
+✓ Compiled in 570ms
+✓ Compiled in 60ms
+✓ Compiled in 1195ms
+ GET /dashboard/bot 200 in 1231ms (compile: 363ms, proxy.ts: 28ms, render: 840ms)
+✓ Compiled in 88ms
+ GET /dashboard/library 200 in 262ms (compile: 179ms, proxy.ts: 15ms, render: 68ms)
+ GET /dashboard/library 200 in 52ms (compile: 9ms, proxy.ts: 7ms, render: 36ms)
+ GET /dashboard 200 in 194ms (compile: 130ms, proxy.ts: 12ms, render: 52ms)
+ GET /dashboard/balance 200 in 202ms (compile: 128ms, proxy.ts: 11ms, render: 62ms)
+ GET /dashboard/reports 200 in 719ms (compile: 647ms, proxy.ts: 8ms, render: 64ms)
+ GET /dashboard/reports 200 in 75ms (compile: 17ms, proxy.ts: 11ms, render: 46ms)
+ GET /dashboard/reports 200 in 57ms (compile: 17ms, proxy.ts: 9ms, render: 31ms)
+ GET /dashboard/metrics 200 in 250ms (compile: 131ms, proxy.ts: 8ms, render: 111ms)
+ GET /dashboard/metrics 200 in 56ms (compile: 13ms, proxy.ts: 7ms, render: 37ms)
+ GET /dashboard/strategy 200 in 255ms (compile: 137ms, proxy.ts: 10ms, render: 109ms)
+ GET /dashboard/strategy 200 in 62ms (compile: 24ms, proxy.ts: 7ms, render: 31ms)
+ GET /dashboard/metrics 200 in 67ms (compile: 9ms, proxy.ts: 8ms, render: 49ms)
+ GET /dashboard/strategy 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 26ms)
+ GET /dashboard/bot 200 in 178ms (compile: 108ms, proxy.ts: 9ms, render: 61ms)
+ GET /dashboard/library 200 in 41ms (compile: 7ms, proxy.ts: 7ms, render: 28ms)
+ GET /dashboard/balance 200 in 62ms (compile: 10ms, proxy.ts: 9ms, render: 44ms)
+ GET /dashboard/balance 200 in 44ms (compile: 8ms, proxy.ts: 6ms, render: 31ms)
+ GET /dashboard/metrics 200 in 61ms (compile: 15ms, proxy.ts: 13ms, render: 33ms)
+✓ Compiled in 204ms
+✓ Compiled in 64ms
+✓ Compiled in 61ms
+ GET /dashboard/bot 200 in 150ms (compile: 12ms, proxy.ts: 16ms, render: 123ms)
+ GET /dashboard/bot 200 in 78ms (compile: 9ms, proxy.ts: 8ms, render: 61ms)
+ GET /dashboard/library 200 in 108ms (compile: 16ms, proxy.ts: 12ms, render: 80ms)
+ GET /dashboard/library 200 in 84ms (compile: 18ms, proxy.ts: 11ms, render: 55ms)
+ GET /dashboard/settings 200 in 258ms (compile: 151ms, proxy.ts: 9ms, render: 99ms)
+ GET /dashboard/settings 200 in 56ms (compile: 8ms, proxy.ts: 7ms, render: 41ms)
+ GET /dashboard/metrics 200 in 200ms (compile: 127ms, proxy.ts: 14ms, render: 59ms)
+ GET /dashboard 200 in 311ms (compile: 196ms, proxy.ts: 11ms, render: 104ms)
+ GET /dashboard 200 in 45ms (compile: 6ms, proxy.ts: 6ms, render: 32ms)
+ GET /dashboard/balance 200 in 87ms (compile: 19ms, proxy.ts: 27ms, render: 41ms)
+ GET /dashboard/reports 200 in 65ms (compile: 13ms, proxy.ts: 11ms, render: 41ms)
+ GET /dashboard/balance 200 in 97ms (compile: 12ms, proxy.ts: 13ms, render: 72ms)
+ GET /dashboard 200 in 53ms (compile: 10ms, proxy.ts: 9ms, render: 33ms)
+ GET /dashboard/bot 200 in 75ms (compile: 10ms, proxy.ts: 11ms, render: 54ms)
+ GET /dashboard/library 200 in 70ms (compile: 12ms, proxy.ts: 9ms, render: 49ms)
+ GET /dashboard/settings 200 in 59ms (compile: 15ms, proxy.ts: 6ms, render: 39ms)
+ GET /dashboard/bot 200 in 56ms (compile: 9ms, proxy.ts: 7ms, render: 40ms)
+ GET /dashboard 200 in 54ms (compile: 9ms, proxy.ts: 6ms, render: 38ms)
+✓ Compiled in 111ms
+✓ Compiled in 85ms
+✓ Compiled in 78ms
+ GET /dashboard/balance 200 in 79ms (compile: 15ms, proxy.ts: 15ms, render: 49ms)
+ GET /dashboard/reports 200 in 69ms (compile: 15ms, proxy.ts: 14ms, render: 41ms)
+ GET /dashboard/reports 200 in 51ms (compile: 10ms, proxy.ts: 6ms, render: 34ms)
+ GET /dashboard/metrics 200 in 198ms (compile: 134ms, proxy.ts: 8ms, render: 55ms)
+ GET /dashboard/bot 200 in 59ms (compile: 8ms, proxy.ts: 12ms, render: 39ms)
+ GET /dashboard/bot 200 in 63ms (compile: 17ms, proxy.ts: 8ms, render: 38ms)
+✓ Compiled in 60ms
+✓ Compiled in 91ms
+✓ Compiled in 94ms
+✓ Compiled in 174ms
+✓ Compiled in 168ms
+✓ Compiled in 115ms
+ GET /dashboard/settings 200 in 257ms (compile: 145ms, proxy.ts: 11ms, render: 100ms)
+ GET /dashboard/bot 200 in 244ms (compile: 162ms, proxy.ts: 15ms, render: 66ms)
+✓ Compiled in 88ms
+ GET /dashboard/library 200 in 81ms (compile: 18ms, proxy.ts: 8ms, render: 55ms)
+ GET /dashboard/bot 200 in 224ms (compile: 136ms, proxy.ts: 9ms, render: 80ms)
+✓ Compiled in 102ms
+ GET /dashboard/balance 200 in 255ms (compile: 172ms, proxy.ts: 12ms, render: 71ms)
+ GET /dashboard/bot 200 in 235ms (compile: 161ms, proxy.ts: 10ms, render: 65ms)
+ GET /dashboard/library 200 in 94ms (compile: 19ms, proxy.ts: 14ms, render: 61ms)
+ GET /dashboard/settings 200 in 74ms (compile: 16ms, proxy.ts: 10ms, render: 48ms)
+ GET /dashboard/settings 200 in 77ms (compile: 22ms, proxy.ts: 10ms, render: 45ms)
+ GET /dashboard 200 in 209ms (compile: 148ms, proxy.ts: 10ms, render: 52ms)
+ GET /dashboard/metrics 200 in 77ms (compile: 14ms, proxy.ts: 12ms, render: 52ms)
+ GET /dashboard/metrics 200 in 89ms (compile: 17ms, proxy.ts: 10ms, render: 63ms)
+ GET /dashboard/strategy 200 in 55ms (compile: 17ms, proxy.ts: 8ms, render: 29ms)
+ GET /dashboard/metrics 200 in 55ms (compile: 11ms, proxy.ts: 5ms, render: 39ms)
+ GET /dashboard 200 in 67ms (compile: 8ms, proxy.ts: 7ms, render: 51ms)
+ GET /dashboard/bot 200 in 48ms (compile: 8ms, proxy.ts: 7ms, render: 33ms)
+ GET /dashboard 200 in 69ms (compile: 23ms, proxy.ts: 9ms, render: 37ms)
+ GET /dashboard/balance 200 in 58ms (compile: 11ms, proxy.ts: 6ms, render: 40ms)
+ GET /dashboard/reports 200 in 67ms (compile: 17ms, proxy.ts: 10ms, render: 40ms)
+ GET /dashboard/strategy 200 in 56ms (compile: 7ms, proxy.ts: 12ms, render: 37ms)
+ GET /dashboard/bot 200 in 51ms (compile: 7ms, proxy.ts: 10ms, render: 34ms)
+ GET /dashboard/library 200 in 128ms (compile: 27ms, proxy.ts: 11ms, render: 90ms)
+✓ Compiled in 75ms
+ GET /dashboard/bot 200 in 224ms (compile: 157ms, proxy.ts: 10ms, render: 57ms)
+ GET /dashboard/strategy 200 in 73ms (compile: 15ms, proxy.ts: 9ms, render: 49ms)
+ GET /dashboard/bot 200 in 52ms (compile: 7ms, proxy.ts: 7ms, render: 37ms)
+ GET /dashboard/bot 200 in 51ms (compile: 11ms, proxy.ts: 9ms, render: 31ms)
+✓ Compiled in 345ms
+✓ Compiled in 323ms
+ GET /dashboard/strategy 200 in 75ms (compile: 18ms, proxy.ts: 9ms, render: 48ms)
+ GET /dashboard/bot 200 in 206ms (compile: 132ms, proxy.ts: 11ms, render: 63ms)
+ GET /dashboard/balance 200 in 85ms (compile: 19ms, proxy.ts: 10ms, render: 56ms)
+ GET /dashboard/bot 200 in 61ms (compile: 14ms, proxy.ts: 10ms, render: 37ms)
+ GET /dashboard 200 in 55ms (compile: 14ms, proxy.ts: 6ms, render: 35ms)
+ GET /dashboard/balance 200 in 79ms (compile: 17ms, proxy.ts: 14ms, render: 49ms)
+ GET /dashboard/reports 200 in 68ms (compile: 15ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/metrics 200 in 70ms (compile: 12ms, proxy.ts: 6ms, render: 52ms)
+ GET /dashboard/metrics 200 in 39ms (compile: 6ms, proxy.ts: 6ms, render: 27ms)
+ GET /dashboard/bot 200 in 69ms (compile: 13ms, proxy.ts: 11ms, render: 45ms)
+ GET /dashboard/strategy 200 in 68ms (compile: 12ms, proxy.ts: 10ms, render: 46ms)
+ GET /dashboard/library 200 in 65ms (compile: 10ms, proxy.ts: 6ms, render: 50ms)
+ GET /dashboard/library 200 in 55ms (compile: 10ms, proxy.ts: 8ms, render: 36ms)
+ GET /dashboard/bot 200 in 64ms (compile: 11ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/balance 200 in 62ms (compile: 10ms, proxy.ts: 11ms, render: 41ms)
+ GET /dashboard 200 in 54ms (compile: 11ms, proxy.ts: 13ms, render: 30ms)
+ GET /dashboard/bot 200 in 66ms (compile: 11ms, proxy.ts: 11ms, render: 44ms)
+✓ Compiled in 182ms
+✓ Compiled in 109ms
+ GET /dashboard/strategy 200 in 68ms (compile: 10ms, proxy.ts: 9ms, render: 49ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 16ms, proxy.ts: 8ms, render: 41ms)
+ GET /dashboard/bot 200 in 203ms (compile: 135ms, proxy.ts: 7ms, render: 61ms)
+ GET /dashboard 200 in 81ms (compile: 19ms, proxy.ts: 17ms, render: 45ms)
+ GET /dashboard/balance 200 in 68ms (compile: 14ms, proxy.ts: 10ms, render: 43ms)
+ GET /dashboard/reports 200 in 60ms (compile: 12ms, proxy.ts: 9ms, render: 38ms)
+ GET /dashboard 200 in 61ms (compile: 8ms, proxy.ts: 6ms, render: 46ms)
+ GET /dashboard/balance 200 in 81ms (compile: 17ms, proxy.ts: 12ms, render: 52ms)
+ GET /dashboard/reports 200 in 76ms (compile: 15ms, proxy.ts: 11ms, render: 50ms)
+ GET /dashboard/metrics 200 in 74ms (compile: 22ms, proxy.ts: 8ms, render: 44ms)
+ GET /dashboard/strategy 200 in 53ms (compile: 9ms, proxy.ts: 6ms, render: 38ms)
+ GET /dashboard/bot 200 in 66ms (compile: 15ms, proxy.ts: 10ms, render: 40ms)
+✓ Compiled in 179ms
+✓ Compiled in 147ms
+ GET /dashboard/bot 200 in 337ms (compile: 182ms, proxy.ts: 11ms, render: 144ms)
+✓ Compiled in 281ms
+✓ Compiled in 72ms
+✓ Compiled in 178ms
+✓ Compiled in 164ms
+ GET /dashboard/bot 200 in 369ms (compile: 235ms, proxy.ts: 11ms, render: 123ms)
+✓ Compiled in 226ms
+✓ Compiled in 155ms
+✓ Compiled in 210ms
+✓ Compiled in 66ms
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 79ms
+ GET /dashboard/bot 200 in 1589ms (compile: 230ms, proxy.ts: 12ms, render: 1347ms)
+✓ Compiled in 82ms
+✓ Compiled in 152ms
+ GET /dashboard/metrics 200 in 75ms (compile: 21ms, proxy.ts: 8ms, render: 45ms)
+ GET /dashboard/strategy 200 in 83ms (compile: 32ms, proxy.ts: 9ms, render: 42ms)
+ GET /dashboard/bot 200 in 209ms (compile: 140ms, proxy.ts: 11ms, render: 58ms)
+✓ Compiled in 223ms
+✓ Compiled in 262ms
+✓ Compiled in 493ms
+ GET /dashboard/bot 200 in 1311ms (compile: 210ms, proxy.ts: 23ms, render: 1079ms)
+ GET /dashboard/bot 200 in 1133ms (compile: 663ms, proxy.ts: 12ms, render: 458ms)
+ GET /dashboard/bot 200 in 1275ms (compile: 25ms, proxy.ts: 9ms, render: 1242ms)
+ GET /dashboard/bot 200 in 154ms (compile: 21ms, proxy.ts: 16ms, render: 116ms)
+ GET /dashboard/bot 200 in 454ms (compile: 19ms, proxy.ts: 46ms, render: 389ms)
+ GET /dashboard/bot 200 in 311ms (compile: 33ms, proxy.ts: 13ms, render: 265ms)
+✓ Compiled in 185ms
+✓ Compiled in 268ms
+✓ Compiled in 97ms
+ GET /dashboard/bot 200 in 81ms (compile: 17ms, proxy.ts: 9ms, render: 56ms)
+✓ Compiled in 251ms
+✓ Compiled in 196ms
+✓ Compiled in 287ms
+✓ Compiled in 196ms
+✓ Compiled in 175ms
+✓ Compiled in 211ms
+✓ Compiled in 193ms
+✓ Compiled in 152ms
+ GET /dashboard/bot 200 in 193ms (compile: 23ms, proxy.ts: 16ms, render: 154ms)
+ GET /dashboard 200 in 269ms (compile: 190ms, proxy.ts: 14ms, render: 66ms)
+ GET /dashboard/balance 200 in 350ms (compile: 273ms, proxy.ts: 11ms, render: 66ms)
+ GET /dashboard/reports 200 in 424ms (compile: 310ms, proxy.ts: 8ms, render: 106ms)
+ GET /dashboard/metrics 200 in 292ms (compile: 215ms, proxy.ts: 8ms, render: 69ms)
+ GET /dashboard/strategy 200 in 266ms (compile: 143ms, proxy.ts: 11ms, render: 112ms)
+ GET /dashboard/strategy 200 in 56ms (compile: 9ms, proxy.ts: 7ms, render: 41ms)
+ GET /dashboard/bot 200 in 69ms (compile: 10ms, proxy.ts: 17ms, render: 42ms)
+ GET /dashboard/library 200 in 373ms (compile: 284ms, proxy.ts: 11ms, render: 78ms)
+ GET /dashboard/settings 200 in 366ms (compile: 227ms, proxy.ts: 8ms, render: 132ms)
+ GET /dashboard/settings 200 in 67ms (compile: 10ms, proxy.ts: 7ms, render: 50ms)
+ GET /dashboard 200 in 70ms (compile: 18ms, proxy.ts: 14ms, render: 38ms)
+ GET /dashboard/balance 200 in 84ms (compile: 13ms, proxy.ts: 13ms, render: 57ms)
+ GET /dashboard/reports 200 in 70ms (compile: 15ms, proxy.ts: 8ms, render: 47ms)
+ GET /dashboard/metrics 200 in 73ms (compile: 13ms, proxy.ts: 16ms, render: 44ms)
+ GET /dashboard/strategy 200 in 65ms (compile: 12ms, proxy.ts: 8ms, render: 44ms)
+ GET /dashboard/bot 200 in 66ms (compile: 9ms, proxy.ts: 9ms, render: 47ms)
+ GET /dashboard/library 200 in 65ms (compile: 13ms, proxy.ts: 11ms, render: 42ms)
+ GET /dashboard/strategy 200 in 70ms (compile: 13ms, proxy.ts: 9ms, render: 48ms)
+ GET /dashboard/bot 200 in 63ms (compile: 11ms, proxy.ts: 10ms, render: 42ms)

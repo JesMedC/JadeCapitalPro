@@ -137,6 +137,18 @@ export const dailyEquitySeriesForMonth = (agg: LedgerAggPoint[], offset: number,
     return points;
 };
 
+export const dailyEquitySeriesForLast4Weeks = (agg: LedgerAggPoint[], offset: number, endDate: Date) => {
+    const points: Array<{ time: number; value: number }> = [];
+    for (let i = 27; i >= 0; i--) {
+        const d = new Date(endDate);
+        d.setDate(d.getDate() - i);
+        const dayEnd = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
+        const labelTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+        points.push({ time: toSec(labelTime), value: balanceAt(agg, offset, toSec(dayEnd)) });
+    }
+    return points;
+};
+
 export const projectionSeriesForMonth = (args: {
     year: number;
     month0: number;
@@ -150,6 +162,69 @@ export const projectionSeriesForMonth = (args: {
         const labelTime = new Date(args.year, args.month0, day, 12, 0, 0);
         const projected = args.startBalance * Math.pow(1 + daily, day);
         points.push({ time: toSec(labelTime), value: Number(projected.toFixed(2)) });
+    }
+    return points;
+};
+
+export const computeFullProjection = (agg: LedgerAggPoint[], offset: number, dailyPct = 1) => {
+    const sortedEvents = [...agg].sort((a, b) => a.t - b.t);
+    const projectionPoints: Array<{ time: number; value: number }> = [];
+    if (sortedEvents.length === 0) return [];
+
+    const firstEvent = sortedEvents[0];
+    const startDate = new Date(firstEvent.t * 1000);
+    const endDate = new Date();
+
+    let currentBalance = 0;
+    let currentMonth = startDate.getMonth();
+    let currentYear = startDate.getFullYear();
+
+    currentBalance = balanceAt(agg, offset, firstEvent.t);
+
+    const d = new Date(startDate);
+    d.setHours(12, 0, 0, 0);
+
+    while (d <= endDate) {
+        if (d.getMonth() !== currentMonth) {
+            currentMonth = d.getMonth();
+            currentYear = d.getFullYear();
+            const monthStart = new Date(currentYear, currentMonth, 1, 0, 0, 0);
+            currentBalance = balanceAt(agg, offset, toSec(monthStart) - 1);
+        }
+
+        const dayOfWeek = d.getDay();
+        if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+            currentBalance *= (1 + dailyPct / 100);
+        }
+
+        projectionPoints.push({
+            time: toSec(d),
+            value: Number(currentBalance.toFixed(2))
+        });
+
+        d.setDate(d.getDate() + 1);
+    }
+    return projectionPoints;
+};
+
+export const computeDailyReal = (agg: LedgerAggPoint[], offset: number) => {
+    const sortedEvents = [...agg].sort((a, b) => a.t - b.t);
+    if (sortedEvents.length === 0) return [];
+
+    const firstEvent = sortedEvents[0];
+    const startDate = new Date(firstEvent.t * 1000);
+    const endDate = new Date();
+
+    const d = new Date(startDate);
+    d.setHours(12, 0, 0, 0);
+
+    const points: Array<{ time: number; value: number }> = [];
+    while (d <= endDate) {
+        points.push({
+            time: toSec(d),
+            value: balanceAt(agg, offset, toSec(new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59)))
+        });
+        d.setDate(d.getDate() + 1);
     }
     return points;
 };

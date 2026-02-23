@@ -33,22 +33,26 @@ _scanner_lock = threading.Lock()
 _scanner_thread: threading.Thread | None = None
 _scanner_stop: threading.Event | None = None
 _scanner_state = {"running": False, "interval_sec": 300, "expiry_time": "5m"}
+_results_thread: threading.Thread | None = None
 _scanner_last_msg: dict[str, str] = {}
 
 _ctx_cache: dict[str, dict[str, object]] = {}
 
 
 def _ensure_scanner_running(default_interval_sec: int = 60) -> None:
-    global _scanner_thread, _scanner_stop
+    global _scanner_thread, _scanner_stop, _results_thread
     with _scanner_lock:
-        if _scanner_state.get("running") and _scanner_thread and _scanner_thread.is_alive():
-            return
-        _scanner_state["interval_sec"] = int(default_interval_sec)
-        _scanner_state["expiry_time"] = "5m"
-        _scanner_state["running"] = True
-        _scanner_stop = threading.Event()
-        _scanner_thread = threading.Thread(target=_scanner_loop, daemon=True)
-        _scanner_thread.start()
+        if not (_scanner_state.get("running") and _scanner_thread and _scanner_thread.is_alive()):
+            _scanner_state["interval_sec"] = int(default_interval_sec)
+            _scanner_state["expiry_time"] = "5m"
+            _scanner_state["running"] = True
+            _scanner_stop = threading.Event()
+            _scanner_thread = threading.Thread(target=_scanner_loop, daemon=True)
+            _scanner_thread.start()
+            
+        if not (_results_thread and _results_thread.is_alive()):
+            _results_thread = threading.Thread(target=_results_monitor_loop, daemon=True)
+            _results_thread.start()
 
 
 def _get_or_create_config(db: Session) -> AppConfig:
@@ -74,7 +78,135 @@ def _send_telegram(token: str, chat_id: str, text: str) -> None:
     if not token or not chat_id:
         return
     url = f"https://api.telegram.org/bot{token}/sendMessage"
-    requests.post(url, json={"chat_id": chat_id, "text": text})
+    try:
+        requests.post(url, json={"chat_id": chat_id, "text": text}, timeout=10)
+    except Exception:
+        pass
+
+
+def _send_whatsapp(apikey: str, phones: List[str], text: str) -> None:
+    if not apikey or not phones:
+        return
+    for phone in phones:
+        # CallMeBot WhatsApp API
+        url = f"https://api.callmebot.com/whatsapp.php?phone={phone}&text={requests.utils.quote(text)}&apikey={apikey}"
+        try:
+            requests.get(url, timeout=10)
+        except Exception:
+            pass
+
+
+@router.post("/notify/test")
+def test_notifications(
+    _: User = Depends(get_current_user),
+    db: Session = Depends(get_session),
+):
+    cfg = _get_or_create_config(db)
+    msg = "🚀 JADE CAPITAL: Mensaje de prueba de notificaciones."
+    
+    results = {}
+    
+    if _should_notify(cfg.notify_channels_json, "telegram"):
+        _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+        results["telegram"] = "Sent"
+        
+    if _should_notify(cfg.notify_channels_json, "whatsapp"):
+        phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+        _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
+        results["whatsapp"] = "Sent"
+        
+    return {"status": "ok", "delivered": results}
+
+
+def _format_alert_content(sig_instrument, sig_direction, price, prob, a_type, rsi, filters="200 Velas + RSI"):
+    rsi_val = int(rsi) if rsi else 0
+    rsi_state = "Neutral"
+    if rsi_val < 30: rsi_state = "Oversold"
+    elif rsi_val > 70: rsi_state = "Overbought"
+    
+    if a_type == "near":
+        return f"""⚠️ PREPARA OPERACIÓN ⚠️
+
+💎 Instrumento: {sig_instrument}
+📈 Acción Sugerida: {sig_direction}
+🎯 Precio Actual: {price:.5f}
+📊 Filtro: {filters}
+📉 RSI: {rsi_val} ({rsi_state})
+⏱️ Expiración Sugerida: 5 MIN
+⭐ Accuracy Estimado: {prob}%
+
+🔍 Estado: Esperando confirmación..."""
+    else:
+        return f"""🔥 CONFIRMADO - ENTRA AHORA! 🔥
+
+💎 Instrumento: {sig_instrument}
+📈 Acción: {sig_direction}
+🎯 Precio Entrada: {price:.5f}
+📊 Filtro: {filters}
+📉 RSI: {rsi_val} ({rsi_state})
+⏱️ Expiración: 5 MIN
+⭐ Accuracy: {prob}%
+
+✅ Todas las confirmaciones OK - EJECUTAR TRADE"""
+
+
+def _results_monitor_loop() -> None:
+    from datetime import timedelta
+    while True:
+        try:
+            with Session(engine) as db:
+                now = datetime.now()
+                # Check alerts created 5 to 20 minutes ago that are still in 'entry' or 'confirmed' status
+                statement = select(BotAlert).where(
+                    BotAlert.alert_type == "entry",
+                    BotAlert.status.in_(["entry", "confirmed"]),
+                    BotAlert.created_at <= (now - timedelta(minutes=5)),
+                    BotAlert.created_at >= (now - timedelta(minutes=20))
+                )
+                pending = db.exec(statement).all()
+                if pending:
+                    cfg = _get_or_create_config(db)
+                    for alert in pending:
+                        px, _ = fetch_any_price(alert.instrument)
+                        if px is None:
+                            # If price is unavailable, we might want to skip or retry later
+                            continue
+                            
+                        dir_lower = alert.direction.lower()
+                        is_call = "call" in dir_lower or "compra" in dir_lower or "up" in dir_lower or "comprar" in dir_lower
+                        
+                        entry_price = float(alert.price)
+                        final_price = float(px)
+                        
+                        win = (is_call and final_price > entry_price) or (not is_call and final_price < entry_price)
+                        result = "win" if win else "loss"
+                        
+                        symbol = "✅" if win else "❌"
+                        status_text = "WIN ✅" if win else "LOSS ❌"
+                        
+                        msg = f"""{symbol} {result.upper()} - admin Alerts
+
+💎 Instrumento: {alert.instrument}
+📈 Acción: {alert.direction}
+🎯 Precio Entrada: {entry_price:.5f}
+🎯 Precio Cierre: {final_price:.5f}
+📊 Estado: {status_text}"""
+
+                        if _should_notify(cfg.notify_channels_json, "telegram"):
+                            _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                            
+                        if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                            phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                            _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
+                            
+                        alert.status = result
+                        alert.updated_at = datetime.now()
+                        db.add(alert)
+                        print(f"[RESULTS] Alert {alert.id} ({alert.instrument}) evaluated as {result.upper()}")
+                    db.commit()
+        except Exception as e:
+            print(f"[RESULTS] Error in monitor loop: {str(e)}")
+        time.sleep(30)
 
 
 def _persist_alert(
@@ -111,10 +243,11 @@ def _is_on_cooldown(db: Session, instrument: str, cooldown_mins: int) -> bool:
         return False
     from datetime import timedelta
     cutoff = datetime.now() - timedelta(minutes=cooldown_mins)
-    # Check for recent entry alerts only (to allow PREPARA -> ENTRY transition)
+    # User request: block new cycle until previous is complete (near -> entry -> result)
+    # We check if there's ANY alert for this instrument that isn't finished (win/loss) in the last cooldown period
     statement = select(BotAlert).where(
         BotAlert.instrument == instrument,
-        BotAlert.alert_type == "entry",
+        BotAlert.status.in_(["near", "entry", "confirmed"]),
         BotAlert.created_at >= cutoff
     )
     result = db.exec(statement).first()
@@ -194,6 +327,14 @@ def _scanner_loop() -> None:
                             ema_fast_p=cfg.bot_ema_fast,
                             ema_slow_p=cfg.bot_ema_slow,
                             ema_filter_p=cfg.bot_ema_filter,
+                            rsi_up=cfg.bot_rsi_up,
+                            rsi_down=cfg.bot_rsi_down,
+                            stoch_up=cfg.bot_stoch_up,
+                            stoch_down=cfg.bot_stoch_down,
+                            entry_rsi_up=cfg.bot_entry_rsi_up,
+                            entry_rsi_down=cfg.bot_entry_rsi_down,
+                            entry_stoch_up=cfg.bot_entry_stoch_up,
+                            entry_stoch_down=cfg.bot_entry_stoch_down,
                         )
                     except Exception:
                         strat_signals = []
@@ -201,10 +342,28 @@ def _scanner_loop() -> None:
                     for sig in strat_signals:
                         meta = sig.meta or {}
                         a_type = str(meta.get("alert_type") or "entry")
+                        
+                        # ENFORCE: No 'entry' without a previous 'near'
+                        if a_type == "entry":
+                            # Check if we sent a 'near' for this instrument in the last 30 mins
+                            from datetime import timedelta
+                            cutoff = datetime.now() - timedelta(minutes=30)
+                            statement = select(BotAlert).where(
+                                BotAlert.instrument == sig.instrument,
+                                BotAlert.alert_type == "near",
+                                BotAlert.created_at >= cutoff
+                            )
+                            has_near = db.exec(statement).first()
+                            if not has_near:
+                                # Skip entry if no near was sent
+                                continue
+
                         prob = int((meta.get("signal") or {}).get("probability", 0) or 0)
+
                         price = float(sig.entry)
                         status = str(sig.status)
-                        msg = f"{sig.instrument} {sig.direction} M5 {a_type.upper()} ENTRY {price:.6f} PROB {prob}%"
+                        rsi = meta.get("indicators", {}).get("rsi", 0)
+                        msg = _format_alert_content(sig.instrument, sig.direction, price, prob, a_type, rsi)
 
                         candle_time = 0
                         try:
@@ -228,8 +387,12 @@ def _scanner_loop() -> None:
                             alert_type=a_type,
                             meta_json=meta_json,
                         )
-                        if _should_notify(cfg.notify_channels_json, "telegram") and a_type == "entry":
+                        if _should_notify(cfg.notify_channels_json, "telegram"):
                             _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                        
+                        if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                            phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                            _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
 
                     # Continue with legacy scanners only if no new signals.
                     if strat_signals:
@@ -240,7 +403,8 @@ def _scanner_loop() -> None:
                         price = float(jade.entry)
                         status = str(jade.status)
                         prob = int((jade.meta or {}).get('signal', {}).get('probability', 0) or 0)
-                        msg = f"{jade.instrument} {jade.direction} M5 ENTRY {price:.6f} PROB {prob}%"
+                        rsi = (jade.meta or {}).get('indicators', {}).get('rsi', 0)
+                        msg = _format_alert_content(jade.instrument, jade.direction, price, prob, "entry", rsi, filters="JADE PULSE M5")
 
                         candle_time = 0
                         try:
@@ -256,13 +420,18 @@ def _scanner_loop() -> None:
                         _persist_alert(db, jade.instrument, jade.direction, jade.expiry_time, price, status, msg, alert_type=str((jade.meta or {}).get("alert_type") or "entry"), meta_json=meta_json)
                         if _should_notify(cfg.notify_channels_json, "telegram"):
                             _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                        if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                            phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                            _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
                         continue
 
                     oanda = scan_binary_oanda_m5_strategy(instrument=instrument, candles_m5=candles5)
                     if oanda:
                         price = float(oanda.entry)
                         status = str(oanda.status)
-                        msg = f"{oanda.instrument} {oanda.direction} M5 ENTRY {price:.6f} PROB {int((oanda.meta or {}).get('signal', {}).get('probability', 0))}%"
+                        prob = int((oanda.meta or {}).get('signal', {}).get('probability', 0) or 0)
+                        rsi = (oanda.meta or {}).get('indicators', {}).get('rsi', 0)
+                        msg = _format_alert_content(oanda.instrument, oanda.direction, price, prob, "entry", rsi, filters="OANDA M5 STRAT")
 
                         candle_time = 0
                         try:
@@ -278,6 +447,9 @@ def _scanner_loop() -> None:
                         _persist_alert(db, oanda.instrument, oanda.direction, oanda.expiry_time, price, status, msg, alert_type=str((oanda.meta or {}).get("alert_type") or "entry"), meta_json=meta_json)
                         if _should_notify(cfg.notify_channels_json, "telegram"):
                             _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                        if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                            phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                            _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
                         continue
 
                     test = scan_test_strategy_ema200_stoch(
@@ -300,7 +472,9 @@ def _scanner_loop() -> None:
                             exp = f"{exp[:-1]}MIN"
                         else:
                             exp = exp.upper()
-                        msg = f"{test.instrument} {test.direction} {exp} PRICE {price:.6f} {status.upper()}"
+                        prob = int((test.meta or {}).get('signal', {}).get('probability', 0) or 80)
+                        rsi = (test.meta or {}).get('indicators', {}).get('rsi', 0)
+                        msg = _format_alert_content(test.instrument, test.direction, price, prob, "entry", rsi, filters=f"EMA {cfg.bot_ema_fast}/{cfg.bot_ema_slow}/{cfg.bot_ema_filter}")
 
                         candle_time = 0
                         try:
@@ -316,6 +490,9 @@ def _scanner_loop() -> None:
                         _persist_alert(db, test.instrument, test.direction, test.expiry_time, price, status, msg, meta_json=meta_json)
                         if _should_notify(cfg.notify_channels_json, "telegram"):
                             _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                        if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                            phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                            _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
                         continue
                     candles1, _p1 = fetch_any_candles(instrument=instrument, timeframe="1m", limit=240)
                     candles15, _p15b = fetch_any_candles(instrument=instrument, timeframe="15m", limit=200)
@@ -338,7 +515,9 @@ def _scanner_loop() -> None:
                         exp = f"{exp[:-1]}MIN"
                     else:
                         exp = exp.upper()
-                    msg = f"{q.instrument} {q.direction} {exp} PRICE {price:.6f} {status.upper()}"
+                    prob = int((q.meta or {}).get('signal', {}).get('probability', 0) or 85)
+                    rsi = (q.meta or {}).get('indicators', {}).get('rsi', 0)
+                    msg = _format_alert_content(q.instrument, q.direction, price, prob, "entry", rsi, filters="QUANT BINARY SETUP")
 
                     candle_time = 0
                     try:
@@ -354,6 +533,9 @@ def _scanner_loop() -> None:
                     _persist_alert(db, q.instrument, q.direction, q.expiry_time, price, status, msg, meta_json=meta_json)
                     if _should_notify(cfg.notify_channels_json, "telegram"):
                         _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+                    if _should_notify(cfg.notify_channels_json, "whatsapp"):
+                        phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+                        _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
 
         except Exception:
             # Scanner is best-effort.
@@ -518,6 +700,14 @@ def scanner_evaluate(
         ema_fast_p=cfg.bot_ema_fast,
         ema_slow_p=cfg.bot_ema_slow,
         ema_filter_p=cfg.bot_ema_filter,
+        rsi_up=cfg.bot_rsi_up,
+        rsi_down=cfg.bot_rsi_down,
+        stoch_up=cfg.bot_stoch_up,
+        stoch_down=cfg.bot_stoch_down,
+        entry_rsi_up=cfg.bot_entry_rsi_up,
+        entry_rsi_down=cfg.bot_entry_rsi_down,
+        entry_stoch_up=cfg.bot_entry_stoch_up,
+        entry_stoch_down=cfg.bot_entry_stoch_down,
     )
     entry = None
     near = None
@@ -537,12 +727,16 @@ def scanner_evaluate(
     price = float(chosen.entry)
     status = str(chosen.status)
     prob = int((meta.get('signal') or {}).get('probability', 0) or 0)
-    msg = f"{chosen.instrument} {chosen.direction} M5 {a_type.upper()} ENTRY {price:.6f} PROB {prob}%"
+    rsi = meta.get("indicators", {}).get("rsi", 0)
+    msg = _format_alert_content(chosen.instrument, chosen.direction, price, prob, a_type, rsi)
 
     meta_json = json.dumps(meta, ensure_ascii=True)
     alert = _persist_alert(db, chosen.instrument, chosen.direction, chosen.expiry_time, price, status, msg, alert_type=a_type, meta_json=meta_json)
     if _should_notify(cfg.notify_channels_json, "telegram"):
         _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+    if _should_notify(cfg.notify_channels_json, "whatsapp"):
+        phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+        _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
     return {"status": status, "alert": alert, "agent_report": chosen.report_text, "meta": meta}
 
     # fallback legacy scanners below (kept but unreachable while fixed strategy is active)
@@ -627,3 +821,126 @@ def get_prediction(instrument: str, session_id: int, investment: float = 10.0):
     """Obtiene la probabilidad proyectada de éxito para una configuración dada."""
     prob = ai_module.predict_success_rate(instrument, session_id, investment)
     return {"instrument": instrument, "session_id": session_id, "probability": prob}
+@router.post("/alerts/{alert_id}/notify-result")
+def notify_alert_result(
+    alert_id: int,
+    result: str = Body(..., embed=True), # 'win' or 'loss'
+    db: Session = Depends(get_session),
+    _: User = Depends(get_current_user),
+):
+    alert = db.get(BotAlert, alert_id)
+    if not alert:
+        raise HTTPException(status_code=404, detail="Alert not found")
+    
+    cfg = _get_or_create_config(db)
+    
+    symbol = "✅" if result == "win" else "❌"
+    status_text = "WIN ✅" if result == "win" else "LOSS ❌"
+    
+    msg = f"""{symbol} {result.upper()} - admin Alerts
+
+💎 Instrumento: {alert.instrument}
+📈 Acción: {alert.direction}
+🎯 Precio Entrada: {alert.price:.5f}
+📊 Estado: {status_text}"""
+
+    if _should_notify(cfg.notify_channels_json, "telegram"):
+        _send_telegram(cfg.notify_telegram_bot_token or "", cfg.notify_telegram_chat_id or "", msg)
+        
+    if _should_notify(cfg.notify_channels_json, "whatsapp"):
+        phones = json.loads(cfg.notify_whatsapp_numbers_json or "[]")
+        _send_whatsapp(cfg.notify_whatsapp_instance or "", phones, msg)
+    
+    # Persist the result in the database status
+    alert.status = result
+    alert.updated_at = datetime.now()
+    db.add(alert)
+    db.commit()
+        
+    return {"status": "ok"}
+    
+
+@router.get("/currency-strength")
+def get_currency_strength():
+    """Monitorea la fuerza de las 8 monedas principales: USD, EUR, JPY, GBP, CAD, NZD, AUD, CHF."""
+    currencies = ["USD", "EUR", "JPY", "GBP", "CAD", "NZD", "AUD", "CHF"]
+    scores = {c: 0.0 for c in currencies}
+    
+    # Pares base contra USD para derivar fuerza relativa
+    pairs = [
+        ("EUR/USD", True),
+        ("GBP/USD", True),
+        ("AUD/USD", True),
+        ("NZD/USD", True),
+        ("USD/JPY", False),
+        ("USD/CAD", False),
+        ("USD/CHF", False),
+    ]
+    
+    for pair_name, base_is_curr in pairs:
+        try:
+            # Obtener velas diarias para ver el desempeño del día
+            candles, _ = fetch_any_candles(pair_name, "1d", limit=1)
+            if not candles: continue
+            
+            # Calculamos el % de cambio del día (Open vs Close actual)
+            last = candles[-1]
+            o = float(last["open"])
+            c = float(last["close"])
+            if o == 0: continue
+            
+            p_change = ((c - o) / o) * 100.0
+            
+            base, quote = pair_name.split("/")
+            scores[base] += p_change
+            scores[quote] -= p_change
+        except Exception:
+            continue
+            
+    vals = list(scores.values())
+    if not vals: 
+        return {"strength": [], "best_pairs": []}
+    
+    min_v = min(vals)
+    max_v = max(vals)
+    rng = max_v - min_v
+    
+    results = []
+    for c in currencies:
+        val = ((scores[c] - min_v) / rng * 10) if rng != 0 else 5.0
+        results.append({
+            "currency": c, 
+            "score": round(val, 1), 
+            "raw": round(scores[c], 3)
+        })
+    
+    # Ordenar por fuerza descendente
+    results.sort(key=lambda x: x["score"], reverse=True)
+    
+    # Identificar mejores pares (Más fuerte contra más débil)
+    best_pairs = []
+    if len(results) >= 2:
+        # Top 1
+        s1 = results[0]
+        w1 = results[-1]
+        best_pairs.append({
+            "pair": f"{s1['currency']}/{w1['currency']}",
+            "direction": "CALL",
+            "strength": f"{s1['score']} vs {w1['score']}",
+            "type": "TREND"
+        })
+        # Top 2
+        s2 = results[1]
+        w2 = results[-2]
+        best_pairs.append({
+            "pair": f"{s2['currency']}/{w2['currency']}",
+            "direction": "CALL",
+            "strength": f"{s2['score']} vs {w2['score']}",
+            "type": "POTENTIAL"
+        })
+        
+    return {
+        "strength": results,
+        "best_pairs": best_pairs,
+        "timestamp": datetime.now().isoformat()
+    }

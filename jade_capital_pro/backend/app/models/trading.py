@@ -157,6 +157,19 @@ class AppConfig(SQLModel, table=True):
     bot_ema_min_slope: float = Field(default=0.00005)
     bot_sideways_filter: bool = Field(default=True)
     bot_cooldown_mins: int = Field(default=15)
+    bot_carousel_sec: int = Field(default=10)
+    
+    # User requested limits for signals
+    bot_rsi_up: int = Field(default=80)
+    bot_rsi_down: int = Field(default=20)
+    bot_stoch_up: int = Field(default=80)
+    bot_stoch_down: int = Field(default=20)
+    
+    # Entrance specific limits (usually more restrictive)
+    bot_entry_rsi_up: int = Field(default=90)
+    bot_entry_rsi_down: int = Field(default=10)
+    bot_entry_stoch_up: int = Field(default=90)
+    bot_entry_stoch_down: int = Field(default=10)
 
     updated_at: datetime = Field(default_factory=datetime.now)
 

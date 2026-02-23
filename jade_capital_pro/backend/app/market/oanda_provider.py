@@ -68,7 +68,7 @@ def fetch_candles(instrument: str, timeframe: str = "5m", limit: int = 200) -> L
         return []
 
     gran = (timeframe or "").strip().lower()
-    gran_map = {"5m": "M5", "15m": "M15", "1h": "H1", "1m": "M1"}
+    gran_map = {"5m": "M5", "15m": "M15", "1h": "H1", "1m": "M1", "1d": "D"}
     if gran not in gran_map:
         return []
 
