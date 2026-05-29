@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
+import 'api_config.dart';
 import '../../features/market/models/price_tick.dart';
 
 /// Socket.IO client for the /ws/market namespace.
@@ -16,7 +17,7 @@ import '../../features/market/models/price_tick.dart';
 /// different event conventions (join/leave, price:update vs subscribe:price/priceUpdate).
 class MarketWsClient {
   MarketWsClient({String? serverUrl, String? token})
-      : _serverUrl = serverUrl ?? 'http://localhost:3000',
+      : _serverUrl = serverUrl ?? ApiConfig.wsBaseUrl,
         _token = token ?? '';
 
   final String _serverUrl;

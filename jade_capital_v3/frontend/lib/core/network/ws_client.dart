@@ -4,13 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
+import 'api_config.dart';
+
 /// WebSocket client wrapping Socket.IO with auth, auto-reconnect,
 /// and typed event streams for price updates, alerts, and trade updates.
 class WsClient {
   WsClient({
     String? serverUrl,
     FlutterSecureStorage? secureStorage,
-  })  : _serverUrl = serverUrl ?? 'http://localhost:3000',
+  })  : _serverUrl = serverUrl ?? ApiConfig.wsBaseUrl,
         _secureStorage =
             secureStorage ?? const FlutterSecureStorage() {
     _initSocket();

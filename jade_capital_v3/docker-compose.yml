@@ -1,11 +1,9 @@
 # ─────────────────────────────────────────────────────────────
 # JadeCapital v3 — Docker Compose
-# Stack: NestJS + Flutter + PostgreSQL/TimescaleDB + Redis
+# Stack: NestJS + Flutter Web + PostgreSQL/TimescaleDB + Redis + nginx
 # ─────────────────────────────────────────────────────────────
 
 services:
-
-  # ── PostgreSQL + TimescaleDB ────────────────────────────────
   postgres:
     image: timescale/timescaledb:latest-pg14
     container_name: jade-v3-postgres
@@ -14,8 +12,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-jade}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jade123}
       POSTGRES_DB: ${POSTGRES_DB:-jade_capital}
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
@@ -28,26 +24,26 @@ services:
     networks:
       - jade-v3-net
 
-  # ── Redis ──────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
     container_name: jade-v3-redis
     restart: unless-stopped
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
+    command: >
+      sh -c 'if [ -n "${REDIS_PASSWORD:-}" ]; then
+        redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}";
+      else
+        redis-server --appendonly yes;
+      fi'
     volumes:
       - redis-data:/data
-      - ./infra/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "if [ -n \"$${REDIS_PASSWORD:-}\" ]; then redis-cli -a \"$${REDIS_PASSWORD}\" ping; else redis-cli ping; fi"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - jade-v3-net
 
-  # ── NestJS Backend ─────────────────────────────────────────
   backend:
     build:
       context: ./backend
@@ -57,64 +53,68 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DATABASE_URL: postgresql://${POSTGRES_USER:-jade}:${POSTGRES_PASSWORD:-jade123}@postgres:5432/${POSTGRES_DB:-jade_capital}
-      REDIS_URL: redis://:${REDIS_PASSWORD:-}@redis:6379/0
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: ${POSTGRES_USER:-jade}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-jade123}
+      DB_DATABASE: ${POSTGRES_DB:-jade_capital}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_DB: 0
       JWT_SECRET: ${JWT_SECRET:-change-me-in-production-min-32-chars}
-      JWT_ACCESS_TTL: ${JWT_ACCESS_TTL:-15m}
-      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-7d}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:3000}
-    ports:
-      - "3000:3000"
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret-min-32-chars}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:8080,http://localhost:3000}
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 15s
+      start_period: 20s
     networks:
       - jade-v3-net
 
-  # ── Flutter Frontend (via nginx) ───────────────────────────
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: jade-v3-frontend
     restart: unless-stopped
-    ports:
-      - "8080:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - jade-v3-net
 
-  # ── NGINX API Gateway ──────────────────────────────────────
   nginx:
     image: nginx:alpine
     container_name: jade-v3-nginx
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
+      # Enable 443 after adding TLS certs or a reverse proxy such as Caddy/Traefik.
+      # - "443:443"
     volumes:
       - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - backend
-      - frontend
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_started
     networks:
       - jade-v3-net
 
-# ── Networks ───────────────────────────────────────────────────
 networks:
   jade-v3-net:
     driver: bridge
 
-# ── Volumes ───────────────────────────────────────────────────
 volumes:
   postgres-data:
   redis-data:

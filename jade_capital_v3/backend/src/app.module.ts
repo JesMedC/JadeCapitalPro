@@ -22,6 +22,7 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
 import { BookmarksModule } from './modules/bookmarks/bookmarks.module';
 import { WebSocketsModule } from './websockets/web-sockets.module';
 import { ReportsModule } from './modules/reports/reports.module';
+import { HealthController } from './health.controller';
 
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import entities from './database/entities';
@@ -88,6 +89,7 @@ import entities from './database/entities';
     WebSocketsModule,
     ReportsModule,
   ],
+  controllers: [HealthController],
   providers: [
     {
       provide: APP_GUARD,

@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+import 'api_config.dart';
+
 /// Centralized API client wrapping [Dio] with JWT auth, auto-refresh,
 /// and standardized error handling.
 class ApiClient {
@@ -8,7 +10,7 @@ class ApiClient {
     String? baseUrl,
   }) : _dio = Dio(
          BaseOptions(
-           baseUrl: baseUrl ?? 'http://localhost:3000/api',
+           baseUrl: baseUrl ?? ApiConfig.apiBaseUrl,
            connectTimeout: const Duration(seconds: 10),
            receiveTimeout: const Duration(seconds: 30),
            sendTimeout: const Duration(seconds: 10),
