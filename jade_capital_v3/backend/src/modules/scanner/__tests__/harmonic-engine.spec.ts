@@ -570,6 +570,8 @@ describe('Harmonic Engine — Unit Tests', () => {
       ratioXD: 0.786, // ideal
       metadata: {
         points: { x: 1.0000, a: 1.0500, b: 1.0191, c: 1.0350, d: 1.0393 },
+        times:  { x: 1_700_000_000_000, a: 1_700_000_003_000, b: 1_700_000_006_000,
+                   c: 1_700_000_009_000, d: 1_700_000_012_000 },
         ratios: { AB: 0.618, BC: 0.634, CD: 1.445, XD: 0.786 },
         przHit: true,
         atr: 0.001,
@@ -633,6 +635,39 @@ describe('Harmonic Engine — Unit Tests', () => {
       // bonus: przHit=false (0) + winRate=72*0.1=7.2
       // total = 7.2 < 82 → filtered
       expect(results.length).toBe(0);
+    });
+
+    // ── Sprint 13: metadata.times assertions ─────────────────────────────────
+
+    it('metadata.times is defined on the scored candidate', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results.length).toBeGreaterThanOrEqual(1);
+      expect(results[0].metadata.times).toBeDefined();
+    });
+
+    it('metadata.times.x is a unix-ms timestamp (>= 13 digits)', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results[0].metadata.times.x).toBeGreaterThan(1_000_000_000_000);
+    });
+
+    it('metadata.times.a is a unix-ms timestamp (>= 13 digits)', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results[0].metadata.times.a).toBeGreaterThan(1_000_000_000_000);
+    });
+
+    it('metadata.times.b is a unix-ms timestamp (>= 13 digits)', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results[0].metadata.times.b).toBeGreaterThan(1_000_000_000_000);
+    });
+
+    it('metadata.times.c is a unix-ms timestamp (>= 13 digits)', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results[0].metadata.times.c).toBeGreaterThan(1_000_000_000_000);
+    });
+
+    it('metadata.times.d is a unix-ms timestamp (>= 13 digits)', () => {
+      const results = scoreAndBuildLevels([idealGartley], 0.001);
+      expect(results[0].metadata.times.d).toBeGreaterThan(1_000_000_000_000);
     });
   });
 
@@ -727,6 +762,8 @@ describe('Harmonic Engine — Unit Tests', () => {
         ratioXD: 0.886,  // ideal center of Allen XD [0.816, 0.956]
         metadata: {
           points: { x: 1.0000, a: 1.0500, b: 1.0107, c: 1.0452, d: 1.0057 },
+          times:  { x: 1_700_000_000_000, a: 1_700_000_003_000, b: 1_700_000_006_000,
+                     c: 1_700_000_009_000, d: 1_700_000_012_000 },
           ratios: { AB: 0.786, BC: 0.634, CD: 1.564, XD: 0.886 },
           przHit: true,
           atr: 0.001,
@@ -770,6 +807,8 @@ describe('Harmonic Engine — Unit Tests', () => {
         ratioXD: 1.445,  // center of XD [1.202, 1.688]
         metadata: {
           points: { x: 1.0000, a: 1.0500, b: 1.0191, c: 1.0309, d: 1.0000 },
+          times:  { x: 1_700_000_000_000, a: 1_700_000_003_000, b: 1_700_000_006_000,
+                     c: 1_700_000_009_000, d: 1_700_000_012_000 },
           ratios: { AB: 0.618, BC: 0.618, CD: 1.445, XD: 1.445 },
           przHit: true,
           atr: 0.001,

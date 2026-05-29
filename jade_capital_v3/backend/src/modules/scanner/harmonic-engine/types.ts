@@ -60,6 +60,7 @@ export interface PatternCandidate {
   // Metadata blob (stored as JSONB)
   metadata: {
     points: { x: number; a: number; b: number; c: number; d: number };
+    times:  { x: number; a: number; b: number; c: number; d: number }; // unix ms
     ratios: { AB: number; BC: number; CD: number; XD: number };
     przHit: boolean;
     atr: number;

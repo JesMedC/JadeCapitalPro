@@ -1,0 +1,712 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../core/auth/auth_provider.dart';
+import '../../core/theme/app_theme.dart';
+import '../../shared/widgets/loading_indicator.dart';
+import 'providers/dashboard_provider.dart';
+import 'widgets/balance_card.dart';
+import 'widgets/equity_chart.dart';
+import 'widgets/new_trade_widget.dart';
+import 'widgets/open_trades_list.dart';
+import 'widgets/risk_bar.dart';
+import 'widgets/stats_row.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Shell scaffold with bottom navigation bar
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Shell scaffold with bottom navigation bar.
+///
+/// Hosts all dashboard child routes inside [child].
+class DashboardPage extends ConsumerWidget {
+  const DashboardPage({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final location = GoRouterState.of(context).matchedLocation;
+
+    return Scaffold(
+      body: child,
+      bottomNavigationBar: _BottomNavBar(currentLocation: location),
+    );
+  }
+}
+
+/// Bottom navigation bar with 5 tabs.
+class _BottomNavBar extends StatelessWidget {
+  const _BottomNavBar({required this.currentLocation});
+
+  final String currentLocation;
+
+  int _calculateSelectedIndex() {
+    if (currentLocation == '/dashboard') return 0;
+    if (currentLocation.startsWith('/dashboard/trades')) return 1;
+    if (currentLocation.startsWith('/dashboard/chart')) return 2;
+    if (currentLocation.startsWith('/dashboard/journal')) return 3;
+    if (currentLocation.startsWith('/dashboard/settings')) return 4;
+    return 0;
+  }
+
+  static const _tabs = <_NavTab>[
+    _NavTab(
+        icon: Icons.home_outlined, activeIcon: Icons.home, label: 'Home'),
+    _NavTab(
+        icon: Icons.swap_horiz_outlined,
+        activeIcon: Icons.swap_horiz,
+        label: 'Trades'),
+    _NavTab(
+        icon: Icons.show_chart_outlined,
+        activeIcon: Icons.show_chart,
+        label: 'Chart'),
+    _NavTab(
+        icon: Icons.menu_book_outlined,
+        activeIcon: Icons.menu_book,
+        label: 'Journal'),
+    _NavTab(
+        icon: Icons.settings_outlined,
+        activeIcon: Icons.settings,
+        label: 'Settings'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedIndex = _calculateSelectedIndex();
+
+    return BottomNavigationBar(
+      currentIndex: selectedIndex,
+      onTap: (index) => _onTabTap(context, index),
+      items: _tabs.map((tab) {
+        final isActive = _tabs.indexOf(tab) == selectedIndex;
+        return BottomNavigationBarItem(
+          icon: Icon(isActive ? tab.activeIcon : tab.icon),
+          label: tab.label,
+        );
+      }).toList(),
+    );
+  }
+
+  void _onTabTap(BuildContext context, int index) {
+    const routes = [
+      '/dashboard',
+      '/dashboard/trades',
+      '/dashboard/chart',
+      '/dashboard/journal',
+      '/dashboard/settings',
+    ];
+
+    if (index >= 0 && index < routes.length) {
+      context.go(routes[index]);
+    }
+  }
+}
+
+class _NavTab {
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+
+  const _NavTab({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dashboard Home Content (shown at /dashboard)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Full dashboard home content: balance, KPIs, equity chart, risk, open trades.
+class DashboardHomeContent extends ConsumerStatefulWidget {
+  const DashboardHomeContent({super.key});
+
+  @override
+  ConsumerState<DashboardHomeContent> createState() =>
+      _DashboardHomeContentState();
+}
+
+class _DashboardHomeContentState extends ConsumerState<DashboardHomeContent>
+    with WidgetsBindingObserver {
+  StreamSubscription<String?>? _errorSub;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _errorSub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(dashboardProvider);
+    final user = ref.watch(currentUserProvider);
+    final authNotifier = ref.read(authStateProvider.notifier);
+
+    // Show error as transient snackbar
+    ref.listen<DashboardState>(dashboardProvider, (prev, next) {
+      if (next.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: AppColors.danger,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'DISMISS',
+              textColor: Colors.white,
+              onPressed: () =>
+                  ref.read(dashboardProvider.notifier).clearError(),
+            ),
+      ),
+    );
+  }
+}
+
+// ── Deposit / Withdraw Sheet ──
+
+class _DepositWithdrawSheet extends ConsumerStatefulWidget {
+  const _DepositWithdrawSheet({required this.account});
+
+  final Account? account;
+
+  @override
+  ConsumerState<_DepositWithdrawSheet> createState() =>
+      _DepositWithdrawSheetState();
+}
+
+class _DepositWithdrawSheetState extends ConsumerState<_DepositWithdrawSheet>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+  final _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final account = widget.account;
+    if (account == null) {
+      return const Padding(
+        padding: EdgeInsets.all(24),
+        child: Text('No account selected'),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header
+          Row(
+            children: [
+              Icon(
+                Icons.account_balance_wallet,
+                color: AppColors.primary,
+                size: 24,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                'Manage Funds',
+                style: GoogleFonts.orbitron(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close, size: 20),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Account info
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.cardBackground,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      account.name,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppColors.textMuted,
+                      ),
+                    ),
+                    Text(
+                      '\$${account.balance.toStringAsFixed(2)}',
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Tabs
+          TabBar(
+            controller: _tabController,
+            labelColor: AppColors.primary,
+            unselectedLabelColor: AppColors.textMuted,
+            indicatorColor: AppColors.primary,
+            labelStyle: GoogleFonts.inter(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: const [
+              Tab(text: 'Deposit'),
+              Tab(text: 'Withdraw'),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Amount input
+          TextField(
+            controller: _amountController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            style: GoogleFonts.jetBrainsMono(
+              fontSize: 24,
+              color: AppColors.textPrimary,
+            ),
+            decoration: InputDecoration(
+              labelText: 'Amount',
+              labelStyle: GoogleFonts.inter(color: AppColors.textSecondary),
+              prefixText: '\$ ',
+              prefixStyle: GoogleFonts.jetBrainsMono(
+                fontSize: 24,
+                color: AppColors.primary,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: AppColors.border),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: AppColors.primary),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Action button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => _handleSubmit(account),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final isDeposit = _tabController.index == 0;
+                  return Text(
+                    isDeposit ? 'DEPOSIT' : 'WITHDRAW',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.background,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+  void _handleSubmit(Account account) {
+    final amount = double.tryParse(_amountController.text);
+    if (amount == null || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid amount'),
+          backgroundColor: AppColors.danger,
+        ),
+      );
+      return;
+    }
+
+    final isDeposit = _tabController.index == 0;
+    final notifier = ref.read(dashboardProvider.notifier);
+
+    if (isDeposit) {
+      notifier.deposit(account.id, amount);
+    } else {
+      if (amount > account.balance) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Insufficient balance'),
+            backgroundColor: AppColors.danger,
+          ),
+        );
+        return;
+      }
+      notifier.withdraw(account.id, amount);
+    }
+
+    Navigator.of(context).pop();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${isDeposit ? 'Deposit' : 'Withdrawal'} successful'),
+        backgroundColor: AppColors.accent,
+      ),
+    );
+  }
+}
+    });
+
+    // Loading state
+    if (state.isLoading && state.accounts.isEmpty) {
+      return Scaffold(
+        appBar: _buildAppBar(user?.username, authNotifier),
+        body: const LoadingIndicator(label: 'Loading dashboard...'),
+      );
+    }
+
+    return Scaffold(
+      appBar: _buildAppBar(user?.username, authNotifier),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton.small(
+            heroTag: 'depositWithdraw',
+            onPressed: () => _openDepositWithdrawSheet(context, state),
+            backgroundColor: AppColors.accent,
+            foregroundColor: AppColors.background,
+            child: const Icon(Icons.account_balance_wallet),
+            tooltip: 'Deposit / Withdraw',
+          ),
+          const SizedBox(height: 8),
+          FloatingActionButton.extended(
+            heroTag: 'newTrade',
+            onPressed: () => _openNewTradeSheet(context),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.background,
+            icon: const Icon(Icons.add),
+            label: const Text('New Trade'),
+            tooltip: 'Open a new trade',
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        color: AppColors.primary,
+        onRefresh: () => ref.read(dashboardProvider.notifier).refresh(),
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          children: [
+            // ── Account selector (only if multiple accounts) ──
+            if (state.accounts.length > 1) ...[
+              _AccountSelector(
+                accounts: state.accounts,
+                selected: state.selectedAccount,
+                onChanged: (a) =>
+                    ref.read(dashboardProvider.notifier).selectAccount(a),
+              ),
+              const SizedBox(height: 16),
+            ],
+
+            // ── Balance card ──
+            BalanceCard(
+              accountName: state.selectedAccount?.name ?? 'Account',
+              balance: state.balance,
+              currency: state.currency,
+              marketType: state.selectedAccount?.marketType ?? 'binary',
+            ),
+            const SizedBox(height: 16),
+
+            // ── KPI stats row ──
+            if (state.overall != null) ...[
+              StatsRow(overall: state.overall!),
+              const SizedBox(height: 16),
+            ],
+
+            // ── Equity curve ──
+            EquityChart(points: state.equityCurve),
+            const SizedBox(height: 16),
+
+            // ── Risk status ──
+            if (state.risk != null) ...[
+              RiskBar(risk: state.risk!),
+              const SizedBox(height: 16),
+            ],
+
+            // ── Open trades list ──
+            OpenTradesList(
+              trades: state.openTrades,
+              onCloseBinary: (id, result) =>
+                  ref.read(dashboardProvider.notifier).closeBinary(id, result),
+              onCloseForex: (id, price) =>
+                  ref.read(dashboardProvider.notifier).closeForex(id, price),
+            ),
+            const SizedBox(height: 16),
+
+            // ── Goals progress ──
+            if (state.goals.isNotEmpty) ...[
+              _GoalsSection(goals: state.goals),
+              const SizedBox(height: 16),
+            ],
+
+            // ── Refresh indicator hint ──
+            if (state.isRefreshing)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Center(
+                  child: SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openNewTradeSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      enableDrag: true,
+      builder: (_) => const NewTradeWidget(),
+    );
+  }
+
+  void _openDepositWithdrawSheet(BuildContext context, DashboardState state) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      enableDrag: true,
+      builder: (_) => _DepositWithdrawSheet(account: state.selectedAccount),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(
+      String? username, AuthNotifier authNotifier) {
+    return AppBar(
+      title: const Text('JadeCapital Pro'),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.logout, size: 20),
+          tooltip: 'Logout',
+          onPressed: () => authNotifier.logout(),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Account Selector ──
+
+class _AccountSelector extends StatelessWidget {
+  const _AccountSelector({
+    required this.accounts,
+    required this.selected,
+    required this.onChanged,
+  });
+
+  final List<Account> accounts;
+  final Account? selected;
+  final ValueChanged<Account> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<Account>(
+          value: selected,
+          isExpanded: true,
+          icon: const Icon(Icons.expand_more,
+              color: AppColors.textSecondary, size: 20),
+          dropdownColor: AppColors.surface,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            color: AppColors.textPrimary,
+          ),
+          items: accounts.map((a) {
+            return DropdownMenuItem<Account>(
+              value: a,
+              child: Row(
+                children: [
+                  Icon(
+                    a.marketType == 'forex'
+                        ? Icons.show_chart
+                        : Icons.bar_chart,
+                    color: AppColors.primary,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      a.name,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    a.marketType.toUpperCase(),
+                    style: GoogleFonts.inter(
+                      fontSize: 10,
+                      color: AppColors.textMuted,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: (a) {
+            if (a != null) onChanged(a);
+          },
+        ),
+      ),
+    );
+  }
+}
+
+// ── Goals Section ──
+
+class _GoalsSection extends StatelessWidget {
+  const _GoalsSection({required this.goals});
+
+  final List<GoalProgress> goals;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Goals',
+            style: GoogleFonts.orbitron(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...goals.map((g) => _GoalBar(goal: g)),
+        ],
+      ),
+    );
+  }
+}
+
+class _GoalBar extends StatelessWidget {
+  const _GoalBar({required this.goal});
+
+  final GoalProgress goal;
+
+  Color get _barColor {
+    if (goal.progressPct >= 80) return AppColors.accent;
+    if (goal.progressPct >= 50) return AppColors.primary;
+    return AppColors.warning;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                goal.title,
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              Text(
+                '${goal.currentValue.toStringAsFixed(0)} / ${goal.targetValue.toStringAsFixed(0)} ${""}',
+                style: GoogleFonts.jetBrainsMono(
+                  fontSize: 11,
+                  color: AppColors.textMuted,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: goal.progressPct / 100,
+              minHeight: 6,
+              backgroundColor: AppColors.surfaceLight,
+              valueColor: AlwaysStoppedAnimation(_barColor),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

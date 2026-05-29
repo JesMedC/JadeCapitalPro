@@ -1,0 +1,120 @@
+# ─────────────────────────────────────────────────────────────
+# JadeCapital v3 — Docker Compose
+# Stack: NestJS + Flutter + PostgreSQL/TimescaleDB + Redis
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL + TimescaleDB ────────────────────────────────
+  postgres:
+    image: timescale/timescaledb:latest-pg14
+    container_name: jade-v3-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-jade}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jade123}
+      POSTGRES_DB: ${POSTGRES_DB:-jade_capital}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jade} -d ${POSTGRES_DB:-jade_capital}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - jade-v3-net
+
+  # ── Redis ──────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: jade-v3-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./infra/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - jade-v3-net
+
+  # ── NestJS Backend ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jade-v3-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-jade}:${POSTGRES_PASSWORD:-jade123}@postgres:5432/${POSTGRES_DB:-jade_capital}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-}@redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production-min-32-chars}
+      JWT_ACCESS_TTL: ${JWT_ACCESS_TTL:-15m}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:3000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - jade-v3-net
+
+  # ── Flutter Frontend (via nginx) ───────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: jade-v3-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - jade-v3-net
+
+  # ── NGINX API Gateway ──────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: jade-v3-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - jade-v3-net
+
+# ── Networks ───────────────────────────────────────────────────
+networks:
+  jade-v3-net:
+    driver: bridge
+
+# ── Volumes ───────────────────────────────────────────────────
+volumes:
+  postgres-data:
+  redis-data:
